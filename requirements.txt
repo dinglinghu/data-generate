@@ -1,0 +1,38 @@
+# STK卫星星座数据采集系统依赖包
+
+# STK COM接口
+pywin32>=306
+
+# 数据处理
+numpy>=1.21.0
+pandas>=1.3.0
+
+# 配置文件处理
+PyYAML>=6.0
+
+# 日志和时间处理
+python-dateutil>=2.8.0
+
+# 异步支持
+asyncio
+
+# 数学计算
+math
+
+# 文件路径处理
+pathlib
+
+# JSON数据处理
+json
+
+# 随机数生成
+random
+
+# 日期时间处理
+datetime
+
+# 类型提示
+typing
+
+# 日志记录
+logging

@@ -1,0 +1,183 @@
+# STK卫星星座数据采集系统配置文件
+# 严格按照ADK官网文档要求进行配置
+
+# Walker星座配置
+constellation:
+  type: "Walker"
+  planes: 3                    # 轨道面数量
+  satellites_per_plane: 3      # 每个轨道面的卫星数量
+  total_satellites: 9          # 总卫星数量
+  
+# 载荷参数配置
+payload:
+  type: "Optical_Sensor"
+  mounting: "Nadir"            # 载荷安装方向：天底方向
+
+# 导弹目标配置
+missile:
+  max_concurrent_missiles: 5   # 场景中同时在中段飞行的导弹数量最大值
+
+# 任务规划配置
+task_planning:
+  midcourse_altitude_threshold: 100  # 中段高度阈值(km)
+  atomic_task_duration: 300          # 原子任务持续时间(秒)
+
+# 元任务管理配置
+meta_task_management:
+  # 元子任务时间间隔配置
+  atomic_task_interval: 300          # 元子任务时间间隔(秒) - 5分钟
+
+# 数据采集配置
+data_collection:
+  # 滚动数据采集配置
+  rolling_collection:
+    enable: true                     # 启用滚动采集
+    total_collections: 3             # 总采集次数（测试用）
+    interval_range: [300, 600]       # 采集时间间隔范围(秒) 5-10分钟
+    max_scenario_duration: 86400     # 最大场景持续时间(秒) 24小时
+
+    # 导弹动态添加配置
+    dynamic_missiles:
+      add_per_collection: 1          # 每次采集添加的导弹数量
+      launch_at_collection_time: true # 导弹发射时间为当前采集时刻
+      only_midcourse_targets: true   # 只采集中段飞行的导弹
+
+# STK软件配置
+stk:
+  detect_existing_project: true      # 是否检测现有STK项目
+  existing_project_wait_time: 5      # 现有项目检测等待时间(秒)
+  max_connections: 5                 # 最大连接数
+  connection_timeout: 30             # 连接超时时间(秒)
+
+# 可视化配置
+visualization:
+  # 甘特图配置
+  gantt_chart:
+    # 图表尺寸配置
+    figure_size: [24, 16]            # 图表尺寸 [宽度, 高度]
+    height_ratios: [2, 3]            # 子图高度比例 [元任务图, 可见任务图]
+    dpi: 300                         # 图片分辨率
+
+    # 时间轴配置
+    time_axis:
+      buffer_minutes: 5              # 时间轴前后缓冲时间(分钟)
+      default_window_hours: 2        # 默认时间窗口(小时)
+      hour_interval: 1               # 主要时间刻度间隔(小时)
+      minute_interval: 30            # 次要时间刻度间隔(分钟)
+      label_rotation: 45             # 时间标签旋转角度(度)
+
+    # 任务条配置
+    task_bars:
+      # 元任务条配置
+      meta_task:
+        height: 0.4                  # 任务条高度
+        linewidth: 1                 # 边框线宽
+        alpha_real: 0.9              # 真实任务透明度
+        alpha_virtual: 0.6           # 虚拟任务透明度
+        min_duration_for_label: 30   # 显示标签的最小持续时间(分钟)
+
+      # 可见任务条配置
+      visible_task:
+        height: 0.7                  # 任务条高度
+        linewidth_visible: 2         # 可见任务边框线宽
+        linewidth_virtual: 1         # 虚拟任务边框线宽
+        alpha_visible: 0.9           # 可见任务透明度
+        alpha_virtual: 0.6           # 虚拟任务透明度
+        min_duration_for_label: 30   # 显示标签的最小持续时间(分钟)
+
+    # Y轴配置
+    y_axis:
+      spacing_between_missiles: 0.5  # 导弹间间隔
+      spacing_between_combos: 0.5    # 导弹-卫星组合间间隔
+      label_fontsize_meta: 10        # 元任务Y轴标签字体大小
+      label_fontsize_visible: 9      # 可见任务Y轴标签字体大小
+
+    # 文字配置
+    text:
+      title_fontsize: 18             # 主标题字体大小
+      subtitle_fontsize: 14          # 子标题字体大小
+      label_fontsize: 12             # 轴标签字体大小
+      task_label_fontsize: 8         # 任务标签字体大小
+      legend_fontsize: 10            # 图例字体大小
+      legend_alpha: 0.9              # 图例透明度
+
+    # 网格配置
+    grid:
+      enable: true                   # 启用网格
+      alpha: 0.3                     # 网格透明度
+      linestyle: "-"                 # 网格线样式
+      linewidth: 0.5                 # 网格线宽
+
+    # 颜色配置
+    colors:
+      # 背景和网格
+      background: "#fafafa"
+      grid_major: "#e0e0e0"
+      grid_minor: "#f5f5f5"
+      text_primary: "#212121"
+      text_secondary: "#757575"
+
+      # 元任务相关颜色
+      meta_task_background: "#e8f4fd"     # 浅蓝背景
+      meta_task_border: "#1e88e5"        # 深蓝边框
+      meta_task_text: "#0d47a1"          # 深蓝文字
+
+      # 可见元任务颜色
+      visible_meta_task: "#4caf50"       # 绿色 - 可见元任务
+      visible_meta_border: "#2e7d32"     # 深绿边框
+
+      # 真实元子任务颜色
+      real_meta_task: "#4caf50"          # 绿色 - 真实元子任务
+      real_meta_border: "#2e7d32"        # 深绿边框
+
+      # 虚拟元子任务颜色
+      virtual_meta_task: "#ff9800"       # 橙色 - 虚拟元子任务
+      virtual_meta_border: "#f57c00"     # 深橙边框
+
+      # 虚拟原子任务颜色
+      virtual_atomic_task: "#ff9800"     # 橙色 - 虚拟原子任务
+      virtual_atomic_border: "#f57c00"   # 深橙边框
+
+      # 导弹飞行相关颜色
+      missile_flight: "#f44336"          # 红色 - 导弹飞行
+      missile_midcourse: "#9c27b0"       # 紫色 - 中段飞行
+      missile_border: "#d32f2f"          # 深红边框
+
+      # 卫星颜色（9种不同颜色）
+      satellite_colors:
+        - "#2196f3"  # 蓝色
+        - "#ff9800"  # 橙色
+        - "#4caf50"  # 绿色
+        - "#e91e63"  # 粉红色
+        - "#9c27b0"  # 紫色
+        - "#795548"  # 棕色
+        - "#607d8b"  # 蓝灰色
+        - "#ff5722"  # 深橙色
+        - "#3f51b5"  # 靛蓝色
+
+      # 状态颜色
+      active: "#00c853"
+      inactive: "#bdbdbd"
+      critical: "#d50000"
+      warning: "#ff6f00"
+
+  # 时间轴转换器配置
+  timeline_converter:
+    # 虚拟任务采样配置
+    virtual_task_sampling:
+      display_interval: 10           # 每N个虚拟任务显示1个
+
+    # 任务默认值配置
+    task_defaults:
+      task_index: 0                  # 默认任务索引
+      coverage_ratio: 0.0            # 默认覆盖率
+      alpha_real: 0.9                # 真实任务默认透明度
+      alpha_virtual: 0.6             # 虚拟任务默认透明度
+      alpha_default: 0.9             # 默认透明度
+
+# 输出配置
+output:
+  data_directory: "output/data"      # 数据输出目录
+  log_directory: "output/logs"       # 日志输出目录
+  visualization_directory: "output/visualization"  # 可视化输出目录
+  charts_directory: "output/charts"  # 图表输出目录

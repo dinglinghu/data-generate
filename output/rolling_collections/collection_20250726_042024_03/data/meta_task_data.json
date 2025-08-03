@@ -1,0 +1,2691 @@
+{
+  "collection_time": "2025-07-26T04:20:24",
+  "data_type": "meta_task_complete_data",
+  "meta_tasks": {
+    "meta_tasks": {
+      "RollingThreat_001_01_3717": {
+        "missile_id": "RollingThreat_001_01_3717",
+        "planning_cycle": {
+          "start_time": "2025-07-26 04:06:00",
+          "end_time": "2025-07-26 04:33:54",
+          "duration_seconds": 1674.0,
+          "midcourse_info": [
+            {
+              "missile_id": "RollingThreat_001_01_3717",
+              "midcourse_start": "2025-07-26 04:06:00",
+              "midcourse_end": "2025-07-26 04:24:00",
+              "duration_seconds": 1080.0
+            },
+            {
+              "missile_id": "RollingThreat_002_01_5663",
+              "midcourse_start": "2025-07-26 04:15:54",
+              "midcourse_end": "2025-07-26 04:33:54",
+              "duration_seconds": 1080.0
+            }
+          ],
+          "earliest_missile": "RollingThreat_001_01_3717",
+          "latest_missile": "RollingThreat_002_01_5663",
+          "original_start": "2025-07-26 04:06:00",
+          "original_end": "2025-07-26 04:33:54",
+          "standardized": true
+        },
+        "midcourse_info": {
+          "missile_id": "RollingThreat_001_01_3717",
+          "midcourse_start": "2025-07-26 04:06:00",
+          "midcourse_end": "2025-07-26 04:24:00",
+          "duration_seconds": 1080.0
+        },
+        "atomic_tasks": [
+          {
+            "task_id": "atomic_task_001",
+            "task_index": 1,
+            "start_time": "2025-07-26 04:06:00",
+            "end_time": "2025-07-26 04:11:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:06:00",
+            "end_time_iso": "2025-07-26T04:11:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_002",
+            "task_index": 2,
+            "start_time": "2025-07-26 04:11:00",
+            "end_time": "2025-07-26 04:16:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:11:00",
+            "end_time_iso": "2025-07-26T04:16:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_003",
+            "task_index": 3,
+            "start_time": "2025-07-26 04:16:00",
+            "end_time": "2025-07-26 04:21:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:16:00",
+            "end_time_iso": "2025-07-26T04:21:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_004",
+            "task_index": 4,
+            "start_time": "2025-07-26 04:21:00",
+            "end_time": "2025-07-26 04:26:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:21:00",
+            "end_time_iso": "2025-07-26T04:26:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_005",
+            "task_index": 5,
+            "start_time": "2025-07-26 04:26:00",
+            "end_time": "2025-07-26 04:31:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:26:00",
+            "end_time_iso": "2025-07-26T04:31:00",
+            "task_type": "virtual_meta_task"
+          },
+          {
+            "task_id": "atomic_task_006",
+            "task_index": 6,
+            "start_time": "2025-07-26 04:31:00",
+            "end_time": "2025-07-26 04:33:54",
+            "duration_seconds": 174.0,
+            "start_time_iso": "2025-07-26T04:31:00",
+            "end_time_iso": "2025-07-26T04:33:54",
+            "task_type": "virtual_meta_task"
+          }
+        ],
+        "real_tasks": [
+          {
+            "task_id": "atomic_task_001",
+            "task_index": 1,
+            "start_time": "2025-07-26 04:06:00",
+            "end_time": "2025-07-26 04:11:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:06:00",
+            "end_time_iso": "2025-07-26T04:11:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_002",
+            "task_index": 2,
+            "start_time": "2025-07-26 04:11:00",
+            "end_time": "2025-07-26 04:16:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:11:00",
+            "end_time_iso": "2025-07-26T04:16:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_003",
+            "task_index": 3,
+            "start_time": "2025-07-26 04:16:00",
+            "end_time": "2025-07-26 04:21:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:16:00",
+            "end_time_iso": "2025-07-26T04:21:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_004",
+            "task_index": 4,
+            "start_time": "2025-07-26 04:21:00",
+            "end_time": "2025-07-26 04:26:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:21:00",
+            "end_time_iso": "2025-07-26T04:26:00",
+            "task_type": "real_meta_task"
+          }
+        ],
+        "virtual_tasks": [
+          {
+            "task_id": "atomic_task_005",
+            "task_index": 5,
+            "start_time": "2025-07-26 04:26:00",
+            "end_time": "2025-07-26 04:31:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:26:00",
+            "end_time_iso": "2025-07-26T04:31:00",
+            "task_type": "virtual_meta_task"
+          },
+          {
+            "task_id": "atomic_task_006",
+            "task_index": 6,
+            "start_time": "2025-07-26 04:31:00",
+            "end_time": "2025-07-26 04:33:54",
+            "duration_seconds": 174.0,
+            "start_time_iso": "2025-07-26T04:31:00",
+            "end_time_iso": "2025-07-26T04:33:54",
+            "task_type": "virtual_meta_task"
+          }
+        ],
+        "total_tasks": 6,
+        "real_task_count": 4,
+        "virtual_task_count": 2,
+        "assignment_time": "2025-08-03T18:20:11.216490",
+        "task_status": "assigned"
+      },
+      "RollingThreat_002_01_5663": {
+        "missile_id": "RollingThreat_002_01_5663",
+        "planning_cycle": {
+          "start_time": "2025-07-26 04:06:00",
+          "end_time": "2025-07-26 04:33:54",
+          "duration_seconds": 1674.0,
+          "midcourse_info": [
+            {
+              "missile_id": "RollingThreat_001_01_3717",
+              "midcourse_start": "2025-07-26 04:06:00",
+              "midcourse_end": "2025-07-26 04:24:00",
+              "duration_seconds": 1080.0
+            },
+            {
+              "missile_id": "RollingThreat_002_01_5663",
+              "midcourse_start": "2025-07-26 04:15:54",
+              "midcourse_end": "2025-07-26 04:33:54",
+              "duration_seconds": 1080.0
+            }
+          ],
+          "earliest_missile": "RollingThreat_001_01_3717",
+          "latest_missile": "RollingThreat_002_01_5663",
+          "original_start": "2025-07-26 04:06:00",
+          "original_end": "2025-07-26 04:33:54",
+          "standardized": true
+        },
+        "midcourse_info": {
+          "missile_id": "RollingThreat_002_01_5663",
+          "midcourse_start": "2025-07-26 04:15:54",
+          "midcourse_end": "2025-07-26 04:33:54",
+          "duration_seconds": 1080.0
+        },
+        "atomic_tasks": [
+          {
+            "task_id": "atomic_task_001",
+            "task_index": 1,
+            "start_time": "2025-07-26 04:06:00",
+            "end_time": "2025-07-26 04:11:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:06:00",
+            "end_time_iso": "2025-07-26T04:11:00",
+            "task_type": "virtual_meta_task"
+          },
+          {
+            "task_id": "atomic_task_002",
+            "task_index": 2,
+            "start_time": "2025-07-26 04:11:00",
+            "end_time": "2025-07-26 04:16:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:11:00",
+            "end_time_iso": "2025-07-26T04:16:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_003",
+            "task_index": 3,
+            "start_time": "2025-07-26 04:16:00",
+            "end_time": "2025-07-26 04:21:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:16:00",
+            "end_time_iso": "2025-07-26T04:21:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_004",
+            "task_index": 4,
+            "start_time": "2025-07-26 04:21:00",
+            "end_time": "2025-07-26 04:26:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:21:00",
+            "end_time_iso": "2025-07-26T04:26:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_005",
+            "task_index": 5,
+            "start_time": "2025-07-26 04:26:00",
+            "end_time": "2025-07-26 04:31:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:26:00",
+            "end_time_iso": "2025-07-26T04:31:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_006",
+            "task_index": 6,
+            "start_time": "2025-07-26 04:31:00",
+            "end_time": "2025-07-26 04:33:54",
+            "duration_seconds": 174.0,
+            "start_time_iso": "2025-07-26T04:31:00",
+            "end_time_iso": "2025-07-26T04:33:54",
+            "task_type": "real_meta_task"
+          }
+        ],
+        "real_tasks": [
+          {
+            "task_id": "atomic_task_002",
+            "task_index": 2,
+            "start_time": "2025-07-26 04:11:00",
+            "end_time": "2025-07-26 04:16:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:11:00",
+            "end_time_iso": "2025-07-26T04:16:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_003",
+            "task_index": 3,
+            "start_time": "2025-07-26 04:16:00",
+            "end_time": "2025-07-26 04:21:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:16:00",
+            "end_time_iso": "2025-07-26T04:21:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_004",
+            "task_index": 4,
+            "start_time": "2025-07-26 04:21:00",
+            "end_time": "2025-07-26 04:26:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:21:00",
+            "end_time_iso": "2025-07-26T04:26:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_005",
+            "task_index": 5,
+            "start_time": "2025-07-26 04:26:00",
+            "end_time": "2025-07-26 04:31:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:26:00",
+            "end_time_iso": "2025-07-26T04:31:00",
+            "task_type": "real_meta_task"
+          },
+          {
+            "task_id": "atomic_task_006",
+            "task_index": 6,
+            "start_time": "2025-07-26 04:31:00",
+            "end_time": "2025-07-26 04:33:54",
+            "duration_seconds": 174.0,
+            "start_time_iso": "2025-07-26T04:31:00",
+            "end_time_iso": "2025-07-26T04:33:54",
+            "task_type": "real_meta_task"
+          }
+        ],
+        "virtual_tasks": [
+          {
+            "task_id": "atomic_task_001",
+            "task_index": 1,
+            "start_time": "2025-07-26 04:06:00",
+            "end_time": "2025-07-26 04:11:00",
+            "duration_seconds": 300.0,
+            "start_time_iso": "2025-07-26T04:06:00",
+            "end_time_iso": "2025-07-26T04:11:00",
+            "task_type": "virtual_meta_task"
+          }
+        ],
+        "total_tasks": 6,
+        "real_task_count": 5,
+        "virtual_task_count": 1,
+        "assignment_time": "2025-08-03T18:20:11.216835",
+        "task_status": "assigned"
+      }
+    },
+    "planning_cycle_info": {
+      "start_time": "2025-07-26 04:06:00",
+      "end_time": "2025-07-26 04:33:54",
+      "duration_seconds": 1674.0,
+      "midcourse_info": [
+        {
+          "missile_id": "RollingThreat_001_01_3717",
+          "midcourse_start": "2025-07-26 04:06:00",
+          "midcourse_end": "2025-07-26 04:24:00",
+          "duration_seconds": 1080.0
+        },
+        {
+          "missile_id": "RollingThreat_002_01_5663",
+          "midcourse_start": "2025-07-26 04:15:54",
+          "midcourse_end": "2025-07-26 04:33:54",
+          "duration_seconds": 1080.0
+        }
+      ],
+      "earliest_missile": "RollingThreat_001_01_3717",
+      "latest_missile": "RollingThreat_002_01_5663",
+      "original_start": "2025-07-26 04:06:00",
+      "original_end": "2025-07-26 04:33:54",
+      "standardized": true
+    },
+    "generation_summary": {
+      "total_missiles": 2,
+      "total_atomic_tasks": 12,
+      "total_real_tasks": 9,
+      "total_virtual_tasks": 3,
+      "planning_duration_hours": 0.465,
+      "generation_time": "2025-07-26T04:20:24"
+    }
+  },
+  "constellation_data": {
+    "satellites": [
+      {
+        "satellite_id": "Satellite01",
+        "position": {
+          "time": "26 Jul 2025 04:00:00.000000000",
+          "x": -7634.997330686222,
+          "y": -2607.780808898702,
+          "z": -1337.2433600219913
+        },
+        "attitude": null,
+        "payload_status": {
+          "type": "Optical_Sensor",
+          "operational": true,
+          "power_consumption": 80.0,
+          "temperature": 25.0,
+          "status_time": "2025-08-03T18:20:11.500598",
+          "data_source": "STK_derived"
+        },
+        "data_quality": "good"
+      },
+      {
+        "satellite_id": "Satellite02",
+        "position": {
+          "time": "26 Jul 2025 04:00:00.000000000",
+          "x": 5545.088976599228,
+          "y": -3645.2602536507316,
+          "z": -4779.747976151143
+        },
+        "attitude": null,
+        "payload_status": {
+          "type": "Optical_Sensor",
+          "operational": true,
+          "power_consumption": 80.0,
+          "temperature": 25.0,
+          "status_time": "2025-08-03T18:20:11.748281",
+          "data_source": "STK_derived"
+        },
+        "data_quality": "good"
+      },
+      {
+        "satellite_id": "Satellite03",
+        "position": {
+          "time": "26 Jul 2025 04:00:00.000000000",
+          "x": 578.5192674895073,
+          "y": 5397.189754038226,
+          "z": 6116.991336173135
+        },
+        "attitude": null,
+        "payload_status": {
+          "type": "Optical_Sensor",
+          "operational": true,
+          "power_consumption": 80.0,
+          "temperature": 25.0,
+          "status_time": "2025-08-03T18:20:11.998785",
+          "data_source": "STK_derived"
+        },
+        "data_quality": "good"
+      },
+      {
+        "satellite_id": "Satellite04",
+        "position": {
+          "time": "26 Jul 2025 04:00:00.000000000",
+          "x": 6075.914210493661,
+          "y": -5308.198516782064,
+          "z": -1337.2433600219913
+        },
+        "attitude": null,
+        "payload_status": {
+          "type": "Optical_Sensor",
+          "operational": true,
+          "power_consumption": 80.0,
+          "temperature": 25.0,
+          "status_time": "2025-08-03T18:20:12.245073",
+          "data_source": "STK_derived"
+        },
+        "data_quality": "good"
+      },
+      {
+        "satellite_id": "Satellite05",
+        "position": {
+          "time": "26 Jul 2025 04:00:00.000000000",
+          "x": 384.33441567932954,
+          "y": 6624.818573528825,
+          "z": -4779.747976151143
+        },
+        "attitude": null,
+        "payload_status": {
+          "type": "Optical_Sensor",
+          "operational": true,
+          "power_consumption": 80.0,
+          "temperature": 25.0,
+          "status_time": "2025-08-03T18:20:12.509448",
+          "data_source": "STK_derived"
+        },
+        "data_quality": "good"
+      },
+      {
+        "satellite_id": "Satellite06",
+        "position": {
+          "time": "26 Jul 2025 04:00:00.000000000",
+          "x": -4963.357459498026,
+          "y": -2197.595165902288,
+          "z": 6116.991336173135
+        },
+        "attitude": null,
+        "payload_status": {
+          "type": "Optical_Sensor",
+          "operational": true,
+          "power_consumption": 80.0,
+          "temperature": 25.0,
+          "status_time": "2025-08-03T18:20:12.764182",
+          "data_source": "STK_derived"
+        },
+        "data_quality": "good"
+      },
+      {
+        "satellite_id": "Satellite07",
+        "position": {
+          "time": "26 Jul 2025 04:00:00.000000000",
+          "x": 1559.0975210012584,
+          "y": 7915.991403914852,
+          "z": -1337.2433600219913
+        },
+        "attitude": null,
+        "payload_status": {
+          "type": "Optical_Sensor",
+          "operational": true,
+          "power_consumption": 80.0,
+          "temperature": 25.0,
+          "status_time": "2025-08-03T18:20:13.013534",
+          "data_source": "STK_derived"
+        },
+        "data_quality": "good"
+      },
+      {
+        "satellite_id": "Satellite08",
+        "position": {
+          "time": "26 Jul 2025 04:00:00.000000000",
+          "x": -5929.4364024437755,
+          "y": -2979.549970150305,
+          "z": -4779.747976151143
+        },
+        "attitude": null,
+        "payload_status": {
+          "type": "Optical_Sensor",
+          "operational": true,
+          "power_consumption": 80.0,
+          "temperature": 25.0,
+          "status_time": "2025-08-03T18:20:13.261490",
+          "data_source": "STK_derived"
+        },
+        "data_quality": "good"
+      },
+      {
+        "satellite_id": "Satellite09",
+        "position": {
+          "time": "26 Jul 2025 04:00:00.000000000",
+          "x": 4384.845537371125,
+          "y": -3199.604881442134,
+          "z": 6116.991336173135
+        },
+        "attitude": null,
+        "payload_status": {
+          "type": "Optical_Sensor",
+          "operational": true,
+          "power_consumption": 80.0,
+          "temperature": 25.0,
+          "status_time": "2025-08-03T18:20:13.543037",
+          "data_source": "STK_derived"
+        },
+        "data_quality": "good"
+      }
+    ],
+    "collection_time": "2025-08-03T18:20:11.218179",
+    "data_quality": "high"
+  },
+  "visible_meta_tasks": {
+    "constellation_visible_task_sets": {
+      "Satellite01": {
+        "satellite_id": "Satellite01",
+        "missile_tasks": {
+          "RollingThreat_001_01_3717": {
+            "visible_tasks": [],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [],
+            "has_access": false,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 0,
+              "virtual_count": 6,
+              "visibility_ratio": 0.0
+            }
+          },
+          "RollingThreat_002_01_5663": {
+            "visible_tasks": [],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [],
+            "has_access": false,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 0,
+              "virtual_count": 6,
+              "visibility_ratio": 0.0
+            }
+          }
+        },
+        "total_visible_tasks": 0,
+        "total_virtual_tasks": 12,
+        "calculation_time": "2025-08-03T18:20:13.544351"
+      },
+      "Satellite02": {
+        "satellite_id": "Satellite02",
+        "missile_tasks": {
+          "RollingThreat_001_01_3717": {
+            "visible_tasks": [],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [],
+            "has_access": false,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 0,
+              "virtual_count": 6,
+              "visibility_ratio": 0.0
+            }
+          },
+          "RollingThreat_002_01_5663": {
+            "visible_tasks": [],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [
+              {
+                "start": "26 Jul 2025 04:31:36.067",
+                "stop": "26 Jul 2025 04:37:34.279"
+              }
+            ],
+            "has_access": true,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 0,
+              "virtual_count": 6,
+              "visibility_ratio": 0.0
+            }
+          }
+        },
+        "total_visible_tasks": 0,
+        "total_virtual_tasks": 12,
+        "calculation_time": "2025-08-03T18:20:13.615469"
+      },
+      "Satellite03": {
+        "satellite_id": "Satellite03",
+        "missile_tasks": {
+          "RollingThreat_001_01_3717": {
+            "visible_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:00:00.000",
+                      "window_end": "26 Jul 2025 04:30:18.738",
+                      "overlap_start": "2025-07-26T04:06:00",
+                      "overlap_end": "2025-07-26T04:11:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:00:00.000",
+                      "window_end": "26 Jul 2025 04:30:18.738",
+                      "overlap_start": "2025-07-26T04:11:00",
+                      "overlap_end": "2025-07-26T04:16:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:00:00.000",
+                      "window_end": "26 Jul 2025 04:30:18.738",
+                      "overlap_start": "2025-07-26T04:16:00",
+                      "overlap_end": "2025-07-26T04:21:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:00:00.000",
+                      "window_end": "26 Jul 2025 04:30:18.738",
+                      "overlap_start": "2025-07-26T04:21:00",
+                      "overlap_end": "2025-07-26T04:26:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              }
+            ],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [
+              {
+                "start": "26 Jul 2025 04:00:00.000",
+                "stop": "26 Jul 2025 04:30:18.738"
+              }
+            ],
+            "has_access": true,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 4,
+              "virtual_count": 2,
+              "visibility_ratio": 0.6666666666666666
+            }
+          },
+          "RollingThreat_002_01_5663": {
+            "visible_tasks": [
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:09:53.990",
+                      "window_end": "26 Jul 2025 04:36:19.306",
+                      "overlap_start": "2025-07-26T04:11:00",
+                      "overlap_end": "2025-07-26T04:16:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:09:53.990",
+                      "window_end": "26 Jul 2025 04:36:19.306",
+                      "overlap_start": "2025-07-26T04:16:00",
+                      "overlap_end": "2025-07-26T04:21:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:09:53.990",
+                      "window_end": "26 Jul 2025 04:36:19.306",
+                      "overlap_start": "2025-07-26T04:21:00",
+                      "overlap_end": "2025-07-26T04:26:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:09:53.990",
+                      "window_end": "26 Jul 2025 04:36:19.306",
+                      "overlap_start": "2025-07-26T04:26:00",
+                      "overlap_end": "2025-07-26T04:31:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:09:53.990",
+                      "window_end": "26 Jul 2025 04:36:19.306",
+                      "overlap_start": "2025-07-26T04:31:00",
+                      "overlap_end": "2025-07-26T04:33:54"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              }
+            ],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [
+              {
+                "start": "26 Jul 2025 04:09:53.990",
+                "stop": "26 Jul 2025 04:36:19.306"
+              }
+            ],
+            "has_access": true,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 5,
+              "virtual_count": 1,
+              "visibility_ratio": 0.8333333333333334
+            }
+          }
+        },
+        "total_visible_tasks": 9,
+        "total_virtual_tasks": 3,
+        "calculation_time": "2025-08-03T18:20:13.706441"
+      },
+      "Satellite04": {
+        "satellite_id": "Satellite04",
+        "missile_tasks": {
+          "RollingThreat_001_01_3717": {
+            "visible_tasks": [],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [],
+            "has_access": false,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 0,
+              "virtual_count": 6,
+              "visibility_ratio": 0.0
+            }
+          },
+          "RollingThreat_002_01_5663": {
+            "visible_tasks": [],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [],
+            "has_access": false,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 0,
+              "virtual_count": 6,
+              "visibility_ratio": 0.0
+            }
+          }
+        },
+        "total_visible_tasks": 0,
+        "total_virtual_tasks": 12,
+        "calculation_time": "2025-08-03T18:20:13.815192"
+      },
+      "Satellite05": {
+        "satellite_id": "Satellite05",
+        "missile_tasks": {
+          "RollingThreat_001_01_3717": {
+            "visible_tasks": [],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [],
+            "has_access": false,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 0,
+              "virtual_count": 6,
+              "visibility_ratio": 0.0
+            }
+          },
+          "RollingThreat_002_01_5663": {
+            "visible_tasks": [
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:10:31.024",
+                      "window_end": "26 Jul 2025 04:46:43.399",
+                      "overlap_start": "2025-07-26T04:11:00",
+                      "overlap_end": "2025-07-26T04:16:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:10:31.024",
+                      "window_end": "26 Jul 2025 04:46:43.399",
+                      "overlap_start": "2025-07-26T04:16:00",
+                      "overlap_end": "2025-07-26T04:21:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:10:31.024",
+                      "window_end": "26 Jul 2025 04:46:43.399",
+                      "overlap_start": "2025-07-26T04:21:00",
+                      "overlap_end": "2025-07-26T04:26:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:10:31.024",
+                      "window_end": "26 Jul 2025 04:46:43.399",
+                      "overlap_start": "2025-07-26T04:26:00",
+                      "overlap_end": "2025-07-26T04:31:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:10:31.024",
+                      "window_end": "26 Jul 2025 04:46:43.399",
+                      "overlap_start": "2025-07-26T04:31:00",
+                      "overlap_end": "2025-07-26T04:33:54"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              }
+            ],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [
+              {
+                "start": "26 Jul 2025 04:10:31.024",
+                "stop": "26 Jul 2025 04:46:43.399"
+              }
+            ],
+            "has_access": true,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 5,
+              "virtual_count": 1,
+              "visibility_ratio": 0.8333333333333334
+            }
+          }
+        },
+        "total_visible_tasks": 5,
+        "total_virtual_tasks": 7,
+        "calculation_time": "2025-08-03T18:20:13.898754"
+      },
+      "Satellite06": {
+        "satellite_id": "Satellite06",
+        "missile_tasks": {
+          "RollingThreat_001_01_3717": {
+            "visible_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:01:30.599",
+                      "window_end": "26 Jul 2025 04:32:32.649",
+                      "overlap_start": "2025-07-26T04:06:00",
+                      "overlap_end": "2025-07-26T04:11:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:01:30.599",
+                      "window_end": "26 Jul 2025 04:32:32.649",
+                      "overlap_start": "2025-07-26T04:11:00",
+                      "overlap_end": "2025-07-26T04:16:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:01:30.599",
+                      "window_end": "26 Jul 2025 04:32:32.649",
+                      "overlap_start": "2025-07-26T04:16:00",
+                      "overlap_end": "2025-07-26T04:21:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:01:30.599",
+                      "window_end": "26 Jul 2025 04:32:32.649",
+                      "overlap_start": "2025-07-26T04:21:00",
+                      "overlap_end": "2025-07-26T04:26:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:01:30.599",
+                      "window_end": "26 Jul 2025 04:32:32.649",
+                      "overlap_start": "2025-07-26T04:26:00",
+                      "overlap_end": "2025-07-26T04:31:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              }
+            ],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [
+              {
+                "start": "26 Jul 2025 04:01:30.599",
+                "stop": "26 Jul 2025 04:32:32.649"
+              }
+            ],
+            "has_access": true,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 5,
+              "virtual_count": 1,
+              "visibility_ratio": 0.8333333333333334
+            }
+          },
+          "RollingThreat_002_01_5663": {
+            "visible_tasks": [],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [],
+            "has_access": false,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 0,
+              "virtual_count": 6,
+              "visibility_ratio": 0.0
+            }
+          }
+        },
+        "total_visible_tasks": 5,
+        "total_virtual_tasks": 7,
+        "calculation_time": "2025-08-03T18:20:13.986661"
+      },
+      "Satellite07": {
+        "satellite_id": "Satellite07",
+        "missile_tasks": {
+          "RollingThreat_001_01_3717": {
+            "visible_tasks": [],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [],
+            "has_access": false,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 0,
+              "virtual_count": 6,
+              "visibility_ratio": 0.0
+            }
+          },
+          "RollingThreat_002_01_5663": {
+            "visible_tasks": [],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [],
+            "has_access": false,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 0,
+              "virtual_count": 6,
+              "visibility_ratio": 0.0
+            }
+          }
+        },
+        "total_visible_tasks": 0,
+        "total_virtual_tasks": 12,
+        "calculation_time": "2025-08-03T18:20:14.091312"
+      },
+      "Satellite08": {
+        "satellite_id": "Satellite08",
+        "missile_tasks": {
+          "RollingThreat_001_01_3717": {
+            "visible_tasks": [
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:17:03.879",
+                      "window_end": "26 Jul 2025 04:34:29.528",
+                      "overlap_start": "2025-07-26T04:21:00",
+                      "overlap_end": "2025-07-26T04:26:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:17:03.879",
+                      "window_end": "26 Jul 2025 04:34:29.528",
+                      "overlap_start": "2025-07-26T04:26:00",
+                      "overlap_end": "2025-07-26T04:31:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:17:03.879",
+                      "window_end": "26 Jul 2025 04:34:29.528",
+                      "overlap_start": "2025-07-26T04:31:00",
+                      "overlap_end": "2025-07-26T04:33:54"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              }
+            ],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [
+              {
+                "start": "26 Jul 2025 04:17:03.879",
+                "stop": "26 Jul 2025 04:34:29.528"
+              }
+            ],
+            "has_access": true,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 3,
+              "virtual_count": 3,
+              "visibility_ratio": 0.5
+            }
+          },
+          "RollingThreat_002_01_5663": {
+            "visible_tasks": [
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:24:36.981",
+                      "window_end": "26 Jul 2025 04:46:57.858",
+                      "overlap_start": "2025-07-26T04:26:00",
+                      "overlap_end": "2025-07-26T04:31:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:24:36.981",
+                      "window_end": "26 Jul 2025 04:46:57.858",
+                      "overlap_start": "2025-07-26T04:31:00",
+                      "overlap_end": "2025-07-26T04:33:54"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              }
+            ],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [
+              {
+                "start": "26 Jul 2025 04:24:36.981",
+                "stop": "26 Jul 2025 04:46:57.858"
+              }
+            ],
+            "has_access": true,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 2,
+              "virtual_count": 4,
+              "visibility_ratio": 0.3333333333333333
+            }
+          }
+        },
+        "total_visible_tasks": 5,
+        "total_virtual_tasks": 7,
+        "calculation_time": "2025-08-03T18:20:14.166090"
+      },
+      "Satellite09": {
+        "satellite_id": "Satellite09",
+        "missile_tasks": {
+          "RollingThreat_001_01_3717": {
+            "visible_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:04:49.006",
+                      "window_end": "26 Jul 2025 04:20:06.700",
+                      "overlap_start": "2025-07-26T04:06:00",
+                      "overlap_end": "2025-07-26T04:11:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:04:49.006",
+                      "window_end": "26 Jul 2025 04:20:06.700",
+                      "overlap_start": "2025-07-26T04:11:00",
+                      "overlap_end": "2025-07-26T04:16:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              }
+            ],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [
+              {
+                "start": "26 Jul 2025 04:04:49.006",
+                "stop": "26 Jul 2025 04:20:06.700"
+              }
+            ],
+            "has_access": true,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 2,
+              "virtual_count": 4,
+              "visibility_ratio": 0.3333333333333333
+            }
+          },
+          "RollingThreat_002_01_5663": {
+            "visible_tasks": [
+              {
+                "task_id": "atomic_task_003",
+                "task_index": 3,
+                "start_time": "2025-07-26 04:16:00",
+                "end_time": "2025-07-26 04:21:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:16:00",
+                "end_time_iso": "2025-07-26T04:21:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:14:49.026",
+                      "window_end": "26 Jul 2025 04:26:22.211",
+                      "overlap_start": "2025-07-26T04:16:00",
+                      "overlap_end": "2025-07-26T04:21:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              },
+              {
+                "task_id": "atomic_task_004",
+                "task_index": 4,
+                "start_time": "2025-07-26 04:21:00",
+                "end_time": "2025-07-26 04:26:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:21:00",
+                "end_time_iso": "2025-07-26T04:26:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": true,
+                  "overlapping_windows": [
+                    {
+                      "window_start": "26 Jul 2025 04:14:49.026",
+                      "window_end": "26 Jul 2025 04:26:22.211",
+                      "overlap_start": "2025-07-26T04:21:00",
+                      "overlap_end": "2025-07-26T04:26:00"
+                    }
+                  ],
+                  "coverage_ratio": 1.0
+                }
+              }
+            ],
+            "virtual_tasks": [
+              {
+                "task_id": "atomic_task_001",
+                "task_index": 1,
+                "start_time": "2025-07-26 04:06:00",
+                "end_time": "2025-07-26 04:11:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:06:00",
+                "end_time_iso": "2025-07-26T04:11:00",
+                "task_type": "virtual_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_002",
+                "task_index": 2,
+                "start_time": "2025-07-26 04:11:00",
+                "end_time": "2025-07-26 04:16:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:11:00",
+                "end_time_iso": "2025-07-26T04:16:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_005",
+                "task_index": 5,
+                "start_time": "2025-07-26 04:26:00",
+                "end_time": "2025-07-26 04:31:00",
+                "duration_seconds": 300.0,
+                "start_time_iso": "2025-07-26T04:26:00",
+                "end_time_iso": "2025-07-26T04:31:00",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              },
+              {
+                "task_id": "atomic_task_006",
+                "task_index": 6,
+                "start_time": "2025-07-26 04:31:00",
+                "end_time": "2025-07-26 04:33:54",
+                "duration_seconds": 174.0,
+                "start_time_iso": "2025-07-26T04:31:00",
+                "end_time_iso": "2025-07-26T04:33:54",
+                "task_type": "real_meta_task",
+                "visibility_info": {
+                  "is_visible": false,
+                  "reason": "no_coverage_or_insufficient_overlap"
+                }
+              }
+            ],
+            "access_intervals": [
+              {
+                "start": "26 Jul 2025 04:14:49.026",
+                "stop": "26 Jul 2025 04:26:22.211"
+              }
+            ],
+            "has_access": true,
+            "visibility_summary": {
+              "total_tasks": 6,
+              "visible_count": 2,
+              "virtual_count": 4,
+              "visibility_ratio": 0.3333333333333333
+            }
+          }
+        },
+        "total_visible_tasks": 4,
+        "total_virtual_tasks": 8,
+        "calculation_time": "2025-08-03T18:20:14.272730"
+      }
+    },
+    "summary": {
+      "satellite_count": 9,
+      "total_visible_tasks": 28,
+      "total_virtual_tasks": 80,
+      "total_tasks": 108,
+      "visibility_ratio": 0.25925925925925924,
+      "average_visible_per_satellite": 3.111111111111111,
+      "average_virtual_per_satellite": 8.88888888888889
+    },
+    "calculation_time": "2025-08-03T18:20:14.381612"
+  },
+  "metadata": {
+    "collection_count": 2,
+    "stk_connected": true,
+    "constellation_info": {
+      "type": "Walker",
+      "planes": 3,
+      "satellites_per_plane": 3,
+      "total_satellites": 9,
+      "satellite_list": [
+        "Satellite01",
+        "Satellite02",
+        "Satellite03",
+        "Satellite04",
+        "Satellite05",
+        "Satellite06",
+        "Satellite07",
+        "Satellite08",
+        "Satellite09"
+      ],
+      "reference_satellite": {},
+      "payload_config": {
+        "type": "Optical_Sensor",
+        "mounting": "Nadir"
+      }
+    },
+    "system_status": "operational"
+  },
+  "rolling_collection_info": {
+    "collection_index": 3,
+    "collection_time": "2025-07-26T04:20:24",
+    "midcourse_missiles": [
+      "RollingThreat_001_01_3717",
+      "RollingThreat_002_01_5663"
+    ],
+    "total_missiles_in_scenario": 3,
+    "collection_folder": "output\\rolling_collections\\collection_20250726_042024_03"
+  }
+}
