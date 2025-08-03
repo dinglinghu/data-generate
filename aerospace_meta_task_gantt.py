@@ -307,62 +307,65 @@ class AerospaceMetaTaskGantt:
                                        gridspec_kw={'height_ratios': self.figure_config['height_ratios']})
         fig.patch.set_facecolor(self.colors.get('background', '#fafafa'))
 
-        # 智能确定时间窗口
-        if not meta_df.empty or not visible_df.empty:
-            # 收集所有时间点
-            all_start_times = []
-            all_end_times = []
+        # 智能确定时间窗口 - 以元任务的时间轴为准
+        if not meta_df.empty:
+            # 优先使用元任务的时间范围
+            meta_start_times = meta_df['Start'].tolist()
+            meta_end_times = meta_df['End'].tolist()
 
-            # 添加元任务时间
-            if not meta_df.empty:
-                all_start_times.extend(meta_df['Start'].tolist())
-                all_end_times.extend(meta_df['End'].tolist())
+            # 确定元任务的时间范围
+            data_min_time = min(meta_start_times)
+            data_max_time = max(meta_end_times)
 
-            # 添加可见任务时间
+            # 添加缓冲时间
+            buffer_minutes = self.time_config.get('buffer_minutes', 5)
+            min_time = data_min_time - timedelta(minutes=buffer_minutes)
+            max_time = data_max_time + timedelta(minutes=buffer_minutes)
+
+            # 如果指定了时间窗口，确保不小于数据范围
+            if time_window_hours and time_window_hours > 0:
+                window_max_time = min_time + timedelta(hours=time_window_hours)
+                if window_max_time > max_time:
+                    max_time = window_max_time
+
+            # 计算实际时间跨度
+            actual_duration = max_time - min_time
+            duration_hours = actual_duration.total_seconds() / 3600
+
+            print(f"🕐 元任务时间范围: {data_min_time} → {data_max_time}")
+            print(f"🕐 图表时间范围: {min_time} → {max_time}")
+            print(f"⏱️ 时间跨度: {duration_hours:.2f} 小时")
+            print(f"📊 原始元任务数据: {len(meta_df)} 条")
+            print(f"👁️ 原始可见任务数据: {len(visible_df)} 条")
+
+            # 使用元任务的时间范围筛选可见任务数据
+            meta_filtered = meta_df
             if not visible_df.empty:
-                all_start_times.extend(visible_df['Start'].tolist())
-                all_end_times.extend(visible_df['End'].tolist())
-
-            if all_start_times and all_end_times:
-                # 确定实际的数据时间范围
-                data_min_time = min(all_start_times)
-                data_max_time = max(all_end_times)
-
-                # 添加缓冲时间
-                buffer_minutes = self.time_config.get('buffer_minutes', 5)
-                min_time = data_min_time - timedelta(minutes=buffer_minutes)
-                max_time = data_max_time + timedelta(minutes=buffer_minutes)
-
-                # 如果指定了时间窗口，确保不小于数据范围
-                if time_window_hours and time_window_hours > 0:
-                    window_max_time = min_time + timedelta(hours=time_window_hours)
-                    if window_max_time > max_time:
-                        max_time = window_max_time
-
-                # 计算实际时间跨度
-                actual_duration = max_time - min_time
-                duration_hours = actual_duration.total_seconds() / 3600
-
-                print(f"🕐 数据时间范围: {data_min_time} → {data_max_time}")
-                print(f"🕐 图表时间范围: {min_time} → {max_time}")
-                print(f"⏱️ 时间跨度: {duration_hours:.2f} 小时")
-                print(f"📊 原始元任务数据: {len(meta_df)} 条")
-                print(f"👁️ 原始可见任务数据: {len(visible_df)} 条")
-
-                # 由于时间范围已经优化，不需要再筛选数据
-                meta_filtered = meta_df
-                visible_filtered = visible_df
-
-                print(f"📊 筛选后元任务数据: {len(meta_filtered)} 条")
-                print(f"👁️ 筛选后可见任务数据: {len(visible_filtered)} 条")
+                visible_filtered = visible_df[
+                    (visible_df['Start'] >= min_time) &
+                    (visible_df['End'] <= max_time)
+                ].copy()
             else:
-                # 如果没有时间数据，使用默认范围
-                min_time = datetime.now()
-                default_hours = time_window_hours or self.time_config.get('default_window_hours', 2)
-                max_time = min_time + timedelta(hours=default_hours)
-                meta_filtered = meta_df
                 visible_filtered = visible_df
-                print("⚠️ 没有有效的时间数据")
+
+            print(f"📊 筛选后元任务数据: {len(meta_filtered)} 条")
+            print(f"👁️ 筛选后可见任务数据: {len(visible_filtered)} 条")
+
+        elif not visible_df.empty:
+            # 如果没有元任务但有可见任务，使用可见任务的时间范围
+            visible_start_times = visible_df['Start'].tolist()
+            visible_end_times = visible_df['End'].tolist()
+
+            data_min_time = min(visible_start_times)
+            data_max_time = max(visible_end_times)
+
+            buffer_minutes = self.time_config.get('buffer_minutes', 5)
+            min_time = data_min_time - timedelta(minutes=buffer_minutes)
+            max_time = data_max_time + timedelta(minutes=buffer_minutes)
+
+            meta_filtered = meta_df
+            visible_filtered = visible_df
+            print("⚠️ 没有元任务数据，使用可见任务时间范围")
         else:
             # 如果没有数据，设置默认时间范围
             min_time = datetime.now()
@@ -370,7 +373,7 @@ class AerospaceMetaTaskGantt:
             max_time = min_time + timedelta(hours=default_hours)
             meta_filtered = meta_df
             visible_filtered = visible_df
-            print("⚠️ 没有元任务数据")
+            print("⚠️ 没有任何任务数据")
         
         # 绘制元任务甘特图
         self._draw_meta_task_gantt(ax1, meta_filtered, min_time, max_time)
@@ -443,8 +446,11 @@ class AerospaceMetaTaskGantt:
 
             y_pos += 0.5  # 导弹间间隔
 
+        # 为元任务填充虚拟任务，确保时间轴完整
+        complete_meta_df = self._fill_virtual_tasks_for_meta_timeline(meta_df, min_time, max_time, y_positions)
+
         # 绘制任务条
-        for idx, row in meta_df.iterrows():
+        for idx, row in complete_meta_df.iterrows():
             start_time = row['Start']
             end_time = row['End']
             missile_id = row['MissileID']
@@ -764,6 +770,109 @@ class AerospaceMetaTaskGantt:
                         'Level': 'virtual',
                         'VisibilityInfo': {},
                         'CoverageRatio': 0.0
+                    }
+                    complete_tasks.append(virtual_task)
+
+        return pd.DataFrame(complete_tasks)
+
+    def _fill_virtual_tasks_for_meta_timeline(self, meta_df, min_time, max_time, y_positions):
+        """为元任务填充虚拟任务，确保时间轴完整"""
+        complete_tasks = []
+
+        # 获取所有唯一的导弹ID
+        unique_missiles = sorted(meta_df['MissileID'].unique()) if not meta_df.empty else []
+
+        # 为每个导弹生成完整时间轴
+        for missile_id in unique_missiles:
+            # 获取该导弹的现有任务
+            missile_tasks = meta_df[meta_df['MissileID'] == missile_id].copy()
+
+            if missile_tasks.empty:
+                # 如果没有任何任务，为整个时间范围填充虚拟任务
+                virtual_task = {
+                    'Start': min_time,
+                    'End': max_time,
+                    'MissileID': missile_id,
+                    'Type': 'meta_atomic_task',
+                    'TaskIndex': 0,
+                    'TaskID': f'virtual_{missile_id}_full',
+                    'TaskName': f'{missile_id} 虚拟元子任务',
+                    'Duration': (max_time - min_time).total_seconds(),
+                    'Category': '虚拟元子任务',
+                    'Level': 'virtual_atomic',
+                    'TaskType': 'virtual_meta_task',
+                    'IsRealTask': False,
+                    'IsVirtualTask': True
+                }
+                complete_tasks.append(virtual_task)
+            else:
+                # 如果有任务，先添加所有原始任务
+                for _, task in missile_tasks.iterrows():
+                    complete_tasks.append(task.to_dict())
+
+                # 然后检查是否需要填充空隙
+                missile_tasks_sorted = missile_tasks.sort_values('Start')
+
+                # 检查开始前的空隙
+                first_task_start = missile_tasks_sorted.iloc[0]['Start']
+                if min_time < first_task_start:
+                    virtual_task = {
+                        'Start': min_time,
+                        'End': first_task_start,
+                        'MissileID': missile_id,
+                        'Type': 'meta_atomic_task',
+                        'TaskIndex': 0,
+                        'TaskID': f'virtual_{missile_id}_start',
+                        'TaskName': f'{missile_id} 虚拟元子任务',
+                        'Duration': (first_task_start - min_time).total_seconds(),
+                        'Category': '虚拟元子任务',
+                        'Level': 'virtual_atomic',
+                        'TaskType': 'virtual_meta_task',
+                        'IsRealTask': False,
+                        'IsVirtualTask': True
+                    }
+                    complete_tasks.append(virtual_task)
+
+                # 检查任务间的空隙
+                for i in range(len(missile_tasks_sorted) - 1):
+                    current_task_end = missile_tasks_sorted.iloc[i]['End']
+                    next_task_start = missile_tasks_sorted.iloc[i + 1]['Start']
+
+                    if current_task_end < next_task_start:
+                        virtual_task = {
+                            'Start': current_task_end,
+                            'End': next_task_start,
+                            'MissileID': missile_id,
+                            'Type': 'meta_atomic_task',
+                            'TaskIndex': 0,
+                            'TaskID': f'virtual_{missile_id}_gap_{i}',
+                            'TaskName': f'{missile_id} 虚拟元子任务',
+                            'Duration': (next_task_start - current_task_end).total_seconds(),
+                            'Category': '虚拟元子任务',
+                            'Level': 'virtual_atomic',
+                            'TaskType': 'virtual_meta_task',
+                            'IsRealTask': False,
+                            'IsVirtualTask': True
+                        }
+                        complete_tasks.append(virtual_task)
+
+                # 检查结束后的空隙
+                last_task_end = missile_tasks_sorted.iloc[-1]['End']
+                if last_task_end < max_time:
+                    virtual_task = {
+                        'Start': last_task_end,
+                        'End': max_time,
+                        'MissileID': missile_id,
+                        'Type': 'meta_atomic_task',
+                        'TaskIndex': 0,
+                        'TaskID': f'virtual_{missile_id}_end',
+                        'TaskName': f'{missile_id} 虚拟元子任务',
+                        'Duration': (max_time - last_task_end).total_seconds(),
+                        'Category': '虚拟元子任务',
+                        'Level': 'virtual_atomic',
+                        'TaskType': 'virtual_meta_task',
+                        'IsRealTask': False,
+                        'IsVirtualTask': True
                     }
                     complete_tasks.append(virtual_task)
 
