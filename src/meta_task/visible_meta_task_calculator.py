@@ -13,31 +13,51 @@ logger = logging.getLogger(__name__)
 class VisibleMetaTaskCalculator:
     """可见元子任务计算器"""
     
-    def __init__(self, visibility_calculator, meta_task_manager, config_manager=None):
+    def __init__(self, visibility_calculator, meta_task_manager, config_manager=None, stk_manager=None, time_manager=None):
         """
         初始化可见元子任务计算器
-        
+
         Args:
             visibility_calculator: 可见性计算器
             meta_task_manager: 元任务管理器
             config_manager: 配置管理器
+            stk_manager: STK管理器（用于位置同步）
+            time_manager: 时间管理器（用于位置同步）
         """
         self.visibility_calculator = visibility_calculator
         self.meta_task_manager = meta_task_manager
         self.config_manager = config_manager or get_config_manager()
-        
+        self.stk_manager = stk_manager
+        self.time_manager = time_manager
+
         # 获取可见元子任务配置
         self.meta_task_config = self.config_manager.config.get("meta_task_management", {})
         self.visible_task_config = self.meta_task_config.get("visible_task_criteria", {})
         self.coverage_requirement = self.visible_task_config.get("coverage_requirement", "complete")
         self.minimum_overlap_ratio = self.visible_task_config.get("minimum_overlap_ratio", 1.0)
-        
+
+        # 位置同步配置
+        self.enable_position_sync = self.visible_task_config.get("enable_position_sync", True)
+
         # 存储可见元任务集
         self.constellation_visible_task_sets = {}
-        
+
+        # 初始化位置同步器
+        if self.enable_position_sync and self.stk_manager and self.time_manager:
+            from .satellite_position_synchronizer import SatellitePositionSynchronizer
+            self.position_synchronizer = SatellitePositionSynchronizer(
+                self.stk_manager, self.time_manager, self.config_manager
+            )
+            logger.info("🛰️ 位置同步器已启用")
+        else:
+            self.position_synchronizer = None
+            if self.enable_position_sync:
+                logger.warning("⚠️ 位置同步已配置启用，但缺少STK管理器或时间管理器，功能将被禁用")
+
         logger.info("👁️ 可见元子任务计算器初始化完成")
         logger.info(f"   覆盖要求: {self.coverage_requirement}")
         logger.info(f"   最小重叠比例: {self.minimum_overlap_ratio}")
+        logger.info(f"   位置同步: {'启用' if self.position_synchronizer else '禁用'}")
     
     def calculate_constellation_visible_meta_tasks(self, satellite_ids: List[str], 
                                                  missile_ids: List[str]) -> Dict[str, Any]:
@@ -81,16 +101,26 @@ class VisibleMetaTaskCalculator:
             
             # 生成汇总信息
             summary = self._generate_constellation_summary(constellation_results)
-            
+
             logger.info(f"✅ 星座可见元任务集计算完成")
             logger.info(f"   总可见任务: {summary['total_visible_tasks']}")
             logger.info(f"   总虚拟任务: {summary['total_virtual_tasks']}")
-            
-            return {
+
+            # 构建基础结果
+            result = {
                 "constellation_visible_task_sets": constellation_results,
                 "summary": summary,
                 "calculation_time": datetime.now().isoformat()
             }
+
+            # 如果启用位置同步，为可见任务同步卫星位置
+            if self.position_synchronizer:
+                logger.info("🛰️ 开始为可见任务同步卫星位置...")
+                enhanced_result = self.position_synchronizer.synchronize_satellite_positions_for_visible_tasks(result)
+                return enhanced_result
+            else:
+                logger.debug("位置同步器未启用，跳过位置同步")
+                return result
             
         except Exception as e:
             logger.error(f"❌ 星座可见元任务集计算失败: {e}")
@@ -171,14 +201,22 @@ class VisibleMetaTaskCalculator:
                 }
             
             access_intervals = visibility_result.get("access_intervals", [])
-            
+
+            logger.debug(f"   📊 获取到 {len(access_intervals)} 个可见窗口")
+            for i, interval in enumerate(access_intervals):
+                logger.debug(f"     窗口{i+1}: {interval.get('start', 'N/A')} - {interval.get('end', 'N/A')}")
+
             # 3. 逐一比较元子任务与可见窗口
             visible_tasks = []
             virtual_tasks = []
             
             for atomic_task in atomic_tasks:
                 is_visible = self._is_atomic_task_visible(atomic_task, access_intervals)
-                
+
+                logger.debug(f"   🔍 元子任务 {atomic_task.get('task_id', 'N/A')}: "
+                           f"{atomic_task.get('start_time', 'N/A')} - {atomic_task.get('end_time', 'N/A')} "
+                           f"→ {'✅可见' if is_visible else '❌虚拟'}")
+
                 if is_visible:
                     # 添加可见性信息
                     visible_task = atomic_task.copy()
@@ -247,14 +285,20 @@ class VisibleMetaTaskCalculator:
             # 根据覆盖要求判断
             if self.coverage_requirement == "complete":
                 # 完全覆盖：任务时间段必须完全在某个可见窗口内
-                return self._is_completely_covered(task_start, task_end, access_intervals)
+                result = self._is_completely_covered(task_start, task_end, access_intervals)
+                logger.debug(f"     完全覆盖判断: {result}")
+                return result
             elif self.coverage_requirement == "partial":
                 # 部分覆盖：任务时间段与可见窗口有重叠即可
                 coverage_ratio = self._calculate_coverage_ratio_value(task_start, task_end, access_intervals)
-                return coverage_ratio >= self.minimum_overlap_ratio
+                result = coverage_ratio >= self.minimum_overlap_ratio
+                logger.debug(f"     部分覆盖判断: 覆盖率={coverage_ratio:.3f}, 最小要求={self.minimum_overlap_ratio:.3f}, 结果={result}")
+                return result
             else:
                 # 默认使用完全覆盖
-                return self._is_completely_covered(task_start, task_end, access_intervals)
+                result = self._is_completely_covered(task_start, task_end, access_intervals)
+                logger.debug(f"     默认完全覆盖判断: {result}")
+                return result
                 
         except Exception as e:
             logger.debug(f"判断元子任务可见性失败: {e}")
@@ -422,22 +466,29 @@ class VisibleMetaTaskCalculator:
     def _parse_stk_time(self, time_str: str) -> Optional[datetime]:
         """
         解析STK时间格式
-        
+
         Args:
             time_str: STK时间字符串
-            
+
         Returns:
             datetime对象
         """
         try:
-            # STK格式: "26 Jul 2025 04:12:56.535"
-            return datetime.strptime(time_str, "%d %b %Y %H:%M:%S.%f")
+            # 方法1: STK格式 "26 Jul 2025 00:08:27.858" (毫秒)
+            # 先移除毫秒部分，只保留到秒
+            time_clean = time_str.split('.')[0]
+            return datetime.strptime(time_clean, "%d %b %Y %H:%M:%S")
         except:
             try:
-                # 尝试其他格式
-                return datetime.strptime(time_str, "%d %b %Y %H:%M:%S")
+                # 方法2: 完整的STK格式，尝试微秒解析
+                return datetime.strptime(time_str, "%d %b %Y %H:%M:%S.%f")
             except:
-                return None
+                try:
+                    # 方法3: 无小数部分的格式
+                    return datetime.strptime(time_str, "%d %b %Y %H:%M:%S")
+                except:
+                    logger.debug(f"⚠️ 无法解析STK时间格式: {time_str}")
+                    return None
     
     def _generate_constellation_summary(self, constellation_results: Dict[str, Any]) -> Dict[str, Any]:
         """

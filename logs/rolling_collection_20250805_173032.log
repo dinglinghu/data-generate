@@ -1,0 +1,1430 @@
+2025-08-05 17:30:33,014 - __main__ - INFO - 启动STK滚动元任务数据采集系统
+2025-08-05 17:30:33,014 - __main__ - INFO - ================================================================================
+2025-08-05 17:30:33,015 - __main__ - INFO - 会话目录: output\unified_collections\session_gantt_fix_test_20250805_173033
+2025-08-05 17:30:33,015 - __main__ - INFO - 甘特图生成: 启用 (--enable-gantt)
+2025-08-05 17:30:33,025 - src.meta_task_main - INFO - 🎯 初始化元任务数据采集系统...
+2025-08-05 17:30:33,028 - src.utils.time_manager - INFO - ⏰ 仿真时间配置加载成功:
+2025-08-05 17:30:33,028 - src.utils.time_manager - INFO -    开始时间: 2025-07-26 00:00:00
+2025-08-05 17:30:33,028 - src.utils.time_manager - INFO -    结束时间: 2025-07-28 00:00:00
+2025-08-05 17:30:33,028 - src.utils.time_manager - INFO -    基准时间: 2025-07-26 00:00:00
+2025-08-05 17:30:33,028 - src.utils.time_manager - INFO -    场景时长: 2 days, 0:00:00
+2025-08-05 17:30:33,029 - src.utils.time_manager - INFO - 🕐 时间管理器初始化完成:
+2025-08-05 17:30:33,029 - src.utils.time_manager - INFO -    仿真时间范围: 2025-07-26 00:00:00 - 2025-07-28 00:00:00
+2025-08-05 17:30:33,029 - src.utils.time_manager - INFO -    历元时间: 2025-07-26 00:00:00
+2025-08-05 17:30:33,029 - src.utils.time_manager - INFO -    数据采集间隔: [60, 300]秒
+2025-08-05 17:30:33,029 - src.utils.time_manager - INFO -    保存频率: 每10次采集保存一次
+2025-08-05 17:30:33,029 - src.utils.time_manager - INFO -    总采集次数目标: 50次
+2025-08-05 17:30:33,029 - src.utils.time_manager - INFO -    导弹发射间隔: [300, 1800]秒
+2025-08-05 17:30:33,029 - src.constellation.constellation_manager - INFO - 🌟 星座管理器初始化完成
+2025-08-05 17:30:33,030 - src.data_collection.data_collector - INFO - 📊 数据采集器初始化完成
+2025-08-05 17:30:33,030 - src.meta_task.meta_task_manager - INFO - 🎯 元任务管理器初始化完成
+2025-08-05 17:30:33,030 - src.meta_task.meta_task_manager - INFO -    元子任务时间间隔: 300秒
+2025-08-05 17:30:33,031 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 卫星位置同步器初始化完成
+2025-08-05 17:30:33,031 - src.meta_task.satellite_position_synchronizer - INFO -    采样间隔: 30秒
+2025-08-05 17:30:33,031 - src.meta_task.satellite_position_synchronizer - INFO -    最大采样点数: 20
+2025-08-05 17:30:33,031 - src.meta_task.satellite_position_synchronizer - INFO -    统计计算: 启用
+2025-08-05 17:30:33,031 - src.meta_task.satellite_position_synchronizer - INFO -    并发处理: 启用
+2025-08-05 17:30:33,031 - src.meta_task.satellite_position_synchronizer - INFO -    最大工作线程: 4
+2025-08-05 17:30:33,031 - src.meta_task.satellite_position_synchronizer - INFO -    批处理大小: 10
+2025-08-05 17:30:33,032 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 位置同步器已启用
+2025-08-05 17:30:33,032 - src.meta_task.visible_meta_task_calculator - INFO - 👁️ 可见元子任务计算器初始化完成
+2025-08-05 17:30:33,032 - src.meta_task.visible_meta_task_calculator - INFO -    覆盖要求: partial
+2025-08-05 17:30:33,032 - src.meta_task.visible_meta_task_calculator - INFO -    最小重叠比例: 0.1
+2025-08-05 17:30:33,032 - src.meta_task.visible_meta_task_calculator - INFO -    位置同步: 启用
+2025-08-05 17:30:33,032 - src.meta_task.meta_task_data_collector - INFO - 🎯 元任务数据采集器初始化完成
+2025-08-05 17:30:33,396 - src.meta_task.rolling_data_collector - INFO - 🔄 滚动数据采集管理器初始化完成
+2025-08-05 17:30:33,396 - src.meta_task.rolling_data_collector - INFO -    总采集次数: 10
+2025-08-05 17:30:33,397 - src.meta_task.rolling_data_collector - INFO -    采集间隔: 300-900秒
+2025-08-05 17:30:33,397 - src.meta_task.rolling_data_collector - INFO -    最大并发导弹: 5
+2025-08-05 17:30:33,397 - src.meta_task.rolling_data_collector - INFO -    导弹池优化: 启用
+2025-08-05 17:30:33,397 - src.meta_task_main - INFO - ✅ 元任务数据采集系统初始化完成
+2025-08-05 17:30:33,397 - __main__ - INFO - 设置总采集次数: 2
+2025-08-05 17:30:33,397 - __main__ - INFO - 设置最大并发导弹数: 10
+2025-08-05 17:30:33,397 - __main__ - INFO - 📋 滚动采集配置:
+2025-08-05 17:30:33,397 - __main__ - INFO -    总采集次数: 2
+2025-08-05 17:30:33,397 - __main__ - INFO -    采集间隔: 300-900秒
+2025-08-05 17:30:33,398 - __main__ - INFO -    最大并发导弹: 10
+2025-08-05 17:30:33,398 - __main__ - INFO -    导弹数量范围: [2, 5]
+2025-08-05 17:30:33,398 - __main__ - INFO -    清理现有导弹: True
+2025-08-05 17:30:33,398 - __main__ - INFO -    输出目录: output\unified_collections\session_gantt_fix_test_20250805_173033
+2025-08-05 17:30:33,398 - __main__ - INFO - 
+🚀 开始滚动数据采集...
+2025-08-05 17:30:33,398 - src.meta_task_main - INFO - 🔄 启动滚动数据采集系统...
+2025-08-05 17:30:33,398 - src.meta_task_main - INFO - 🔧 设置STK环境...
+2025-08-05 17:30:36,655 - src.stk_interface.stk_manager - INFO - ✅ 创建新的STK实例
+2025-08-05 17:30:36,669 - src.stk_interface.stk_manager - INFO - 🔧 当前无场景，创建新场景...
+2025-08-05 17:30:43,375 - src.stk_interface.stk_manager - INFO - ✅ 创建新场景: RefactoredScenario
+2025-08-05 17:30:43,830 - src.stk_interface.stk_manager - INFO - ✅ 场景时间设置: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:30:43,884 - src.stk_interface.stk_manager - INFO - ✅ STK连接成功，场景: RefactoredScenario
+2025-08-05 17:30:43,884 - src.meta_task_main - INFO - ✅ STK环境设置完成
+2025-08-05 17:30:43,885 - src.meta_task_main - INFO - 🌟 设置Walker星座...
+2025-08-05 17:30:43,885 - src.constellation.constellation_manager - INFO - 🌟 开始创建Walker星座...
+2025-08-05 17:30:43,885 - src.constellation.constellation_manager - INFO - 📊 星座配置: Walker, 3个轨道面, 每面3颗卫星
+2025-08-05 17:30:43,885 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO - ✅ Walker参数验证通过: W(9, 3, 1)
+2025-08-05 17:30:43,885 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO - 🌟 开始计算Walker星座轨道参数
+2025-08-05 17:30:43,886 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO -    星座配置: W(9, 3, 1)
+2025-08-05 17:30:43,886 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO -    模式类型: delta
+2025-08-05 17:30:43,886 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO -    参考轨道: 高度=1800km, 倾角=51.856°
+2025-08-05 17:30:43,886 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO -    半长轴: 8171.0km
+2025-08-05 17:30:43,886 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO -    RAAN间隔: 120.0°
+2025-08-05 17:30:43,886 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO -    平近点角间隔: 120.0°
+2025-08-05 17:30:43,887 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO - ✅ Walker星座轨道计算完成，共9颗卫星
+2025-08-05 17:30:43,887 - src.constellation.constellation_manager - INFO - 📊 Walker星座计算完成:
+2025-08-05 17:30:43,887 - src.constellation.constellation_manager - INFO -    星座记号: W(9, 3, 1)
+2025-08-05 17:30:43,887 - src.constellation.constellation_manager - INFO -    模式类型: delta
+2025-08-05 17:30:43,887 - src.constellation.constellation_manager - INFO -    RAAN间隔: 120.0°
+2025-08-05 17:30:43,887 - src.constellation.constellation_manager - INFO -    平近点角间隔: 120.0°
+2025-08-05 17:30:43,888 - src.constellation.constellation_manager - INFO -    相位偏移: 40.0°/面
+2025-08-05 17:30:44,034 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite01
+2025-08-05 17:30:46,069 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-05 17:30:46,069 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-05 17:30:46,070 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-05 17:30:46,070 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-05 17:30:46,070 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 0.0 验证通过
+2025-08-05 17:30:46,070 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-05 17:30:46,070 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 0.0 验证通过
+2025-08-05 17:30:46,071 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-05 17:30:46,423 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-05 17:30:46,520 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-05 17:30:46,526 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite01
+2025-08-05 17:30:46,634 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite01_Payload
+2025-08-05 17:30:47,647 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-05 17:30:47,872 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-05 17:30:47,882 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 85.0°
+2025-08-05 17:30:47,896 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.1°
+2025-08-05 17:30:47,930 - src.stk_interface.stk_manager - INFO - ✓ 设置时钟角约束成功: 0.0° - 360.0°
+2025-08-05 17:30:47,933 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-05 17:30:47,987 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-05 17:30:48,598 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-05 17:30:48,602 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-05 17:30:48,602 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite01_Payload
+2025-08-05 17:30:48,605 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite01 (轨道面1, 位置1)
+2025-08-05 17:30:48,657 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite02
+2025-08-05 17:30:50,702 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-05 17:30:50,702 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-05 17:30:50,702 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-05 17:30:50,702 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-05 17:30:50,702 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 0.0 验证通过
+2025-08-05 17:30:50,702 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-05 17:30:50,703 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 120.0 验证通过
+2025-08-05 17:30:50,703 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-05 17:30:51,099 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-05 17:30:51,198 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-05 17:30:51,204 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite02
+2025-08-05 17:30:51,316 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite02_Payload
+2025-08-05 17:30:52,340 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-05 17:30:52,556 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-05 17:30:52,568 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 85.0°
+2025-08-05 17:30:52,581 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.1°
+2025-08-05 17:30:52,622 - src.stk_interface.stk_manager - INFO - ✓ 设置时钟角约束成功: 0.0° - 360.0°
+2025-08-05 17:30:52,625 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-05 17:30:52,689 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-05 17:30:53,294 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-05 17:30:53,298 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-05 17:30:53,298 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite02_Payload
+2025-08-05 17:30:53,302 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite02 (轨道面1, 位置2)
+2025-08-05 17:30:53,361 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite03
+2025-08-05 17:30:55,408 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-05 17:30:55,408 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-05 17:30:55,408 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-05 17:30:55,408 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-05 17:30:55,408 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 0.0 验证通过
+2025-08-05 17:30:55,409 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-05 17:30:55,409 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 240.0 验证通过
+2025-08-05 17:30:55,409 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-05 17:30:55,722 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-05 17:30:55,830 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-05 17:30:55,836 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite03
+2025-08-05 17:30:55,948 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite03_Payload
+2025-08-05 17:30:56,960 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-05 17:30:57,182 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-05 17:30:57,192 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 85.0°
+2025-08-05 17:30:57,203 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.1°
+2025-08-05 17:30:57,230 - src.stk_interface.stk_manager - INFO - ✓ 设置时钟角约束成功: 0.0° - 360.0°
+2025-08-05 17:30:57,232 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-05 17:30:57,287 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-05 17:30:57,894 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-05 17:30:57,900 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-05 17:30:57,900 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite03_Payload
+2025-08-05 17:30:57,904 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite03 (轨道面1, 位置3)
+2025-08-05 17:30:57,971 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite04
+2025-08-05 17:31:00,007 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-05 17:31:00,007 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-05 17:31:00,007 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-05 17:31:00,007 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-05 17:31:00,007 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 120.0 验证通过
+2025-08-05 17:31:00,007 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-05 17:31:00,007 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 40.0 验证通过
+2025-08-05 17:31:00,007 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-05 17:31:00,341 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-05 17:31:00,443 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-05 17:31:00,450 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite04
+2025-08-05 17:31:00,565 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite04_Payload
+2025-08-05 17:31:01,589 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-05 17:31:01,814 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-05 17:31:01,824 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 85.0°
+2025-08-05 17:31:01,834 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.1°
+2025-08-05 17:31:01,863 - src.stk_interface.stk_manager - INFO - ✓ 设置时钟角约束成功: 0.0° - 360.0°
+2025-08-05 17:31:01,865 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-05 17:31:01,921 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-05 17:31:02,512 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-05 17:31:02,516 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-05 17:31:02,516 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite04_Payload
+2025-08-05 17:31:02,519 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite04 (轨道面2, 位置1)
+2025-08-05 17:31:02,570 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite05
+2025-08-05 17:31:04,606 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-05 17:31:04,607 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-05 17:31:04,607 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-05 17:31:04,607 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-05 17:31:04,607 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 120.0 验证通过
+2025-08-05 17:31:04,608 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-05 17:31:04,608 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 160.0 验证通过
+2025-08-05 17:31:04,608 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-05 17:31:04,954 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-05 17:31:05,052 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-05 17:31:05,058 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite05
+2025-08-05 17:31:05,182 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite05_Payload
+2025-08-05 17:31:06,214 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-05 17:31:06,428 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-05 17:31:06,438 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 85.0°
+2025-08-05 17:31:06,450 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.1°
+2025-08-05 17:31:06,481 - src.stk_interface.stk_manager - INFO - ✓ 设置时钟角约束成功: 0.0° - 360.0°
+2025-08-05 17:31:06,484 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-05 17:31:06,536 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-05 17:31:07,146 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-05 17:31:07,151 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-05 17:31:07,151 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite05_Payload
+2025-08-05 17:31:07,153 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite05 (轨道面2, 位置2)
+2025-08-05 17:31:07,210 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite06
+2025-08-05 17:31:09,259 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-05 17:31:09,259 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-05 17:31:09,260 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-05 17:31:09,260 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-05 17:31:09,260 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 120.0 验证通过
+2025-08-05 17:31:09,260 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-05 17:31:09,260 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 280.0 验证通过
+2025-08-05 17:31:09,260 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-05 17:31:09,559 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-05 17:31:09,660 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-05 17:31:09,666 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite06
+2025-08-05 17:31:09,775 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite06_Payload
+2025-08-05 17:31:10,802 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-05 17:31:11,035 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-05 17:31:11,046 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 85.0°
+2025-08-05 17:31:11,065 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.1°
+2025-08-05 17:31:11,096 - src.stk_interface.stk_manager - INFO - ✓ 设置时钟角约束成功: 0.0° - 360.0°
+2025-08-05 17:31:11,099 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-05 17:31:11,164 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-05 17:31:11,764 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-05 17:31:11,768 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-05 17:31:11,769 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite06_Payload
+2025-08-05 17:31:11,772 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite06 (轨道面2, 位置3)
+2025-08-05 17:31:11,824 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite07
+2025-08-05 17:31:13,860 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-05 17:31:13,860 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-05 17:31:13,860 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-05 17:31:13,860 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-05 17:31:13,860 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 240.0 验证通过
+2025-08-05 17:31:13,861 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-05 17:31:13,861 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 80.0 验证通过
+2025-08-05 17:31:13,861 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-05 17:31:14,231 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-05 17:31:14,357 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-05 17:31:14,367 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite07
+2025-08-05 17:31:14,497 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite07_Payload
+2025-08-05 17:31:15,509 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-05 17:31:15,726 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-05 17:31:15,737 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 85.0°
+2025-08-05 17:31:15,748 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.1°
+2025-08-05 17:31:15,780 - src.stk_interface.stk_manager - INFO - ✓ 设置时钟角约束成功: 0.0° - 360.0°
+2025-08-05 17:31:15,783 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-05 17:31:15,835 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-05 17:31:16,429 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-05 17:31:16,434 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-05 17:31:16,434 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite07_Payload
+2025-08-05 17:31:16,437 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite07 (轨道面3, 位置1)
+2025-08-05 17:31:16,516 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite08
+2025-08-05 17:31:18,537 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-05 17:31:18,537 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-05 17:31:18,537 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-05 17:31:18,538 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-05 17:31:18,538 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 240.0 验证通过
+2025-08-05 17:31:18,538 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-05 17:31:18,538 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 200.0 验证通过
+2025-08-05 17:31:18,538 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-05 17:31:18,849 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-05 17:31:18,974 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-05 17:31:18,979 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite08
+2025-08-05 17:31:19,091 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite08_Payload
+2025-08-05 17:31:20,116 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-05 17:31:20,330 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-05 17:31:20,341 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 85.0°
+2025-08-05 17:31:20,354 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.1°
+2025-08-05 17:31:20,398 - src.stk_interface.stk_manager - INFO - ✓ 设置时钟角约束成功: 0.0° - 360.0°
+2025-08-05 17:31:20,401 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-05 17:31:20,460 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-05 17:31:21,060 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-05 17:31:21,063 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-05 17:31:21,064 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite08_Payload
+2025-08-05 17:31:21,065 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite08 (轨道面3, 位置2)
+2025-08-05 17:31:21,142 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite09
+2025-08-05 17:31:23,183 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-05 17:31:23,183 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-05 17:31:23,183 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-05 17:31:23,184 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-05 17:31:23,184 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 240.0 验证通过
+2025-08-05 17:31:23,184 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-05 17:31:23,184 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 320.0 验证通过
+2025-08-05 17:31:23,184 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-05 17:31:23,510 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-05 17:31:23,614 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-05 17:31:23,621 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite09
+2025-08-05 17:31:23,726 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite09_Payload
+2025-08-05 17:31:24,749 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-05 17:31:24,963 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-05 17:31:24,973 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 85.0°
+2025-08-05 17:31:24,996 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.1°
+2025-08-05 17:31:25,059 - src.stk_interface.stk_manager - INFO - ✓ 设置时钟角约束成功: 0.0° - 360.0°
+2025-08-05 17:31:25,064 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-05 17:31:25,119 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-05 17:31:25,715 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-05 17:31:25,719 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-05 17:31:25,719 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite09_Payload
+2025-08-05 17:31:25,722 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite09 (轨道面3, 位置3)
+2025-08-05 17:31:25,722 - src.constellation.constellation_manager - INFO - 🌟 Walker星座创建完成，共创建9颗卫星
+2025-08-05 17:31:25,723 - src.constellation.constellation_manager - INFO - ✅ Walker星座创建成功，共9颗卫星
+2025-08-05 17:31:25,723 - src.meta_task_main - INFO - 📊 Walker星座配置信息:
+2025-08-05 17:31:25,723 - src.meta_task_main - INFO -    星座类型: Walker
+2025-08-05 17:31:25,723 - src.meta_task_main - INFO -    轨道面数: 3
+2025-08-05 17:31:25,723 - src.meta_task_main - INFO -    每面卫星数: 3
+2025-08-05 17:31:25,724 - src.meta_task_main - INFO -    总卫星数: 9
+2025-08-05 17:31:25,724 - src.meta_task_main - INFO - ✅ 星座设置完成
+2025-08-05 17:31:25,724 - src.meta_task_main - INFO - 🔄 开始滚动数据采集...
+2025-08-05 17:31:25,724 - src.meta_task.rolling_data_collector - INFO - 🚀 开始滚动数据采集
+2025-08-05 17:31:25,724 - src.meta_task.rolling_data_collector - INFO - ================================================================================
+2025-08-05 17:31:25,725 - src.meta_task.rolling_data_collector - INFO - 📅 从配置文件获取场景开始时间: 2025-07-26 00:00:00
+2025-08-05 17:31:25,725 - src.meta_task.rolling_data_collector - INFO - 📅 场景开始时间: 2025-07-26 00:00:00
+2025-08-05 17:31:25,725 - src.meta_task.rolling_data_collector - INFO - 🎯 计划采集次数: 2
+2025-08-05 17:31:25,725 - src.meta_task.rolling_data_collector - INFO - 🏊 初始化导弹池管理器...
+2025-08-05 17:31:25,727 - src.optimization.missile_pool_manager - INFO - 导弹池管理器初始化完成，池大小: 10
+2025-08-05 17:31:25,727 - src.optimization.missile_pool_manager - INFO - 🏊 开始初始化导弹池，预创建 10 个导弹...
+2025-08-05 17:31:25,792 - src.stk_interface.missile_manager - INFO - 🚀 创建导弹对象: PoolMissile_001_8103
+2025-08-05 17:31:27,826 - src.stk_interface.missile_manager - INFO - ✅ 轨迹类型设置为弹道轨迹
+2025-08-05 17:31:27,826 - src.stk_interface.missile_manager - INFO - ✅ 轨迹参数验证通过
+2025-08-05 17:31:27,841 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:27,876 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 05 Aug 2025 17:31:25.000 - 05 Aug 2025 18:01:25.000
+2025-08-05 17:31:27,939 - src.stk_interface.missile_manager - INFO - ✅ 发射位置设置成功
+2025-08-05 17:31:28,025 - src.stk_interface.missile_manager - INFO - ✅ 撞击位置设置成功
+2025-08-05 17:31:28,026 - src.stk_interface.missile_manager - INFO - ✅ 随机飞行高度: 1511.2km
+2025-08-05 17:31:28,064 - src.stk_interface.missile_manager - INFO - ✅ 发射控制设置成功: 1511.2km
+2025-08-05 17:31:28,127 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:28,138 - src.stk_interface.missile_manager - INFO - 🔍 验证轨迹传播: PoolMissile_001_8103
+2025-08-05 17:31:28,157 - src.stk_interface.missile_manager - INFO -    ⏰ 使用场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:28,189 - src.stk_interface.missile_manager - INFO -    📡 DataProvider数量: 156
+2025-08-05 17:31:28,202 - src.stk_interface.missile_manager - INFO -    ✅ LLA State DataProvider可用
+2025-08-05 17:31:28,206 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播验证成功
+2025-08-05 17:31:28,208 - src.stk_interface.missile_manager - INFO - 🔄 开始传播导弹轨迹...
+2025-08-05 17:31:28,241 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:28,323 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功，DataProvider可用
+2025-08-05 17:31:28,332 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功
+2025-08-05 17:31:28,332 - src.stk_interface.missile_manager - INFO - ✅ 导弹创建成功: PoolMissile_001_8103
+2025-08-05 17:31:28,431 - src.stk_interface.missile_manager - INFO - 🚀 创建导弹对象: PoolMissile_002_4069
+2025-08-05 17:31:30,464 - src.stk_interface.missile_manager - INFO - ✅ 轨迹类型设置为弹道轨迹
+2025-08-05 17:31:30,464 - src.stk_interface.missile_manager - INFO - ✅ 轨迹参数验证通过
+2025-08-05 17:31:30,465 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:30,500 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 05 Aug 2025 17:31:28.000 - 05 Aug 2025 18:01:28.000
+2025-08-05 17:31:30,595 - src.stk_interface.missile_manager - INFO - ✅ 发射位置设置成功
+2025-08-05 17:31:30,679 - src.stk_interface.missile_manager - INFO - ✅ 撞击位置设置成功
+2025-08-05 17:31:30,680 - src.stk_interface.missile_manager - INFO - ✅ 随机飞行高度: 1569.6km
+2025-08-05 17:31:30,718 - src.stk_interface.missile_manager - INFO - ✅ 发射控制设置成功: 1569.6km
+2025-08-05 17:31:30,742 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:30,754 - src.stk_interface.missile_manager - INFO - 🔍 验证轨迹传播: PoolMissile_002_4069
+2025-08-05 17:31:30,800 - src.stk_interface.missile_manager - INFO -    ⏰ 使用场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:30,828 - src.stk_interface.missile_manager - INFO -    📡 DataProvider数量: 156
+2025-08-05 17:31:30,839 - src.stk_interface.missile_manager - INFO -    ✅ LLA State DataProvider可用
+2025-08-05 17:31:30,843 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播验证成功
+2025-08-05 17:31:30,845 - src.stk_interface.missile_manager - INFO - 🔄 开始传播导弹轨迹...
+2025-08-05 17:31:30,878 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:30,964 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功，DataProvider可用
+2025-08-05 17:31:30,971 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功
+2025-08-05 17:31:30,972 - src.stk_interface.missile_manager - INFO - ✅ 导弹创建成功: PoolMissile_002_4069
+2025-08-05 17:31:31,106 - src.stk_interface.missile_manager - INFO - 🚀 创建导弹对象: PoolMissile_003_4152
+2025-08-05 17:31:33,126 - src.stk_interface.missile_manager - INFO - ✅ 轨迹类型设置为弹道轨迹
+2025-08-05 17:31:33,126 - src.stk_interface.missile_manager - INFO - ✅ 轨迹参数验证通过
+2025-08-05 17:31:33,128 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:33,154 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 05 Aug 2025 17:31:30.000 - 05 Aug 2025 18:01:30.000
+2025-08-05 17:31:33,219 - src.stk_interface.missile_manager - INFO - ✅ 发射位置设置成功
+2025-08-05 17:31:33,282 - src.stk_interface.missile_manager - INFO - ✅ 撞击位置设置成功
+2025-08-05 17:31:33,283 - src.stk_interface.missile_manager - INFO - ✅ 随机飞行高度: 1516.1km
+2025-08-05 17:31:33,312 - src.stk_interface.missile_manager - INFO - ✅ 发射控制设置成功: 1516.1km
+2025-08-05 17:31:33,345 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:33,353 - src.stk_interface.missile_manager - INFO - 🔍 验证轨迹传播: PoolMissile_003_4152
+2025-08-05 17:31:33,366 - src.stk_interface.missile_manager - INFO -    ⏰ 使用场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:33,388 - src.stk_interface.missile_manager - INFO -    📡 DataProvider数量: 156
+2025-08-05 17:31:33,404 - src.stk_interface.missile_manager - INFO -    ✅ LLA State DataProvider可用
+2025-08-05 17:31:33,411 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播验证成功
+2025-08-05 17:31:33,414 - src.stk_interface.missile_manager - INFO - 🔄 开始传播导弹轨迹...
+2025-08-05 17:31:33,451 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:33,522 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功，DataProvider可用
+2025-08-05 17:31:33,530 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功
+2025-08-05 17:31:33,530 - src.stk_interface.missile_manager - INFO - ✅ 导弹创建成功: PoolMissile_003_4152
+2025-08-05 17:31:33,641 - src.stk_interface.missile_manager - INFO - 🚀 创建导弹对象: PoolMissile_004_2702
+2025-08-05 17:31:35,659 - src.stk_interface.missile_manager - INFO - ✅ 轨迹类型设置为弹道轨迹
+2025-08-05 17:31:35,659 - src.stk_interface.missile_manager - INFO - ✅ 轨迹参数验证通过
+2025-08-05 17:31:35,660 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:35,681 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 05 Aug 2025 17:31:33.000 - 05 Aug 2025 18:01:33.000
+2025-08-05 17:31:35,748 - src.stk_interface.missile_manager - INFO - ✅ 发射位置设置成功
+2025-08-05 17:31:35,799 - src.stk_interface.missile_manager - INFO - ✅ 撞击位置设置成功
+2025-08-05 17:31:35,799 - src.stk_interface.missile_manager - INFO - ✅ 随机飞行高度: 1661.5km
+2025-08-05 17:31:35,825 - src.stk_interface.missile_manager - INFO - ✅ 发射控制设置成功: 1661.5km
+2025-08-05 17:31:35,857 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:35,863 - src.stk_interface.missile_manager - INFO - 🔍 验证轨迹传播: PoolMissile_004_2702
+2025-08-05 17:31:35,873 - src.stk_interface.missile_manager - INFO -    ⏰ 使用场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:35,888 - src.stk_interface.missile_manager - INFO -    📡 DataProvider数量: 156
+2025-08-05 17:31:35,898 - src.stk_interface.missile_manager - INFO -    ✅ LLA State DataProvider可用
+2025-08-05 17:31:35,901 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播验证成功
+2025-08-05 17:31:35,902 - src.stk_interface.missile_manager - INFO - 🔄 开始传播导弹轨迹...
+2025-08-05 17:31:35,936 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:35,982 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功，DataProvider可用
+2025-08-05 17:31:35,988 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功
+2025-08-05 17:31:35,988 - src.stk_interface.missile_manager - INFO - ✅ 导弹创建成功: PoolMissile_004_2702
+2025-08-05 17:31:36,087 - src.stk_interface.missile_manager - INFO - 🚀 创建导弹对象: PoolMissile_005_5765
+2025-08-05 17:31:38,124 - src.stk_interface.missile_manager - INFO - ✅ 轨迹类型设置为弹道轨迹
+2025-08-05 17:31:38,124 - src.stk_interface.missile_manager - INFO - ✅ 轨迹参数验证通过
+2025-08-05 17:31:38,126 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:38,158 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 05 Aug 2025 17:31:36.000 - 05 Aug 2025 18:01:36.000
+2025-08-05 17:31:38,233 - src.stk_interface.missile_manager - INFO - ✅ 发射位置设置成功
+2025-08-05 17:31:38,308 - src.stk_interface.missile_manager - INFO - ✅ 撞击位置设置成功
+2025-08-05 17:31:38,309 - src.stk_interface.missile_manager - INFO - ✅ 随机飞行高度: 1506.4km
+2025-08-05 17:31:38,343 - src.stk_interface.missile_manager - INFO - ✅ 发射控制设置成功: 1506.4km
+2025-08-05 17:31:38,376 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:38,394 - src.stk_interface.missile_manager - INFO - 🔍 验证轨迹传播: PoolMissile_005_5765
+2025-08-05 17:31:38,424 - src.stk_interface.missile_manager - INFO -    ⏰ 使用场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:38,551 - src.stk_interface.missile_manager - INFO -    📡 DataProvider数量: 156
+2025-08-05 17:31:38,563 - src.stk_interface.missile_manager - INFO -    ✅ LLA State DataProvider可用
+2025-08-05 17:31:38,567 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播验证成功
+2025-08-05 17:31:38,568 - src.stk_interface.missile_manager - INFO - 🔄 开始传播导弹轨迹...
+2025-08-05 17:31:38,602 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:38,682 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功，DataProvider可用
+2025-08-05 17:31:38,691 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功
+2025-08-05 17:31:38,691 - src.stk_interface.missile_manager - INFO - ✅ 导弹创建成功: PoolMissile_005_5765
+2025-08-05 17:31:38,791 - src.stk_interface.missile_manager - INFO - 🚀 创建导弹对象: PoolMissile_006_4775
+2025-08-05 17:31:40,816 - src.stk_interface.missile_manager - INFO - ✅ 轨迹类型设置为弹道轨迹
+2025-08-05 17:31:40,816 - src.stk_interface.missile_manager - INFO - ✅ 轨迹参数验证通过
+2025-08-05 17:31:40,817 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:40,845 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 05 Aug 2025 17:31:38.000 - 05 Aug 2025 18:01:38.000
+2025-08-05 17:31:40,921 - src.stk_interface.missile_manager - INFO - ✅ 发射位置设置成功
+2025-08-05 17:31:41,012 - src.stk_interface.missile_manager - INFO - ✅ 撞击位置设置成功
+2025-08-05 17:31:41,013 - src.stk_interface.missile_manager - INFO - ✅ 随机飞行高度: 1800.0km
+2025-08-05 17:31:41,057 - src.stk_interface.missile_manager - INFO - ✅ 发射控制设置成功: 1800.0km
+2025-08-05 17:31:41,093 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:41,102 - src.stk_interface.missile_manager - INFO - 🔍 验证轨迹传播: PoolMissile_006_4775
+2025-08-05 17:31:41,122 - src.stk_interface.missile_manager - INFO -    ⏰ 使用场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:41,149 - src.stk_interface.missile_manager - INFO -    📡 DataProvider数量: 156
+2025-08-05 17:31:41,170 - src.stk_interface.missile_manager - INFO -    ✅ LLA State DataProvider可用
+2025-08-05 17:31:41,174 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播验证成功
+2025-08-05 17:31:41,176 - src.stk_interface.missile_manager - INFO - 🔄 开始传播导弹轨迹...
+2025-08-05 17:31:41,212 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:41,294 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功，DataProvider可用
+2025-08-05 17:31:41,300 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功
+2025-08-05 17:31:41,301 - src.stk_interface.missile_manager - INFO - ✅ 导弹创建成功: PoolMissile_006_4775
+2025-08-05 17:31:41,412 - src.stk_interface.missile_manager - INFO - 🚀 创建导弹对象: PoolMissile_007_2141
+2025-08-05 17:31:43,461 - src.stk_interface.missile_manager - INFO - ✅ 轨迹类型设置为弹道轨迹
+2025-08-05 17:31:43,462 - src.stk_interface.missile_manager - INFO - ✅ 轨迹参数验证通过
+2025-08-05 17:31:43,463 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:43,497 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 05 Aug 2025 17:31:41.000 - 05 Aug 2025 18:01:41.000
+2025-08-05 17:31:43,555 - src.stk_interface.missile_manager - INFO - ✅ 发射位置设置成功
+2025-08-05 17:31:43,565 - src.stk_interface.missile_manager - INFO - ✅ 撞击位置设置成功
+2025-08-05 17:31:43,565 - src.stk_interface.missile_manager - INFO - ✅ 随机飞行高度: 1542.8km
+2025-08-05 17:31:43,570 - src.stk_interface.missile_manager - INFO - ✅ 发射控制设置成功: 1542.8km
+2025-08-05 17:31:43,601 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:43,613 - src.stk_interface.missile_manager - INFO - 🔍 验证轨迹传播: PoolMissile_007_2141
+2025-08-05 17:31:43,634 - src.stk_interface.missile_manager - INFO -    ⏰ 使用场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:43,660 - src.stk_interface.missile_manager - INFO -    📡 DataProvider数量: 156
+2025-08-05 17:31:43,681 - src.stk_interface.missile_manager - INFO -    ✅ LLA State DataProvider可用
+2025-08-05 17:31:43,687 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播验证成功
+2025-08-05 17:31:43,689 - src.stk_interface.missile_manager - INFO - 🔄 开始传播导弹轨迹...
+2025-08-05 17:31:43,727 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:43,802 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功，DataProvider可用
+2025-08-05 17:31:43,809 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功
+2025-08-05 17:31:43,809 - src.stk_interface.missile_manager - INFO - ✅ 导弹创建成功: PoolMissile_007_2141
+2025-08-05 17:31:43,913 - src.stk_interface.missile_manager - INFO - 🚀 创建导弹对象: PoolMissile_008_2356
+2025-08-05 17:31:45,923 - src.stk_interface.missile_manager - INFO - ✅ 轨迹类型设置为弹道轨迹
+2025-08-05 17:31:45,923 - src.stk_interface.missile_manager - INFO - ✅ 轨迹参数验证通过
+2025-08-05 17:31:45,924 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:45,931 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 05 Aug 2025 17:31:43.000 - 05 Aug 2025 18:01:43.000
+2025-08-05 17:31:45,984 - src.stk_interface.missile_manager - INFO - ✅ 发射位置设置成功
+2025-08-05 17:31:45,997 - src.stk_interface.missile_manager - INFO - ✅ 撞击位置设置成功
+2025-08-05 17:31:45,997 - src.stk_interface.missile_manager - INFO - ✅ 随机飞行高度: 1666.4km
+2025-08-05 17:31:46,002 - src.stk_interface.missile_manager - INFO - ✅ 发射控制设置成功: 1666.4km
+2025-08-05 17:31:46,031 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:46,041 - src.stk_interface.missile_manager - INFO - 🔍 验证轨迹传播: PoolMissile_008_2356
+2025-08-05 17:31:46,061 - src.stk_interface.missile_manager - INFO -    ⏰ 使用场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:46,090 - src.stk_interface.missile_manager - INFO -    📡 DataProvider数量: 156
+2025-08-05 17:31:46,103 - src.stk_interface.missile_manager - INFO -    ✅ LLA State DataProvider可用
+2025-08-05 17:31:46,106 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播验证成功
+2025-08-05 17:31:46,108 - src.stk_interface.missile_manager - INFO - 🔄 开始传播导弹轨迹...
+2025-08-05 17:31:46,146 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:46,224 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功，DataProvider可用
+2025-08-05 17:31:46,233 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功
+2025-08-05 17:31:46,233 - src.stk_interface.missile_manager - INFO - ✅ 导弹创建成功: PoolMissile_008_2356
+2025-08-05 17:31:46,341 - src.stk_interface.missile_manager - INFO - 🚀 创建导弹对象: PoolMissile_009_4067
+2025-08-05 17:31:48,372 - src.stk_interface.missile_manager - INFO - ✅ 轨迹类型设置为弹道轨迹
+2025-08-05 17:31:48,372 - src.stk_interface.missile_manager - INFO - ✅ 轨迹参数验证通过
+2025-08-05 17:31:48,374 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:48,407 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 05 Aug 2025 17:31:46.000 - 05 Aug 2025 18:01:46.000
+2025-08-05 17:31:48,489 - src.stk_interface.missile_manager - INFO - ✅ 发射位置设置成功
+2025-08-05 17:31:48,564 - src.stk_interface.missile_manager - INFO - ✅ 撞击位置设置成功
+2025-08-05 17:31:48,565 - src.stk_interface.missile_manager - INFO - ✅ 随机飞行高度: 1528.8km
+2025-08-05 17:31:48,599 - src.stk_interface.missile_manager - INFO - ✅ 发射控制设置成功: 1528.8km
+2025-08-05 17:31:48,633 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:48,644 - src.stk_interface.missile_manager - INFO - 🔍 验证轨迹传播: PoolMissile_009_4067
+2025-08-05 17:31:48,664 - src.stk_interface.missile_manager - INFO -    ⏰ 使用场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:48,692 - src.stk_interface.missile_manager - INFO -    📡 DataProvider数量: 156
+2025-08-05 17:31:48,711 - src.stk_interface.missile_manager - INFO -    ✅ LLA State DataProvider可用
+2025-08-05 17:31:48,718 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播验证成功
+2025-08-05 17:31:48,720 - src.stk_interface.missile_manager - INFO - 🔄 开始传播导弹轨迹...
+2025-08-05 17:31:48,759 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:48,842 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功，DataProvider可用
+2025-08-05 17:31:48,849 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功
+2025-08-05 17:31:48,849 - src.stk_interface.missile_manager - INFO - ✅ 导弹创建成功: PoolMissile_009_4067
+2025-08-05 17:31:48,977 - src.stk_interface.missile_manager - INFO - 🚀 创建导弹对象: PoolMissile_010_9095
+2025-08-05 17:31:51,004 - src.stk_interface.missile_manager - INFO - ✅ 轨迹类型设置为弹道轨迹
+2025-08-05 17:31:51,004 - src.stk_interface.missile_manager - INFO - ✅ 轨迹参数验证通过
+2025-08-05 17:31:51,006 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:51,057 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 05 Aug 2025 17:31:48.000 - 05 Aug 2025 18:01:48.000
+2025-08-05 17:31:51,140 - src.stk_interface.missile_manager - INFO - ✅ 发射位置设置成功
+2025-08-05 17:31:51,232 - src.stk_interface.missile_manager - INFO - ✅ 撞击位置设置成功
+2025-08-05 17:31:51,232 - src.stk_interface.missile_manager - INFO - ✅ 随机飞行高度: 1635.9km
+2025-08-05 17:31:51,276 - src.stk_interface.missile_manager - INFO - ✅ 发射控制设置成功: 1635.9km
+2025-08-05 17:31:51,312 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:51,323 - src.stk_interface.missile_manager - INFO - 🔍 验证轨迹传播: PoolMissile_010_9095
+2025-08-05 17:31:51,345 - src.stk_interface.missile_manager - INFO -    ⏰ 使用场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:51,380 - src.stk_interface.missile_manager - INFO -    📡 DataProvider数量: 156
+2025-08-05 17:31:51,400 - src.stk_interface.missile_manager - INFO -    ✅ LLA State DataProvider可用
+2025-08-05 17:31:51,404 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播验证成功
+2025-08-05 17:31:51,406 - src.stk_interface.missile_manager - INFO - 🔄 开始传播导弹轨迹...
+2025-08-05 17:31:51,443 - src.stk_interface.missile_manager - INFO - ✅ 轨迹传播成功
+2025-08-05 17:31:51,507 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功，DataProvider可用
+2025-08-05 17:31:51,514 - src.stk_interface.missile_manager - INFO - ✅ 轨迹数据验证成功
+2025-08-05 17:31:51,515 - src.stk_interface.missile_manager - INFO - ✅ 导弹创建成功: PoolMissile_010_9095
+2025-08-05 17:31:51,530 - src.optimization.missile_pool_manager - INFO - ✅ 导弹池初始化完成！
+2025-08-05 17:31:51,530 - src.optimization.missile_pool_manager - INFO -    成功创建: 10/10 个导弹
+2025-08-05 17:31:51,530 - src.optimization.missile_pool_manager - INFO -    初始化耗时: 25.80秒
+2025-08-05 17:31:51,531 - src.meta_task.rolling_data_collector - INFO - ✅ 导弹池初始化成功
+2025-08-05 17:31:51,531 - src.meta_task.rolling_data_collector - INFO - 
+🔄 第 1/2 次数据采集
+2025-08-05 17:31:51,531 - src.meta_task.rolling_data_collector - INFO - ⏰ 当前采集时刻: 2025-07-26 00:00:00
+2025-08-05 17:31:51,531 - src.meta_task.rolling_data_collector - INFO - 🚀 为第 1 次采集管理导弹...
+2025-08-05 17:31:51,531 - src.meta_task.rolling_data_collector - INFO - 🧹 清理现有导弹...
+2025-08-05 17:31:51,532 - src.meta_task.rolling_data_collector - INFO -    📊 清理完成: 删除 0 个导弹对象
+2025-08-05 17:31:51,532 - src.meta_task.rolling_data_collector - INFO -    计划创建导弹数: 2 (范围: 2-5)
+2025-08-05 17:31:51,532 - src.optimization.missile_pool_manager - INFO - 🎯 从导弹池获取 2 个导弹用于采集...
+2025-08-05 17:31:51,533 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:51,533 - src.stk_interface.missile_manager - INFO - 调整发射时间到场景开始后: 2025-07-26 00:01:00
+2025-08-05 17:31:51,556 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 26 Jul 2025 00:01:00.000 - 26 Jul 2025 00:39:35.000
+2025-08-05 17:31:51,558 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:51,559 - src.stk_interface.missile_manager - INFO - 调整发射时间到场景开始后: 2025-07-26 00:01:00
+2025-08-05 17:31:51,580 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 26 Jul 2025 00:01:00.000 - 26 Jul 2025 00:38:43.000
+2025-08-05 17:31:51,582 - src.optimization.missile_pool_manager - INFO - ✅ 成功从池中获取 2 个导弹
+2025-08-05 17:31:51,582 - src.optimization.missile_pool_manager - INFO -    选择耗时: 0.050秒 (vs 创建耗时 ~0.5秒)
+2025-08-05 17:31:51,582 - src.meta_task.rolling_data_collector - INFO -    ✅ 从池获取导弹: PoolMissile_001_8103
+2025-08-05 17:31:51,583 - src.meta_task.rolling_data_collector - INFO -       发射时间: 2025-07-25 23:59:34
+2025-08-05 17:31:51,583 - src.meta_task.rolling_data_collector - INFO -    ✅ 从池获取导弹: PoolMissile_002_4069
+2025-08-05 17:31:51,583 - src.meta_task.rolling_data_collector - INFO -       发射时间: 2025-07-25 23:59:37
+2025-08-05 17:31:51,583 - src.meta_task.rolling_data_collector - INFO -    📊 导弹管理完成: 成功创建 2/2 个导弹
+2025-08-05 17:31:51,584 - src.meta_task.rolling_data_collector - INFO - 🔄 调整采集时间到中段飞行时间: 2025-07-26 00:03:23.300000
+2025-08-05 17:31:51,584 - src.meta_task.rolling_data_collector - INFO - 🎯 当前中段飞行导弹: 1 个
+2025-08-05 17:31:51,584 - src.meta_task.rolling_data_collector - INFO -    • PoolMissile_002_4069
+2025-08-05 17:31:51,584 - src.meta_task.rolling_data_collector - INFO - 📊 执行第 1 次数据采集...
+2025-08-05 17:31:51,585 - src.meta_task.meta_task_data_collector - INFO - ================================================================================
+2025-08-05 17:31:51,585 - src.meta_task.meta_task_data_collector - INFO - 🎯 【元任务数据采集】开始
+2025-08-05 17:31:51,585 - src.meta_task.meta_task_data_collector - INFO - ⏰ 采集时间: 2025-07-26 00:03:23.300000
+2025-08-05 17:31:51,585 - src.meta_task.meta_task_data_collector - INFO - ================================================================================
+2025-08-05 17:31:51,586 - src.meta_task.meta_task_data_collector - INFO - 📋 步骤1: 生成元任务...
+2025-08-05 17:31:51,586 - src.meta_task.meta_task_manager - INFO - 🎯 开始为所有导弹生成独立元任务，当前规划时刻: 2025-07-26 00:03:23.300000
+2025-08-05 17:31:51,586 - src.meta_task.meta_task_manager - INFO - 🎯 为每个导弹生成独立元任务...
+2025-08-05 17:31:51,586 - src.meta_task.meta_task_manager - INFO - 🔍 确定元任务规划周期...
+2025-08-05 17:31:51,587 - src.meta_task.meta_task_manager - INFO - ✅ 元任务规划周期确定完成:
+2025-08-05 17:31:51,587 - src.meta_task.meta_task_manager - INFO -    开始时间: 2025-07-26 00:05:37 (最早中段飞行开始)
+2025-08-05 17:31:51,587 - src.meta_task.meta_task_manager - INFO -    结束时间: 2025-07-26 00:23:37 (最晚中段飞行结束)
+2025-08-05 17:31:51,587 - src.meta_task.meta_task_manager - INFO -    持续时间: 1080.0秒 (0.3小时)
+2025-08-05 17:31:51,588 - src.meta_task.meta_task_manager - INFO -    最早导弹: PoolMissile_002_4069
+2025-08-05 17:31:51,588 - src.meta_task.meta_task_manager - INFO -    最晚导弹: PoolMissile_002_4069
+2025-08-05 17:31:51,588 - src.meta_task.meta_task_manager - INFO -    覆盖导弹数: 1
+2025-08-05 17:31:51,588 - src.meta_task.meta_task_manager - INFO - 📊 全局规划周期: 2025-07-26 00:05:37 -> 2025-07-26 00:23:37
+2025-08-05 17:31:51,588 - src.meta_task.meta_task_manager - INFO - 🚀 生成导弹 PoolMissile_002_4069 的独立元任务...
+2025-08-05 17:31:51,589 - src.meta_task.meta_task_manager - INFO - 🎯 获取导弹轨迹数据: PoolMissile_002_4069
+2025-08-05 17:31:51,589 - src.stk_interface.missile_manager - INFO - 🎯 获取导弹轨迹信息: PoolMissile_002_4069
+2025-08-05 17:31:51,600 - src.stk_interface.missile_manager - INFO - ✅ 导弹对象获取成功: PoolMissile_002_4069
+2025-08-05 17:31:51,601 - src.stk_interface.missile_manager - INFO - 🔄 确保导弹轨迹传播: PoolMissile_002_4069
+2025-08-05 17:31:51,643 - src.stk_interface.missile_manager - INFO - ✅ 导弹轨迹传播成功: PoolMissile_002_4069
+2025-08-05 17:31:51,656 - src.stk_interface.missile_manager - INFO - 🎯 从STK DataProvider获取轨迹数据: PoolMissile_002_4069
+2025-08-05 17:31:51,656 - src.stk_interface.missile_manager - INFO - 🎯 从STK DataProvider获取真实轨迹数据
+2025-08-05 17:31:51,657 - src.stk_interface.missile_manager - INFO -    🎯 基于STK官方文档获取轨迹数据: PoolMissile_002_4069
+2025-08-05 17:31:51,666 - src.stk_interface.missile_manager - INFO -    ✅ 导弹轨迹对象获取成功
+2025-08-05 17:31:51,717 - src.stk_interface.missile_manager - INFO -    ⏰ 使用场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:51,738 - src.stk_interface.missile_manager - INFO -    📡 DataProviders数量: 156
+2025-08-05 17:31:53,352 - src.stk_interface.missile_manager - INFO -    ✅ LLA State DataProvider获取成功
+2025-08-05 17:31:53,372 - src.stk_interface.missile_manager - INFO -    🔍 DataProvider Group对象获取成功
+2025-08-05 17:31:53,385 - src.stk_interface.missile_manager - INFO -    ✅ 成功获取Fixed坐标系的DataProvider
+2025-08-05 17:31:53,385 - src.stk_interface.missile_manager - INFO -    ⏰ 时间步长: 30秒
+2025-08-05 17:31:53,385 - src.stk_interface.missile_manager - INFO -    ⏰ 时间范围: 26 Jul 2025 00:00:00.000 到 28 Jul 2025 00:00:00.000
+2025-08-05 17:31:53,385 - src.stk_interface.missile_manager - INFO -    🚀 执行DataProvider.Exec()...
+2025-08-05 17:31:53,385 - src.stk_interface.missile_manager - INFO -    🔍 尝试ExecElements方法，元素: ['Time', 'Lat', 'Lon', 'Alt']
+2025-08-05 17:31:53,398 - src.stk_interface.missile_manager - INFO -    ✅ ExecElements方法执行成功
+2025-08-05 17:31:53,398 - src.stk_interface.missile_manager - INFO -    ✅ DataProvider.Exec()执行成功，使用方法: ExecElements
+2025-08-05 17:31:53,419 - src.stk_interface.missile_manager - INFO -    📊 DataSets数量: 4
+2025-08-05 17:31:53,420 - src.stk_interface.missile_manager - INFO -    🔍 开始分析STK DataProvider数据结构...
+2025-08-05 17:31:53,420 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO - 🔍 分析 导弹PoolMissile_002_4069轨迹数据
+2025-08-05 17:31:53,420 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    结果类型: <class 'win32com.client.CDispatch'>
+2025-08-05 17:31:53,438 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    DataSets数量: 4
+2025-08-05 17:31:53,460 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 0: 数据点数=73
+2025-08-05 17:31:53,472 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 0: 样本数据=['26 Jul 2025 00:01:00.000000000', '26 Jul 2025 00:01:30.000000000', '26 Jul 2025 00:02:00.000000000', '26 Jul 2025 00:02:30.000000000', '26 Jul 2025 00:03:00.000000000']
+2025-08-05 17:31:53,484 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 1: 数据点数=73
+2025-08-05 17:31:53,496 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 1: 样本数据=['32.4150244927419', '33.784405013885525', '35.10256373912546', '36.371859397580366', '37.594427994737345']
+2025-08-05 17:31:53,508 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 2: 数据点数=73
+2025-08-05 17:31:53,520 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 2: 样本数据=['138.5519846818971', '139.79578604132118', '141.04593260289113', '142.30449191448943', '143.57342504678678']
+2025-08-05 17:31:53,533 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 3: 数据点数=73
+2025-08-05 17:31:53,545 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 3: 样本数据=['-1.608967805186282e-12', '87.31395622712819', '172.13394454758114', '254.44569917698607', '334.2387793208602']
+2025-08-05 17:31:53,570 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ GetDataSetByName('Time') 成功
+2025-08-05 17:31:53,594 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ GetDataSetByName('Lat') 成功
+2025-08-05 17:31:53,618 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ GetDataSetByName('Lon') 成功
+2025-08-05 17:31:53,641 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ GetDataSetByName('Alt') 成功
+2025-08-05 17:31:53,761 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ DataSets.Item(0) 成功
+2025-08-05 17:31:53,784 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ DataSets.Item(1) 成功
+2025-08-05 17:31:53,807 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ DataSets.Item(2) 成功
+2025-08-05 17:31:53,831 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ DataSets.Item(3) 成功
+2025-08-05 17:31:53,867 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ 直接GetValues() 成功
+2025-08-05 17:31:53,967 - src.stk_interface.missile_manager - INFO -    📊 数据结构分析:
+2025-08-05 17:31:53,967 - src.stk_interface.missile_manager - INFO -      推荐访问方法: GetDataSetByName
+2025-08-05 17:31:53,968 - src.stk_interface.missile_manager - INFO -      可用数据集数量: 4
+2025-08-05 17:31:53,968 - src.stk_interface.missile_manager - INFO -      数据集 0: 名称=None, 数据点数=73
+2025-08-05 17:31:53,968 - src.stk_interface.missile_manager - INFO -      数据集 1: 名称=None, 数据点数=73
+2025-08-05 17:31:53,968 - src.stk_interface.missile_manager - INFO -      数据集 2: 名称=None, 数据点数=73
+2025-08-05 17:31:53,968 - src.stk_interface.missile_manager - INFO -      数据集 3: 名称=None, 数据点数=73
+2025-08-05 17:31:54,014 - src.stk_interface.missile_manager - INFO -    📊 DataSet数据点数: 73
+2025-08-05 17:31:54,015 - src.stk_interface.missile_manager - INFO -    📊 开始提取 73 个轨迹数据点...
+2025-08-05 17:31:54,112 - src.stk_interface.missile_manager - INFO -    ✅ 使用GetDataSetByName方法成功获取数据
+2025-08-05 17:31:54,113 - src.stk_interface.missile_manager - INFO -    📊 数据长度: 时间=73, 纬度=73, 经度=73, 高度=73
+2025-08-05 17:31:54,113 - src.stk_interface.missile_manager - INFO -    📊 有效数据点数: 73
+2025-08-05 17:31:54,114 - src.stk_interface.missile_manager - INFO -    ✅ 成功提取 73 个轨迹点
+2025-08-05 17:31:54,127 - src.stk_interface.missile_manager - INFO - ✅ 成功获取STK真实轨迹数据
+2025-08-05 17:31:54,129 - src.meta_task.meta_task_manager - INFO - ✅ 导弹 PoolMissile_002_4069 轨迹数据获取并缓存成功
+2025-08-05 17:31:54,129 - src.meta_task.meta_task_manager - INFO -    轨迹点数: 73
+2025-08-05 17:31:54,130 - src.meta_task.meta_task_manager - INFO -    时间范围: 26 Jul 2025 00:01:00.000000 -> 26 Jul 2025 00:36:46.626713
+2025-08-05 17:31:54,134 - src.meta_task.meta_task_manager - INFO - ✅ 导弹 PoolMissile_002_4069: 4 真实任务, 0 虚拟任务
+2025-08-05 17:31:54,134 - src.meta_task.meta_task_manager - INFO - ✅ 独立元任务生成完成，覆盖 1 个导弹
+2025-08-05 17:31:54,135 - src.meta_task.meta_task_manager - INFO - ✅ 独立元任务生成完成，覆盖 1 个导弹目标
+2025-08-05 17:31:54,135 - src.meta_task.meta_task_manager - INFO - 📊 全局规划周期: 2025-07-26 00:05:37 -> 2025-07-26 00:23:37
+2025-08-05 17:31:54,135 - src.meta_task.meta_task_manager - INFO -    规划时长: 1080.0秒 (0.3小时)
+2025-08-05 17:31:54,135 - src.meta_task.meta_task_manager - INFO -    总任务: 4, 真实任务: 4, 虚拟任务: 0
+2025-08-05 17:31:54,135 - src.meta_task.meta_task_data_collector - INFO - ✅ 元任务生成成功:
+2025-08-05 17:31:54,135 - src.meta_task.meta_task_data_collector - INFO -    导弹数量: 1
+2025-08-05 17:31:54,136 - src.meta_task.meta_task_data_collector - INFO -    元子任务数: 4
+2025-08-05 17:31:54,136 - src.meta_task.meta_task_data_collector - INFO -    规划时长: 0.3小时
+2025-08-05 17:31:54,136 - src.meta_task.meta_task_data_collector - INFO - 🛰️ 步骤2: 采集星座位置信息...
+2025-08-05 17:31:58,000 - src.meta_task.meta_task_data_collector - INFO - ✅ 星座数据采集完成: 9颗卫星
+2025-08-05 17:31:58,000 - src.meta_task.meta_task_data_collector - INFO - 👁️ 步骤3: 计算可见元任务...
+2025-08-05 17:31:58,000 - src.meta_task.visible_meta_task_calculator - INFO - 👁️ 开始计算星座可见元任务集
+2025-08-05 17:31:58,000 - src.meta_task.visible_meta_task_calculator - INFO -    卫星数量: 9
+2025-08-05 17:31:58,001 - src.meta_task.visible_meta_task_calculator - INFO -    导弹数量: 1
+2025-08-05 17:31:58,001 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite01 的可见元任务集...
+2025-08-05 17:31:58,001 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite01 -> PoolMissile_002_4069
+2025-08-05 17:31:58,001 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite01 -> PoolMissile_002_4069
+2025-08-05 17:31:58,001 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite01
+2025-08-05 17:31:58,039 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite01
+2025-08-05 17:31:58,039 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_002_4069
+2025-08-05 17:31:58,369 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_002_4069
+2025-08-05 17:31:58,424 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite01_Payload
+2025-08-05 17:31:58,424 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:31:58,445 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:31:58,468 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:31:58,490 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:31:58,492 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:31:58,496 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite01 -> PoolMissile_002_4069
+2025-08-05 17:31:58,498 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite01
+2025-08-05 17:31:58,499 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite01: 可见任务 0, 虚拟任务 4
+2025-08-05 17:31:58,499 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite02 的可见元任务集...
+2025-08-05 17:31:58,499 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite02 -> PoolMissile_002_4069
+2025-08-05 17:31:58,499 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite02 -> PoolMissile_002_4069
+2025-08-05 17:31:58,499 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite02
+2025-08-05 17:31:58,573 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite02
+2025-08-05 17:31:58,574 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_002_4069
+2025-08-05 17:31:58,951 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_002_4069
+2025-08-05 17:31:59,018 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite02_Payload
+2025-08-05 17:31:59,018 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:31:59,042 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:31:59,078 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:31:59,132 - src.stk_interface.visibility_calculator - INFO - 🔍 找到 1 个访问间隔
+2025-08-05 17:31:59,146 - src.stk_interface.visibility_calculator - INFO - 🔍 成功获取访问间隔数组，长度: 1
+2025-08-05 17:31:59,146 - src.stk_interface.visibility_calculator - INFO - 📅 间隔 1: 26 Jul 2025 00:09:17.358 - 26 Jul 2025 00:11:56.001 (159.0s)
+2025-08-05 17:31:59,150 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 1个间隔, 总时长159.0秒
+2025-08-05 17:31:59,158 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite02 -> PoolMissile_002_4069
+2025-08-05 17:31:59,161 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite02
+2025-08-05 17:31:59,161 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite02: 可见任务 2, 虚拟任务 2
+2025-08-05 17:31:59,162 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite03 的可见元任务集...
+2025-08-05 17:31:59,162 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite03 -> PoolMissile_002_4069
+2025-08-05 17:31:59,162 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite03 -> PoolMissile_002_4069
+2025-08-05 17:31:59,162 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite03
+2025-08-05 17:31:59,314 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite03
+2025-08-05 17:31:59,314 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_002_4069
+2025-08-05 17:31:59,790 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_002_4069
+2025-08-05 17:31:59,866 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite03_Payload
+2025-08-05 17:31:59,867 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:31:59,893 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:31:59,918 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:31:59,946 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:31:59,948 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:31:59,953 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite03 -> PoolMissile_002_4069
+2025-08-05 17:31:59,956 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite03
+2025-08-05 17:31:59,956 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite03: 可见任务 0, 虚拟任务 4
+2025-08-05 17:31:59,956 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite04 的可见元任务集...
+2025-08-05 17:31:59,957 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite04 -> PoolMissile_002_4069
+2025-08-05 17:31:59,957 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite04 -> PoolMissile_002_4069
+2025-08-05 17:31:59,957 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite04
+2025-08-05 17:32:00,101 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite04
+2025-08-05 17:32:00,101 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_002_4069
+2025-08-05 17:32:00,484 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_002_4069
+2025-08-05 17:32:00,522 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite04_Payload
+2025-08-05 17:32:00,522 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:00,536 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:00,571 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:00,603 - src.stk_interface.visibility_calculator - INFO - 🔍 找到 1 个访问间隔
+2025-08-05 17:32:00,609 - src.stk_interface.visibility_calculator - INFO - 🔍 成功获取访问间隔数组，长度: 1
+2025-08-05 17:32:00,610 - src.stk_interface.visibility_calculator - INFO - 📅 间隔 1: 26 Jul 2025 00:13:12.612 - 26 Jul 2025 00:27:16.907 (844.0s)
+2025-08-05 17:32:00,612 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 1个间隔, 总时长844.0秒
+2025-08-05 17:32:00,616 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite04 -> PoolMissile_002_4069
+2025-08-05 17:32:00,618 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite04
+2025-08-05 17:32:00,619 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite04: 可见任务 3, 虚拟任务 1
+2025-08-05 17:32:00,619 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite05 的可见元任务集...
+2025-08-05 17:32:00,619 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite05 -> PoolMissile_002_4069
+2025-08-05 17:32:00,619 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite05 -> PoolMissile_002_4069
+2025-08-05 17:32:00,619 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite05
+2025-08-05 17:32:00,742 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite05
+2025-08-05 17:32:00,743 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_002_4069
+2025-08-05 17:32:00,993 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_002_4069
+2025-08-05 17:32:01,026 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite05_Payload
+2025-08-05 17:32:01,026 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:01,045 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:01,064 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:01,075 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:01,079 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:01,081 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite05 -> PoolMissile_002_4069
+2025-08-05 17:32:01,082 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite05
+2025-08-05 17:32:01,083 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite05: 可见任务 0, 虚拟任务 4
+2025-08-05 17:32:01,083 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite06 的可见元任务集...
+2025-08-05 17:32:01,083 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite06 -> PoolMissile_002_4069
+2025-08-05 17:32:01,083 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite06 -> PoolMissile_002_4069
+2025-08-05 17:32:01,083 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite06
+2025-08-05 17:32:01,219 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite06
+2025-08-05 17:32:01,219 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_002_4069
+2025-08-05 17:32:01,458 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_002_4069
+2025-08-05 17:32:01,499 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite06_Payload
+2025-08-05 17:32:01,500 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:01,511 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:01,533 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:01,550 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:01,551 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:01,553 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite06 -> PoolMissile_002_4069
+2025-08-05 17:32:01,555 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite06
+2025-08-05 17:32:01,556 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite06: 可见任务 0, 虚拟任务 4
+2025-08-05 17:32:01,556 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite07 的可见元任务集...
+2025-08-05 17:32:01,556 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite07 -> PoolMissile_002_4069
+2025-08-05 17:32:01,556 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite07 -> PoolMissile_002_4069
+2025-08-05 17:32:01,556 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite07
+2025-08-05 17:32:01,781 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite07
+2025-08-05 17:32:01,782 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_002_4069
+2025-08-05 17:32:02,091 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_002_4069
+2025-08-05 17:32:02,143 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite07_Payload
+2025-08-05 17:32:02,143 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:02,161 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:02,188 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:02,204 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:02,206 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:02,210 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite07 -> PoolMissile_002_4069
+2025-08-05 17:32:02,213 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite07
+2025-08-05 17:32:02,213 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite07: 可见任务 0, 虚拟任务 4
+2025-08-05 17:32:02,214 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite08 的可见元任务集...
+2025-08-05 17:32:02,214 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite08 -> PoolMissile_002_4069
+2025-08-05 17:32:02,214 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite08 -> PoolMissile_002_4069
+2025-08-05 17:32:02,214 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite08
+2025-08-05 17:32:02,483 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite08
+2025-08-05 17:32:02,483 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_002_4069
+2025-08-05 17:32:02,832 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_002_4069
+2025-08-05 17:32:02,870 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite08_Payload
+2025-08-05 17:32:02,870 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:02,885 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:02,905 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:02,926 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:02,928 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:02,932 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite08 -> PoolMissile_002_4069
+2025-08-05 17:32:02,934 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite08
+2025-08-05 17:32:02,935 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite08: 可见任务 0, 虚拟任务 4
+2025-08-05 17:32:02,935 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite09 的可见元任务集...
+2025-08-05 17:32:02,935 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite09 -> PoolMissile_002_4069
+2025-08-05 17:32:02,935 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite09 -> PoolMissile_002_4069
+2025-08-05 17:32:02,935 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite09
+2025-08-05 17:32:03,237 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite09
+2025-08-05 17:32:03,237 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_002_4069
+2025-08-05 17:32:03,653 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_002_4069
+2025-08-05 17:32:03,706 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite09_Payload
+2025-08-05 17:32:03,706 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:03,723 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:03,756 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:03,780 - src.stk_interface.visibility_calculator - INFO - 🔍 找到 1 个访问间隔
+2025-08-05 17:32:03,788 - src.stk_interface.visibility_calculator - INFO - 🔍 成功获取访问间隔数组，长度: 1
+2025-08-05 17:32:03,789 - src.stk_interface.visibility_calculator - INFO - 📅 间隔 1: 26 Jul 2025 00:23:04.002 - 26 Jul 2025 00:28:21.880 (317.0s)
+2025-08-05 17:32:03,790 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 1个间隔, 总时长317.0秒
+2025-08-05 17:32:03,793 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite09 -> PoolMissile_002_4069
+2025-08-05 17:32:03,795 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite09
+2025-08-05 17:32:03,796 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite09: 可见任务 1, 虚拟任务 3
+2025-08-05 17:32:03,796 - src.meta_task.visible_meta_task_calculator - INFO - ✅ 星座可见元任务集计算完成
+2025-08-05 17:32:03,797 - src.meta_task.visible_meta_task_calculator - INFO -    总可见任务: 6
+2025-08-05 17:32:03,797 - src.meta_task.visible_meta_task_calculator - INFO -    总虚拟任务: 30
+2025-08-05 17:32:03,797 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 开始为可见任务同步卫星位置...
+2025-08-05 17:32:03,798 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 开始为可见元任务同步卫星位置...
+2025-08-05 17:32:03,798 - src.meta_task.satellite_position_synchronizer - INFO - 🔧 使用串行处理模式（避免STK COM多线程问题）
+2025-08-05 17:32:03,798 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite01 的可见任务...
+2025-08-05 17:32:03,798 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite02 的可见任务...
+2025-08-05 17:32:03,799 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_001: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:03,799 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_001 位置同步失败
+2025-08-05 17:32:03,799 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_002: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:03,800 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_002 位置同步失败
+2025-08-05 17:32:03,800 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite03 的可见任务...
+2025-08-05 17:32:03,800 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite04 的可见任务...
+2025-08-05 17:32:03,800 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_002: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:03,801 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_002 位置同步失败
+2025-08-05 17:32:03,801 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_003: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:03,801 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_003 位置同步失败
+2025-08-05 17:32:03,801 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_004: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:03,801 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_004 位置同步失败
+2025-08-05 17:32:03,802 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite05 的可见任务...
+2025-08-05 17:32:03,802 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite06 的可见任务...
+2025-08-05 17:32:03,802 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite07 的可见任务...
+2025-08-05 17:32:03,802 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite08 的可见任务...
+2025-08-05 17:32:03,803 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite09 的可见任务...
+2025-08-05 17:32:03,803 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_004: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:03,803 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_004 位置同步失败
+2025-08-05 17:32:03,803 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 卫星位置同步完成:
+2025-08-05 17:32:03,803 - src.meta_task.satellite_position_synchronizer - INFO -    处理任务数: 0
+2025-08-05 17:32:03,804 - src.meta_task.satellite_position_synchronizer - INFO -    采集位置点数: 0
+2025-08-05 17:32:03,804 - src.meta_task.satellite_position_synchronizer - INFO -    处理时间: 0.01秒
+2025-08-05 17:32:03,804 - src.meta_task.satellite_position_synchronizer - INFO -    处理模式: 并发
+2025-08-05 17:32:03,804 - src.meta_task.meta_task_data_collector - INFO - ✅ 可见元任务计算完成:
+2025-08-05 17:32:03,804 - src.meta_task.meta_task_data_collector - INFO -    卫星数量: 9
+2025-08-05 17:32:03,805 - src.meta_task.meta_task_data_collector - INFO -    可见任务: 6
+2025-08-05 17:32:03,805 - src.meta_task.meta_task_data_collector - INFO -    虚拟任务: 30
+2025-08-05 17:32:03,805 - src.meta_task.meta_task_data_collector - INFO -    可见率: 16.67%
+2025-08-05 17:32:03,805 - src.meta_task.meta_task_data_collector - INFO - 📊 步骤4: 整合数据...
+2025-08-05 17:32:03,806 - src.meta_task.meta_task_data_collector - INFO - ✅ 【元任务数据采集】完成
+2025-08-05 17:32:03,806 - src.meta_task.meta_task_data_collector - INFO - 📊 汇总信息:
+2025-08-05 17:32:03,806 - src.meta_task.meta_task_data_collector - INFO -    卫星数量: 9
+2025-08-05 17:32:03,806 - src.meta_task.meta_task_data_collector - INFO -    导弹数量: 1
+2025-08-05 17:32:03,807 - src.meta_task.meta_task_data_collector - INFO -    元任务总数: 4
+2025-08-05 17:32:03,807 - src.meta_task.meta_task_data_collector - INFO -    可见任务总数: 6
+2025-08-05 17:32:03,807 - src.meta_task.meta_task_data_collector - INFO -    虚拟任务总数: 30
+2025-08-05 17:32:03,807 - src.meta_task.meta_task_data_collector - INFO - ================================================================================
+2025-08-05 17:32:03,808 - src.meta_task.rolling_data_collector - INFO - 💾 仅保存数据到统一目录，跳过专用文件夹保存
+2025-08-05 17:32:03,808 - src.meta_task.rolling_data_collector - INFO - 🎯 生成冲突消解数据...
+2025-08-05 17:32:03,808 - src.conflict_resolution.conflict_data_processor - ERROR - ❌ 生成冲突消解数据失败: No module named 'aerospace_meta_task_gantt'
+2025-08-05 17:32:03,812 - src.data_management.unified_data_manager - INFO - 📁 统一会话目录已创建: output\unified_collections\session_conflict_resolution_20250805_173203_20250805_173203
+2025-08-05 17:32:03,813 - src.data_management.unified_data_manager - INFO -    JSON数据目录: output\unified_collections\session_conflict_resolution_20250805_173203_20250805_173203\json_data
+2025-08-05 17:32:03,813 - src.data_management.unified_data_manager - INFO -    图表目录: output\unified_collections\session_conflict_resolution_20250805_173203_20250805_173203\charts
+2025-08-05 17:32:03,813 - src.data_management.unified_data_manager - INFO -    日志目录: output\unified_collections\session_conflict_resolution_20250805_173203_20250805_173203\logs
+2025-08-05 17:32:03,814 - src.data_management.unified_data_manager - INFO -    分析目录: output\unified_collections\session_conflict_resolution_20250805_173203_20250805_173203\analysis
+2025-08-05 17:32:03,814 - src.meta_task.rolling_data_collector - INFO - 📁 统一数据会话已初始化
+2025-08-05 17:32:03,841 - src.utils.timeline_converter - INFO - ✅ 时间轴数据转换完成
+2025-08-05 17:32:03,842 - src.utils.timeline_converter - INFO -    元任务: 4 个 (含导弹位置: 4 个)
+2025-08-05 17:32:03,842 - src.utils.timeline_converter - INFO -    可见任务: 6 个 (含卫星位置: 0 个)
+2025-08-05 17:32:03,842 - src.utils.timeline_converter - INFO -    虚拟原子任务: 17 个
+2025-08-05 17:32:03,849 - src.data_management.unified_data_manager - INFO - 💾 第 1 次采集数据已保存到统一目录
+2025-08-05 17:32:03,849 - src.data_management.unified_data_manager - INFO -    原始数据: collection_001_original.json
+2025-08-05 17:32:03,849 - src.meta_task.rolling_data_collector - INFO - 💾 数据已保存到统一目录:
+2025-08-05 17:32:03,849 - src.meta_task.rolling_data_collector - INFO -    original_data: collection_001_original.json
+2025-08-05 17:32:03,850 - src.meta_task.rolling_data_collector - INFO -    timeline_data: collection_001_timeline.json
+2025-08-05 17:32:03,850 - src.meta_task.rolling_data_collector - INFO -    summary: collection_001_summary.json
+2025-08-05 17:32:03,850 - src.meta_task.rolling_data_collector - INFO - 💾 采集数据仅保存到统一目录
+2025-08-05 17:32:03,850 - src.meta_task.rolling_data_collector - INFO - 📊 第 1 次采集：开始生成甘特图...
+2025-08-05 17:32:03,851 - src.meta_task.rolling_data_collector - WARNING - ⚠️ 甘特图生成异常: No module named 'aerospace_meta_task_gantt'
+2025-08-05 17:32:03,852 - src.meta_task.rolling_data_collector - WARNING - ⚠️ 详细错误: Traceback (most recent call last):
+  File "D:\work\llm\code\augment\data_generate\src\meta_task\rolling_data_collector.py", line 685, in _generate_collection_visualizations
+    from aerospace_meta_task_gantt import AerospaceMetaTaskGantt
+ModuleNotFoundError: No module named 'aerospace_meta_task_gantt'
+
+2025-08-05 17:32:03,853 - src.meta_task.rolling_data_collector - INFO - 📄 统一目录模式：采集信息已包含在会话汇总中
+2025-08-05 17:32:03,853 - src.meta_task.rolling_data_collector - INFO - ✅ 第 1 次数据采集成功，数据仅保存到统一目录
+2025-08-05 17:32:03,853 - src.meta_task.rolling_data_collector - INFO - ✅ 第 1 次采集完成
+2025-08-05 17:32:03,854 - src.meta_task.rolling_data_collector - INFO - ⏰ 下次采集时间: 2025-07-26 00:10:52.300000 (间隔: 449秒, 均值: 600秒)
+2025-08-05 17:32:03,854 - src.meta_task.rolling_data_collector - INFO - 
+🔄 第 2/2 次数据采集
+2025-08-05 17:32:03,854 - src.meta_task.rolling_data_collector - INFO - ⏰ 当前采集时刻: 2025-07-26 00:10:52.300000
+2025-08-05 17:32:03,855 - src.meta_task.rolling_data_collector - INFO - 🚀 为第 2 次采集管理导弹...
+2025-08-05 17:32:03,855 - src.meta_task.rolling_data_collector - INFO - 🧹 清理现有导弹...
+2025-08-05 17:32:03,855 - src.optimization.missile_pool_manager - INFO - 🔄 释放 2 个导弹回池中...
+2025-08-05 17:32:03,855 - src.optimization.missile_pool_manager - INFO - ✅ 导弹释放完成，可用导弹: 10
+2025-08-05 17:32:03,856 - src.meta_task.rolling_data_collector - INFO -    ✅ 释放 2 个导弹回池中
+2025-08-05 17:32:03,856 - src.meta_task.rolling_data_collector - INFO -    📊 清理完成: 删除 2 个导弹对象
+2025-08-05 17:32:03,856 - src.meta_task.rolling_data_collector - INFO -    计划创建导弹数: 4 (范围: 2-5)
+2025-08-05 17:32:03,856 - src.optimization.missile_pool_manager - INFO - 🎯 从导弹池获取 4 个导弹用于采集...
+2025-08-05 17:32:03,859 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:32:03,891 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 26 Jul 2025 00:13:31.000 - 26 Jul 2025 00:46:48.000
+2025-08-05 17:32:03,895 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:32:03,933 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 26 Jul 2025 00:05:52.000 - 26 Jul 2025 00:45:20.000
+2025-08-05 17:32:03,936 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:32:03,974 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 26 Jul 2025 00:06:25.000 - 26 Jul 2025 00:39:26.000
+2025-08-05 17:32:03,978 - src.stk_interface.missile_manager - INFO - 📅 场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:32:04,012 - src.stk_interface.missile_manager - INFO - ✅ EphemerisInterval时间设置成功: 26 Jul 2025 00:14:24.000 - 26 Jul 2025 00:45:41.000
+2025-08-05 17:32:04,014 - src.optimization.missile_pool_manager - INFO - ✅ 成功从池中获取 4 个导弹
+2025-08-05 17:32:04,014 - src.optimization.missile_pool_manager - INFO -    选择耗时: 0.157秒 (vs 创建耗时 ~1.6秒)
+2025-08-05 17:32:04,014 - src.meta_task.rolling_data_collector - INFO -    ✅ 从池获取导弹: PoolMissile_003_4152
+2025-08-05 17:32:04,015 - src.meta_task.rolling_data_collector - INFO -       发射时间: 2025-07-26 00:13:31.300000
+2025-08-05 17:32:04,015 - src.meta_task.rolling_data_collector - INFO -    ✅ 从池获取导弹: PoolMissile_004_2702
+2025-08-05 17:32:04,015 - src.meta_task.rolling_data_collector - INFO -       发射时间: 2025-07-26 00:05:52.300000
+2025-08-05 17:32:04,015 - src.meta_task.rolling_data_collector - INFO -    ✅ 从池获取导弹: PoolMissile_005_5765
+2025-08-05 17:32:04,015 - src.meta_task.rolling_data_collector - INFO -       发射时间: 2025-07-26 00:06:25.300000
+2025-08-05 17:32:04,016 - src.meta_task.rolling_data_collector - INFO -    ✅ 从池获取导弹: PoolMissile_006_4775
+2025-08-05 17:32:04,016 - src.meta_task.rolling_data_collector - INFO -       发射时间: 2025-07-26 00:14:24.300000
+2025-08-05 17:32:04,016 - src.meta_task.rolling_data_collector - INFO -    📊 导弹管理完成: 成功创建 4/4 个导弹
+2025-08-05 17:32:04,016 - src.meta_task.rolling_data_collector - INFO - 🎯 当前中段飞行导弹: 2 个
+2025-08-05 17:32:04,016 - src.meta_task.rolling_data_collector - INFO -    • PoolMissile_004_2702
+2025-08-05 17:32:04,016 - src.meta_task.rolling_data_collector - INFO -    • PoolMissile_005_5765
+2025-08-05 17:32:04,017 - src.meta_task.rolling_data_collector - INFO - 📊 执行第 2 次数据采集...
+2025-08-05 17:32:04,017 - src.meta_task.meta_task_data_collector - INFO - ================================================================================
+2025-08-05 17:32:04,017 - src.meta_task.meta_task_data_collector - INFO - 🎯 【元任务数据采集】开始
+2025-08-05 17:32:04,017 - src.meta_task.meta_task_data_collector - INFO - ⏰ 采集时间: 2025-07-26 00:10:52.300000
+2025-08-05 17:32:04,018 - src.meta_task.meta_task_data_collector - INFO - ================================================================================
+2025-08-05 17:32:04,018 - src.meta_task.meta_task_data_collector - INFO - 📋 步骤1: 生成元任务...
+2025-08-05 17:32:04,018 - src.meta_task.meta_task_manager - INFO - 🎯 开始为所有导弹生成独立元任务，当前规划时刻: 2025-07-26 00:10:52.300000
+2025-08-05 17:32:04,018 - src.meta_task.meta_task_manager - INFO - 🎯 为每个导弹生成独立元任务...
+2025-08-05 17:32:04,018 - src.meta_task.meta_task_manager - INFO - 🔍 确定元任务规划周期...
+2025-08-05 17:32:04,019 - src.meta_task.meta_task_manager - INFO - ✅ 元任务规划周期确定完成:
+2025-08-05 17:32:04,019 - src.meta_task.meta_task_manager - INFO -    开始时间: 2025-07-26 00:11:52.300000 (最早中段飞行开始)
+2025-08-05 17:32:04,019 - src.meta_task.meta_task_manager - INFO -    结束时间: 2025-07-26 00:30:25.300000 (最晚中段飞行结束)
+2025-08-05 17:32:04,019 - src.meta_task.meta_task_manager - INFO -    持续时间: 1113.0秒 (0.3小时)
+2025-08-05 17:32:04,019 - src.meta_task.meta_task_manager - INFO -    最早导弹: PoolMissile_004_2702
+2025-08-05 17:32:04,019 - src.meta_task.meta_task_manager - INFO -    最晚导弹: PoolMissile_005_5765
+2025-08-05 17:32:04,019 - src.meta_task.meta_task_manager - INFO -    覆盖导弹数: 2
+2025-08-05 17:32:04,019 - src.meta_task.meta_task_manager - INFO - 📊 全局规划周期: 2025-07-26 00:11:52.300000 -> 2025-07-26 00:30:25.300000
+2025-08-05 17:32:04,020 - src.meta_task.meta_task_manager - INFO - 🚀 生成导弹 PoolMissile_004_2702 的独立元任务...
+2025-08-05 17:32:04,020 - src.meta_task.meta_task_manager - INFO - 🎯 获取导弹轨迹数据: PoolMissile_004_2702
+2025-08-05 17:32:04,020 - src.stk_interface.missile_manager - INFO - 🎯 获取导弹轨迹信息: PoolMissile_004_2702
+2025-08-05 17:32:04,035 - src.stk_interface.missile_manager - INFO - ✅ 导弹对象获取成功: PoolMissile_004_2702
+2025-08-05 17:32:04,035 - src.stk_interface.missile_manager - INFO - 🔄 确保导弹轨迹传播: PoolMissile_004_2702
+2025-08-05 17:32:04,082 - src.stk_interface.missile_manager - INFO - ✅ 导弹轨迹传播成功: PoolMissile_004_2702
+2025-08-05 17:32:04,086 - src.stk_interface.missile_manager - INFO - 🎯 从STK DataProvider获取轨迹数据: PoolMissile_004_2702
+2025-08-05 17:32:04,086 - src.stk_interface.missile_manager - INFO - 🎯 从STK DataProvider获取真实轨迹数据
+2025-08-05 17:32:04,087 - src.stk_interface.missile_manager - INFO -    🎯 基于STK官方文档获取轨迹数据: PoolMissile_004_2702
+2025-08-05 17:32:04,092 - src.stk_interface.missile_manager - INFO -    ✅ 导弹轨迹对象获取成功
+2025-08-05 17:32:04,123 - src.stk_interface.missile_manager - INFO -    ⏰ 使用场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:32:04,143 - src.stk_interface.missile_manager - INFO -    📡 DataProviders数量: 156
+2025-08-05 17:32:05,946 - src.stk_interface.missile_manager - INFO -    ✅ LLA State DataProvider获取成功
+2025-08-05 17:32:05,955 - src.stk_interface.missile_manager - INFO -    🔍 DataProvider Group对象获取成功
+2025-08-05 17:32:05,973 - src.stk_interface.missile_manager - INFO -    ✅ 成功获取Fixed坐标系的DataProvider
+2025-08-05 17:32:05,973 - src.stk_interface.missile_manager - INFO -    ⏰ 时间步长: 30秒
+2025-08-05 17:32:05,973 - src.stk_interface.missile_manager - INFO -    ⏰ 时间范围: 26 Jul 2025 00:00:00.000 到 28 Jul 2025 00:00:00.000
+2025-08-05 17:32:05,974 - src.stk_interface.missile_manager - INFO -    🚀 执行DataProvider.Exec()...
+2025-08-05 17:32:05,974 - src.stk_interface.missile_manager - INFO -    🔍 尝试ExecElements方法，元素: ['Time', 'Lat', 'Lon', 'Alt']
+2025-08-05 17:32:05,987 - src.stk_interface.missile_manager - INFO -    ✅ ExecElements方法执行成功
+2025-08-05 17:32:05,988 - src.stk_interface.missile_manager - INFO -    ✅ DataProvider.Exec()执行成功，使用方法: ExecElements
+2025-08-05 17:32:06,004 - src.stk_interface.missile_manager - INFO -    📊 DataSets数量: 4
+2025-08-05 17:32:06,004 - src.stk_interface.missile_manager - INFO -    🔍 开始分析STK DataProvider数据结构...
+2025-08-05 17:32:06,005 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO - 🔍 分析 导弹PoolMissile_004_2702轨迹数据
+2025-08-05 17:32:06,005 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    结果类型: <class 'win32com.client.CDispatch'>
+2025-08-05 17:32:06,022 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    DataSets数量: 4
+2025-08-05 17:32:06,044 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 0: 数据点数=69
+2025-08-05 17:32:06,056 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 0: 样本数据=['26 Jul 2025 00:05:52.000000000', '26 Jul 2025 00:06:22.000000000', '26 Jul 2025 00:06:52.000000000', '26 Jul 2025 00:07:22.000000000', '26 Jul 2025 00:07:52.000000000']
+2025-08-05 17:32:06,068 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 1: 数据点数=69
+2025-08-05 17:32:06,080 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 1: 样本数据=['39.63695242737057', '40.837248919029065', '41.98218836990555', '43.07469906355466', '44.11739375644835']
+2025-08-05 17:32:06,091 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 2: 数据点数=69
+2025-08-05 17:32:06,103 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 2: 样本数据=['132.3162066331987', '133.70270989563315', '135.0969419990722', '136.50078167665177', '137.9159580324419']
+2025-08-05 17:32:06,116 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 3: 数据点数=69
+2025-08-05 17:32:06,129 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 3: 样本数据=['-5.941100354598416e-13', '99.32576557414234', '195.37918566419486', '288.17918305736316', '377.7463893698797']
+2025-08-05 17:32:06,155 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ GetDataSetByName('Time') 成功
+2025-08-05 17:32:06,179 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ GetDataSetByName('Lat') 成功
+2025-08-05 17:32:06,203 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ GetDataSetByName('Lon') 成功
+2025-08-05 17:32:06,227 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ GetDataSetByName('Alt') 成功
+2025-08-05 17:32:06,351 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ DataSets.Item(0) 成功
+2025-08-05 17:32:06,377 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ DataSets.Item(1) 成功
+2025-08-05 17:32:06,402 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ DataSets.Item(2) 成功
+2025-08-05 17:32:06,427 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ DataSets.Item(3) 成功
+2025-08-05 17:32:06,464 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ 直接GetValues() 成功
+2025-08-05 17:32:06,569 - src.stk_interface.missile_manager - INFO -    📊 数据结构分析:
+2025-08-05 17:32:06,570 - src.stk_interface.missile_manager - INFO -      推荐访问方法: GetDataSetByName
+2025-08-05 17:32:06,570 - src.stk_interface.missile_manager - INFO -      可用数据集数量: 4
+2025-08-05 17:32:06,570 - src.stk_interface.missile_manager - INFO -      数据集 0: 名称=None, 数据点数=69
+2025-08-05 17:32:06,570 - src.stk_interface.missile_manager - INFO -      数据集 1: 名称=None, 数据点数=69
+2025-08-05 17:32:06,570 - src.stk_interface.missile_manager - INFO -      数据集 2: 名称=None, 数据点数=69
+2025-08-05 17:32:06,571 - src.stk_interface.missile_manager - INFO -      数据集 3: 名称=None, 数据点数=69
+2025-08-05 17:32:06,620 - src.stk_interface.missile_manager - INFO -    📊 DataSet数据点数: 69
+2025-08-05 17:32:06,620 - src.stk_interface.missile_manager - INFO -    📊 开始提取 69 个轨迹数据点...
+2025-08-05 17:32:06,727 - src.stk_interface.missile_manager - INFO -    ✅ 使用GetDataSetByName方法成功获取数据
+2025-08-05 17:32:06,727 - src.stk_interface.missile_manager - INFO -    📊 数据长度: 时间=69, 纬度=69, 经度=69, 高度=69
+2025-08-05 17:32:06,728 - src.stk_interface.missile_manager - INFO -    📊 有效数据点数: 69
+2025-08-05 17:32:06,728 - src.stk_interface.missile_manager - INFO -    ✅ 成功提取 69 个轨迹点
+2025-08-05 17:32:06,741 - src.stk_interface.missile_manager - INFO - ✅ 成功获取STK真实轨迹数据
+2025-08-05 17:32:06,742 - src.meta_task.meta_task_manager - INFO - ✅ 导弹 PoolMissile_004_2702 轨迹数据获取并缓存成功
+2025-08-05 17:32:06,743 - src.meta_task.meta_task_manager - INFO -    轨迹点数: 69
+2025-08-05 17:32:06,743 - src.meta_task.meta_task_manager - INFO -    时间范围: 26 Jul 2025 00:05:52.000000 -> 26 Jul 2025 00:39:47.015565
+2025-08-05 17:32:06,747 - src.meta_task.meta_task_manager - INFO - ✅ 导弹 PoolMissile_004_2702: 4 真实任务, 0 虚拟任务
+2025-08-05 17:32:06,747 - src.meta_task.meta_task_manager - INFO - 🚀 生成导弹 PoolMissile_005_5765 的独立元任务...
+2025-08-05 17:32:06,748 - src.meta_task.meta_task_manager - INFO - 🎯 获取导弹轨迹数据: PoolMissile_005_5765
+2025-08-05 17:32:06,748 - src.stk_interface.missile_manager - INFO - 🎯 获取导弹轨迹信息: PoolMissile_005_5765
+2025-08-05 17:32:06,764 - src.stk_interface.missile_manager - INFO - ✅ 导弹对象获取成功: PoolMissile_005_5765
+2025-08-05 17:32:06,765 - src.stk_interface.missile_manager - INFO - 🔄 确保导弹轨迹传播: PoolMissile_005_5765
+2025-08-05 17:32:06,810 - src.stk_interface.missile_manager - INFO - ✅ 导弹轨迹传播成功: PoolMissile_005_5765
+2025-08-05 17:32:06,822 - src.stk_interface.missile_manager - INFO - 🎯 从STK DataProvider获取轨迹数据: PoolMissile_005_5765
+2025-08-05 17:32:06,822 - src.stk_interface.missile_manager - INFO - 🎯 从STK DataProvider获取真实轨迹数据
+2025-08-05 17:32:06,823 - src.stk_interface.missile_manager - INFO -    🎯 基于STK官方文档获取轨迹数据: PoolMissile_005_5765
+2025-08-05 17:32:06,833 - src.stk_interface.missile_manager - INFO -    ✅ 导弹轨迹对象获取成功
+2025-08-05 17:32:06,882 - src.stk_interface.missile_manager - INFO -    ⏰ 使用场景时间范围: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-05 17:32:06,906 - src.stk_interface.missile_manager - INFO -    📡 DataProviders数量: 156
+2025-08-05 17:32:08,699 - src.stk_interface.missile_manager - INFO -    ✅ LLA State DataProvider获取成功
+2025-08-05 17:32:08,719 - src.stk_interface.missile_manager - INFO -    🔍 DataProvider Group对象获取成功
+2025-08-05 17:32:08,733 - src.stk_interface.missile_manager - INFO -    ✅ 成功获取Fixed坐标系的DataProvider
+2025-08-05 17:32:08,733 - src.stk_interface.missile_manager - INFO -    ⏰ 时间步长: 30秒
+2025-08-05 17:32:08,733 - src.stk_interface.missile_manager - INFO -    ⏰ 时间范围: 26 Jul 2025 00:00:00.000 到 28 Jul 2025 00:00:00.000
+2025-08-05 17:32:08,733 - src.stk_interface.missile_manager - INFO -    🚀 执行DataProvider.Exec()...
+2025-08-05 17:32:08,733 - src.stk_interface.missile_manager - INFO -    🔍 尝试ExecElements方法，元素: ['Time', 'Lat', 'Lon', 'Alt']
+2025-08-05 17:32:08,747 - src.stk_interface.missile_manager - INFO -    ✅ ExecElements方法执行成功
+2025-08-05 17:32:08,747 - src.stk_interface.missile_manager - INFO -    ✅ DataProvider.Exec()执行成功，使用方法: ExecElements
+2025-08-05 17:32:08,767 - src.stk_interface.missile_manager - INFO -    📊 DataSets数量: 4
+2025-08-05 17:32:08,768 - src.stk_interface.missile_manager - INFO -    🔍 开始分析STK DataProvider数据结构...
+2025-08-05 17:32:08,768 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO - 🔍 分析 导弹PoolMissile_005_5765轨迹数据
+2025-08-05 17:32:08,768 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    结果类型: <class 'win32com.client.CDispatch'>
+2025-08-05 17:32:08,786 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    DataSets数量: 4
+2025-08-05 17:32:08,807 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 0: 数据点数=68
+2025-08-05 17:32:08,820 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 0: 样本数据=['26 Jul 2025 00:06:25.000000000', '26 Jul 2025 00:06:55.000000000', '26 Jul 2025 00:07:25.000000000', '26 Jul 2025 00:07:55.000000000', '26 Jul 2025 00:08:25.000000000']
+2025-08-05 17:32:08,833 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 1: 数据点数=68
+2025-08-05 17:32:08,846 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 1: 样本数据=['48.2723377388513', '49.936441039128106', '51.55097624280906', '53.11904909671761', '54.64345497006006']
+2025-08-05 17:32:08,859 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 2: 数据点数=68
+2025-08-05 17:32:08,872 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 2: 样本数据=['137.56943108353516', '138.09959375733794', '138.65662279020515', '139.2438978273462', '139.86515567032546']
+2025-08-05 17:32:08,886 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 3: 数据点数=68
+2025-08-05 17:32:08,898 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -      数据集 3: 样本数据=['1.8280040572418194e-12', '91.1694020472198', '179.38780617877939', '264.6588484847909', '346.9887886859288']
+2025-08-05 17:32:08,922 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ GetDataSetByName('Time') 成功
+2025-08-05 17:32:08,948 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ GetDataSetByName('Lat') 成功
+2025-08-05 17:32:08,973 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ GetDataSetByName('Lon') 成功
+2025-08-05 17:32:09,000 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ GetDataSetByName('Alt') 成功
+2025-08-05 17:32:09,124 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ DataSets.Item(0) 成功
+2025-08-05 17:32:09,146 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ DataSets.Item(1) 成功
+2025-08-05 17:32:09,170 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ DataSets.Item(2) 成功
+2025-08-05 17:32:09,195 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ DataSets.Item(3) 成功
+2025-08-05 17:32:09,237 - src.utils.stk_data_structure_analyzer.STKDataStructureAnalyzer - INFO -    ✅ 直接GetValues() 成功
+2025-08-05 17:32:09,338 - src.stk_interface.missile_manager - INFO -    📊 数据结构分析:
+2025-08-05 17:32:09,339 - src.stk_interface.missile_manager - INFO -      推荐访问方法: GetDataSetByName
+2025-08-05 17:32:09,339 - src.stk_interface.missile_manager - INFO -      可用数据集数量: 4
+2025-08-05 17:32:09,339 - src.stk_interface.missile_manager - INFO -      数据集 0: 名称=None, 数据点数=68
+2025-08-05 17:32:09,339 - src.stk_interface.missile_manager - INFO -      数据集 1: 名称=None, 数据点数=68
+2025-08-05 17:32:09,340 - src.stk_interface.missile_manager - INFO -      数据集 2: 名称=None, 数据点数=68
+2025-08-05 17:32:09,340 - src.stk_interface.missile_manager - INFO -      数据集 3: 名称=None, 数据点数=68
+2025-08-05 17:32:09,600 - src.stk_interface.missile_manager - INFO -    📊 DataSet数据点数: 68
+2025-08-05 17:32:09,600 - src.stk_interface.missile_manager - INFO -    📊 开始提取 68 个轨迹数据点...
+2025-08-05 17:32:09,704 - src.stk_interface.missile_manager - INFO -    ✅ 使用GetDataSetByName方法成功获取数据
+2025-08-05 17:32:09,704 - src.stk_interface.missile_manager - INFO -    📊 数据长度: 时间=68, 纬度=68, 经度=68, 高度=68
+2025-08-05 17:32:09,705 - src.stk_interface.missile_manager - INFO -    📊 有效数据点数: 68
+2025-08-05 17:32:09,705 - src.stk_interface.missile_manager - INFO -    ✅ 成功提取 68 个轨迹点
+2025-08-05 17:32:09,722 - src.stk_interface.missile_manager - INFO - ✅ 成功获取STK真实轨迹数据
+2025-08-05 17:32:09,724 - src.meta_task.meta_task_manager - INFO - ✅ 导弹 PoolMissile_005_5765 轨迹数据获取并缓存成功
+2025-08-05 17:32:09,725 - src.meta_task.meta_task_manager - INFO -    轨迹点数: 68
+2025-08-05 17:32:09,725 - src.meta_task.meta_task_manager - INFO -    时间范围: 26 Jul 2025 00:06:25.000000 -> 26 Jul 2025 00:39:35.235788
+2025-08-05 17:32:09,729 - src.meta_task.meta_task_manager - INFO - ✅ 导弹 PoolMissile_005_5765: 4 真实任务, 0 虚拟任务
+2025-08-05 17:32:09,730 - src.meta_task.meta_task_manager - INFO - ✅ 独立元任务生成完成，覆盖 2 个导弹
+2025-08-05 17:32:09,730 - src.meta_task.meta_task_manager - INFO - ✅ 独立元任务生成完成，覆盖 2 个导弹目标
+2025-08-05 17:32:09,730 - src.meta_task.meta_task_manager - INFO - 📊 全局规划周期: 2025-07-26 00:11:52.300000 -> 2025-07-26 00:30:25.300000
+2025-08-05 17:32:09,730 - src.meta_task.meta_task_manager - INFO -    规划时长: 1113.0秒 (0.3小时)
+2025-08-05 17:32:09,730 - src.meta_task.meta_task_manager - INFO -    总任务: 8, 真实任务: 8, 虚拟任务: 0
+2025-08-05 17:32:09,730 - src.meta_task.meta_task_data_collector - INFO - ✅ 元任务生成成功:
+2025-08-05 17:32:09,730 - src.meta_task.meta_task_data_collector - INFO -    导弹数量: 2
+2025-08-05 17:32:09,731 - src.meta_task.meta_task_data_collector - INFO -    元子任务数: 8
+2025-08-05 17:32:09,731 - src.meta_task.meta_task_data_collector - INFO -    规划时长: 0.3小时
+2025-08-05 17:32:09,731 - src.meta_task.meta_task_data_collector - INFO - 🛰️ 步骤2: 采集星座位置信息...
+2025-08-05 17:32:14,015 - src.meta_task.meta_task_data_collector - INFO - ✅ 星座数据采集完成: 9颗卫星
+2025-08-05 17:32:14,016 - src.meta_task.meta_task_data_collector - INFO - 👁️ 步骤3: 计算可见元任务...
+2025-08-05 17:32:14,016 - src.meta_task.visible_meta_task_calculator - INFO - 👁️ 开始计算星座可见元任务集
+2025-08-05 17:32:14,016 - src.meta_task.visible_meta_task_calculator - INFO -    卫星数量: 9
+2025-08-05 17:32:14,016 - src.meta_task.visible_meta_task_calculator - INFO -    导弹数量: 2
+2025-08-05 17:32:14,017 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite01 的可见元任务集...
+2025-08-05 17:32:14,017 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite01 -> PoolMissile_004_2702
+2025-08-05 17:32:14,017 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite01 -> PoolMissile_004_2702
+2025-08-05 17:32:14,018 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite01
+2025-08-05 17:32:14,069 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite01
+2025-08-05 17:32:14,070 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_004_2702
+2025-08-05 17:32:14,413 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_004_2702
+2025-08-05 17:32:14,464 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite01_Payload
+2025-08-05 17:32:14,464 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:14,481 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:14,500 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:14,518 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:14,519 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:14,523 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite01 -> PoolMissile_004_2702
+2025-08-05 17:32:14,525 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite01
+2025-08-05 17:32:14,525 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite01 -> PoolMissile_005_5765
+2025-08-05 17:32:14,525 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite01 -> PoolMissile_005_5765
+2025-08-05 17:32:14,525 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite01
+2025-08-05 17:32:14,568 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite01
+2025-08-05 17:32:14,568 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_005_5765
+2025-08-05 17:32:15,232 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_005_5765
+2025-08-05 17:32:15,290 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite01_Payload
+2025-08-05 17:32:15,291 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:15,303 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:15,323 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:15,337 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:15,338 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:15,342 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite01 -> PoolMissile_005_5765
+2025-08-05 17:32:15,343 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite01
+2025-08-05 17:32:15,343 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite01: 可见任务 0, 虚拟任务 8
+2025-08-05 17:32:15,344 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite02 的可见元任务集...
+2025-08-05 17:32:15,344 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite02 -> PoolMissile_004_2702
+2025-08-05 17:32:15,344 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite02 -> PoolMissile_004_2702
+2025-08-05 17:32:15,344 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite02
+2025-08-05 17:32:15,394 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite02
+2025-08-05 17:32:15,394 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_004_2702
+2025-08-05 17:32:15,845 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_004_2702
+2025-08-05 17:32:15,921 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite02_Payload
+2025-08-05 17:32:15,921 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:15,938 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:15,962 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:15,984 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:15,985 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:15,989 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite02 -> PoolMissile_004_2702
+2025-08-05 17:32:15,991 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite02
+2025-08-05 17:32:15,991 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite02 -> PoolMissile_005_5765
+2025-08-05 17:32:15,991 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite02 -> PoolMissile_005_5765
+2025-08-05 17:32:15,991 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite02
+2025-08-05 17:32:16,056 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite02
+2025-08-05 17:32:16,056 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_005_5765
+2025-08-05 17:32:16,568 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_005_5765
+2025-08-05 17:32:16,659 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite02_Payload
+2025-08-05 17:32:16,659 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:16,673 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:16,693 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:16,720 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:16,722 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:16,729 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite02 -> PoolMissile_005_5765
+2025-08-05 17:32:16,733 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite02
+2025-08-05 17:32:16,733 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite02: 可见任务 0, 虚拟任务 8
+2025-08-05 17:32:16,733 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite03 的可见元任务集...
+2025-08-05 17:32:16,734 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite03 -> PoolMissile_004_2702
+2025-08-05 17:32:16,734 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite03 -> PoolMissile_004_2702
+2025-08-05 17:32:16,734 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite03
+2025-08-05 17:32:16,828 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite03
+2025-08-05 17:32:16,829 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_004_2702
+2025-08-05 17:32:17,269 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_004_2702
+2025-08-05 17:32:17,322 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite03_Payload
+2025-08-05 17:32:17,322 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:17,336 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:17,356 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:17,374 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:17,374 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:17,378 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite03 -> PoolMissile_004_2702
+2025-08-05 17:32:17,384 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite03
+2025-08-05 17:32:17,385 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite03 -> PoolMissile_005_5765
+2025-08-05 17:32:17,385 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite03 -> PoolMissile_005_5765
+2025-08-05 17:32:17,385 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite03
+2025-08-05 17:32:17,476 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite03
+2025-08-05 17:32:17,477 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_005_5765
+2025-08-05 17:32:17,963 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_005_5765
+2025-08-05 17:32:18,017 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite03_Payload
+2025-08-05 17:32:18,018 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:18,061 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:18,090 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:18,122 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:18,124 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:18,126 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite03 -> PoolMissile_005_5765
+2025-08-05 17:32:18,128 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite03
+2025-08-05 17:32:18,129 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite03: 可见任务 0, 虚拟任务 8
+2025-08-05 17:32:18,129 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite04 的可见元任务集...
+2025-08-05 17:32:18,129 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite04 -> PoolMissile_004_2702
+2025-08-05 17:32:18,129 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite04 -> PoolMissile_004_2702
+2025-08-05 17:32:18,129 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite04
+2025-08-05 17:32:18,303 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite04
+2025-08-05 17:32:18,304 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_004_2702
+2025-08-05 17:32:18,718 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_004_2702
+2025-08-05 17:32:18,761 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite04_Payload
+2025-08-05 17:32:18,762 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:18,776 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:18,807 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:18,837 - src.stk_interface.visibility_calculator - INFO - 🔍 找到 1 个访问间隔
+2025-08-05 17:32:18,846 - src.stk_interface.visibility_calculator - INFO - 🔍 成功获取访问间隔数组，长度: 1
+2025-08-05 17:32:18,846 - src.stk_interface.visibility_calculator - INFO - 📅 间隔 1: 26 Jul 2025 00:13:09.618 - 26 Jul 2025 00:32:12.162 (1143.0s)
+2025-08-05 17:32:18,848 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 1个间隔, 总时长1143.0秒
+2025-08-05 17:32:18,853 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite04 -> PoolMissile_004_2702
+2025-08-05 17:32:18,856 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite04
+2025-08-05 17:32:18,856 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite04 -> PoolMissile_005_5765
+2025-08-05 17:32:18,857 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite04 -> PoolMissile_005_5765
+2025-08-05 17:32:18,857 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite04
+2025-08-05 17:32:18,981 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite04
+2025-08-05 17:32:18,982 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_005_5765
+2025-08-05 17:32:19,350 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_005_5765
+2025-08-05 17:32:19,424 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite04_Payload
+2025-08-05 17:32:19,425 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:19,458 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:19,493 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:19,551 - src.stk_interface.visibility_calculator - INFO - 🔍 找到 1 个访问间隔
+2025-08-05 17:32:19,569 - src.stk_interface.visibility_calculator - INFO - 🔍 成功获取访问间隔数组，长度: 1
+2025-08-05 17:32:19,569 - src.stk_interface.visibility_calculator - INFO - 📅 间隔 1: 26 Jul 2025 00:14:33.869 - 26 Jul 2025 00:30:15.512 (942.0s)
+2025-08-05 17:32:19,575 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 1个间隔, 总时长942.0秒
+2025-08-05 17:32:19,579 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite04 -> PoolMissile_005_5765
+2025-08-05 17:32:19,581 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite04
+2025-08-05 17:32:19,582 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite04: 可见任务 8, 虚拟任务 0
+2025-08-05 17:32:19,582 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite05 的可见元任务集...
+2025-08-05 17:32:19,582 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite05 -> PoolMissile_004_2702
+2025-08-05 17:32:19,583 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite05 -> PoolMissile_004_2702
+2025-08-05 17:32:19,583 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite05
+2025-08-05 17:32:19,744 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite05
+2025-08-05 17:32:19,744 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_004_2702
+2025-08-05 17:32:20,084 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_004_2702
+2025-08-05 17:32:20,128 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite05_Payload
+2025-08-05 17:32:20,129 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:20,162 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:20,183 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:20,202 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:20,203 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:20,206 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite05 -> PoolMissile_004_2702
+2025-08-05 17:32:20,207 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite05
+2025-08-05 17:32:20,207 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite05 -> PoolMissile_005_5765
+2025-08-05 17:32:20,208 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite05 -> PoolMissile_005_5765
+2025-08-05 17:32:20,208 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite05
+2025-08-05 17:32:20,392 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite05
+2025-08-05 17:32:20,393 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_005_5765
+2025-08-05 17:32:20,467 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_005_5765
+2025-08-05 17:32:20,475 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite05_Payload
+2025-08-05 17:32:20,475 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:20,479 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:20,497 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:20,502 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:20,502 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:20,504 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite05 -> PoolMissile_005_5765
+2025-08-05 17:32:20,504 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite05
+2025-08-05 17:32:20,504 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite05: 可见任务 0, 虚拟任务 8
+2025-08-05 17:32:20,504 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite06 的可见元任务集...
+2025-08-05 17:32:20,505 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite06 -> PoolMissile_004_2702
+2025-08-05 17:32:20,505 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite06 -> PoolMissile_004_2702
+2025-08-05 17:32:20,505 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite06
+2025-08-05 17:32:20,549 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite06
+2025-08-05 17:32:20,549 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_004_2702
+2025-08-05 17:32:20,612 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_004_2702
+2025-08-05 17:32:20,620 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite06_Payload
+2025-08-05 17:32:20,620 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:20,624 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:20,641 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:20,647 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:20,648 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:20,649 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite06 -> PoolMissile_004_2702
+2025-08-05 17:32:20,649 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite06
+2025-08-05 17:32:20,649 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite06 -> PoolMissile_005_5765
+2025-08-05 17:32:20,649 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite06 -> PoolMissile_005_5765
+2025-08-05 17:32:20,649 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite06
+2025-08-05 17:32:20,673 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite06
+2025-08-05 17:32:20,673 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_005_5765
+2025-08-05 17:32:20,729 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_005_5765
+2025-08-05 17:32:20,734 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite06_Payload
+2025-08-05 17:32:20,734 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:20,737 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:20,754 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:20,758 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:20,759 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:20,759 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite06 -> PoolMissile_005_5765
+2025-08-05 17:32:20,760 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite06
+2025-08-05 17:32:20,760 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite06: 可见任务 0, 虚拟任务 8
+2025-08-05 17:32:20,760 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite07 的可见元任务集...
+2025-08-05 17:32:20,760 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite07 -> PoolMissile_004_2702
+2025-08-05 17:32:20,760 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite07 -> PoolMissile_004_2702
+2025-08-05 17:32:20,760 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite07
+2025-08-05 17:32:20,900 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite07
+2025-08-05 17:32:20,900 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_004_2702
+2025-08-05 17:32:21,638 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_004_2702
+2025-08-05 17:32:21,681 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite07_Payload
+2025-08-05 17:32:21,682 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:21,697 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:21,716 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:21,738 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:21,740 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:21,743 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite07 -> PoolMissile_004_2702
+2025-08-05 17:32:21,745 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite07
+2025-08-05 17:32:21,745 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite07 -> PoolMissile_005_5765
+2025-08-05 17:32:21,745 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite07 -> PoolMissile_005_5765
+2025-08-05 17:32:21,746 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite07
+2025-08-05 17:32:21,949 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite07
+2025-08-05 17:32:21,950 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_005_5765
+2025-08-05 17:32:22,242 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_005_5765
+2025-08-05 17:32:22,247 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite07_Payload
+2025-08-05 17:32:22,248 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:22,251 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:22,268 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:22,276 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:22,277 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:22,277 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite07 -> PoolMissile_005_5765
+2025-08-05 17:32:22,278 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite07
+2025-08-05 17:32:22,278 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite07: 可见任务 0, 虚拟任务 8
+2025-08-05 17:32:22,278 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite08 的可见元任务集...
+2025-08-05 17:32:22,279 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite08 -> PoolMissile_004_2702
+2025-08-05 17:32:22,279 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite08 -> PoolMissile_004_2702
+2025-08-05 17:32:22,279 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite08
+2025-08-05 17:32:22,305 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite08
+2025-08-05 17:32:22,305 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_004_2702
+2025-08-05 17:32:22,360 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_004_2702
+2025-08-05 17:32:22,367 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite08_Payload
+2025-08-05 17:32:22,367 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:22,371 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:22,387 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:22,391 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:22,391 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:22,392 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite08 -> PoolMissile_004_2702
+2025-08-05 17:32:22,392 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite08
+2025-08-05 17:32:22,392 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite08 -> PoolMissile_005_5765
+2025-08-05 17:32:22,392 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite08 -> PoolMissile_005_5765
+2025-08-05 17:32:22,392 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite08
+2025-08-05 17:32:22,424 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite08
+2025-08-05 17:32:22,425 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_005_5765
+2025-08-05 17:32:22,474 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_005_5765
+2025-08-05 17:32:22,480 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite08_Payload
+2025-08-05 17:32:22,480 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:22,483 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:22,498 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:22,502 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:22,502 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:22,503 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite08 -> PoolMissile_005_5765
+2025-08-05 17:32:22,503 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite08
+2025-08-05 17:32:22,503 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite08: 可见任务 0, 虚拟任务 8
+2025-08-05 17:32:22,503 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 计算卫星 Satellite09 的可见元任务集...
+2025-08-05 17:32:22,503 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite09 -> PoolMissile_004_2702
+2025-08-05 17:32:22,503 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite09 -> PoolMissile_004_2702
+2025-08-05 17:32:22,504 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite09
+2025-08-05 17:32:22,536 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite09
+2025-08-05 17:32:22,536 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_004_2702
+2025-08-05 17:32:22,579 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_004_2702
+2025-08-05 17:32:22,584 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite09_Payload
+2025-08-05 17:32:22,584 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:22,587 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:22,616 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:22,622 - src.stk_interface.visibility_calculator - INFO - 🔍 找到 1 个访问间隔
+2025-08-05 17:32:22,624 - src.stk_interface.visibility_calculator - INFO - 🔍 成功获取访问间隔数组，长度: 1
+2025-08-05 17:32:22,624 - src.stk_interface.visibility_calculator - INFO - 📅 间隔 1: 26 Jul 2025 00:26:06.125 - 26 Jul 2025 00:32:31.138 (385.0s)
+2025-08-05 17:32:22,625 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 1个间隔, 总时长385.0秒
+2025-08-05 17:32:22,625 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite09 -> PoolMissile_004_2702
+2025-08-05 17:32:22,626 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite09
+2025-08-05 17:32:22,627 - src.stk_interface.visibility_calculator - INFO - 🔍 计算可见性: Satellite09 -> PoolMissile_005_5765
+2025-08-05 17:32:22,627 - src.stk_interface.visibility_calculator - INFO - 🔍 开始计算可见性: Satellite09 -> PoolMissile_005_5765
+2025-08-05 17:32:22,627 - src.stk_interface.visibility_calculator - INFO - 🔍 查找卫星: Satellite09
+2025-08-05 17:32:22,672 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的卫星: Satellite09
+2025-08-05 17:32:22,673 - src.stk_interface.visibility_calculator - INFO - 🔍 查找导弹: PoolMissile_005_5765
+2025-08-05 17:32:22,778 - src.stk_interface.visibility_calculator - INFO - ✅ 找到匹配的导弹: PoolMissile_005_5765
+2025-08-05 17:32:22,792 - src.stk_interface.visibility_calculator - INFO - 🔭 找到传感器: Satellite09_Payload
+2025-08-05 17:32:22,792 - src.stk_interface.visibility_calculator - INFO - 🔭 使用传感器计算访问
+2025-08-05 17:32:22,796 - src.stk_interface.visibility_calculator - INFO - ✅ STK访问对象创建成功
+2025-08-05 17:32:22,815 - src.stk_interface.visibility_calculator - INFO - ✅ 访问计算完成
+2025-08-05 17:32:22,832 - src.stk_interface.visibility_calculator - INFO - 🚫 没有找到访问间隔
+2025-08-05 17:32:22,835 - src.stk_interface.visibility_calculator - INFO - ✅ 访问结果: 0个间隔, 总时长0.0秒
+2025-08-05 17:32:22,842 - src.stk_interface.visibility_calculator - INFO - ✅ 可见性计算成功: Satellite09 -> PoolMissile_005_5765
+2025-08-05 17:32:22,846 - src.stk_interface.visibility_calculator - INFO -    ✅ 可见性计算成功: Satellite09
+2025-08-05 17:32:22,846 - src.meta_task.visible_meta_task_calculator - INFO -    ✅ 卫星 Satellite09: 可见任务 2, 虚拟任务 6
+2025-08-05 17:32:22,846 - src.meta_task.visible_meta_task_calculator - INFO - ✅ 星座可见元任务集计算完成
+2025-08-05 17:32:22,847 - src.meta_task.visible_meta_task_calculator - INFO -    总可见任务: 10
+2025-08-05 17:32:22,847 - src.meta_task.visible_meta_task_calculator - INFO -    总虚拟任务: 62
+2025-08-05 17:32:22,847 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 开始为可见任务同步卫星位置...
+2025-08-05 17:32:22,847 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 开始为可见元任务同步卫星位置...
+2025-08-05 17:32:22,848 - src.meta_task.satellite_position_synchronizer - INFO - 🔧 使用串行处理模式（避免STK COM多线程问题）
+2025-08-05 17:32:22,848 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite01 的可见任务...
+2025-08-05 17:32:22,848 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite02 的可见任务...
+2025-08-05 17:32:22,848 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite03 的可见任务...
+2025-08-05 17:32:22,848 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite04 的可见任务...
+2025-08-05 17:32:22,849 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_001: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:22,849 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_001 位置同步失败
+2025-08-05 17:32:22,849 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_002: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:22,849 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_002 位置同步失败
+2025-08-05 17:32:22,849 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_003: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:22,850 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_003 位置同步失败
+2025-08-05 17:32:22,850 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_004: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:22,850 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_004 位置同步失败
+2025-08-05 17:32:22,850 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_001: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:22,850 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_001 位置同步失败
+2025-08-05 17:32:22,851 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_002: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:22,851 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_002 位置同步失败
+2025-08-05 17:32:22,851 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_003: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:22,851 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_003 位置同步失败
+2025-08-05 17:32:22,852 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_004: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:22,852 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_004 位置同步失败
+2025-08-05 17:32:22,852 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite05 的可见任务...
+2025-08-05 17:32:22,852 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite06 的可见任务...
+2025-08-05 17:32:22,853 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite07 的可见任务...
+2025-08-05 17:32:22,853 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite08 的可见任务...
+2025-08-05 17:32:22,853 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 处理卫星 Satellite09 的可见任务...
+2025-08-05 17:32:22,853 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_003: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:22,853 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_003 位置同步失败
+2025-08-05 17:32:22,854 - src.meta_task.satellite_position_synchronizer - ERROR - ❌ 任务位置同步失败 atomic_task_004: STKManager.get_satellite_position() takes 3 positional arguments but 4 were given
+2025-08-05 17:32:22,854 - src.meta_task.satellite_position_synchronizer - WARNING - ⚠️ 任务 atomic_task_004 位置同步失败
+2025-08-05 17:32:22,854 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 卫星位置同步完成:
+2025-08-05 17:32:22,855 - src.meta_task.satellite_position_synchronizer - INFO -    处理任务数: 0
+2025-08-05 17:32:22,855 - src.meta_task.satellite_position_synchronizer - INFO -    采集位置点数: 0
+2025-08-05 17:32:22,855 - src.meta_task.satellite_position_synchronizer - INFO -    处理时间: 0.01秒
+2025-08-05 17:32:22,855 - src.meta_task.satellite_position_synchronizer - INFO -    处理模式: 并发
+2025-08-05 17:32:22,856 - src.meta_task.meta_task_data_collector - INFO - ✅ 可见元任务计算完成:
+2025-08-05 17:32:22,856 - src.meta_task.meta_task_data_collector - INFO -    卫星数量: 9
+2025-08-05 17:32:22,856 - src.meta_task.meta_task_data_collector - INFO -    可见任务: 10
+2025-08-05 17:32:22,856 - src.meta_task.meta_task_data_collector - INFO -    虚拟任务: 62
+2025-08-05 17:32:22,857 - src.meta_task.meta_task_data_collector - INFO -    可见率: 13.89%
+2025-08-05 17:32:22,857 - src.meta_task.meta_task_data_collector - INFO - 📊 步骤4: 整合数据...
+2025-08-05 17:32:22,857 - src.meta_task.meta_task_data_collector - INFO - ✅ 【元任务数据采集】完成
+2025-08-05 17:32:22,857 - src.meta_task.meta_task_data_collector - INFO - 📊 汇总信息:
+2025-08-05 17:32:22,857 - src.meta_task.meta_task_data_collector - INFO -    卫星数量: 9
+2025-08-05 17:32:22,857 - src.meta_task.meta_task_data_collector - INFO -    导弹数量: 2
+2025-08-05 17:32:22,857 - src.meta_task.meta_task_data_collector - INFO -    元任务总数: 8
+2025-08-05 17:32:22,858 - src.meta_task.meta_task_data_collector - INFO -    可见任务总数: 10
+2025-08-05 17:32:22,858 - src.meta_task.meta_task_data_collector - INFO -    虚拟任务总数: 62
+2025-08-05 17:32:22,858 - src.meta_task.meta_task_data_collector - INFO - ================================================================================
+2025-08-05 17:32:22,858 - src.meta_task.rolling_data_collector - INFO - 💾 仅保存数据到统一目录，跳过专用文件夹保存
+2025-08-05 17:32:22,858 - src.meta_task.rolling_data_collector - INFO - 🎯 生成冲突消解数据...
+2025-08-05 17:32:22,859 - src.conflict_resolution.conflict_data_processor - ERROR - ❌ 生成冲突消解数据失败: No module named 'aerospace_meta_task_gantt'
+2025-08-05 17:32:22,883 - src.utils.timeline_converter - INFO - ✅ 时间轴数据转换完成
+2025-08-05 17:32:22,883 - src.utils.timeline_converter - INFO -    元任务: 8 个 (含导弹位置: 8 个)
+2025-08-05 17:32:22,884 - src.utils.timeline_converter - INFO -    可见任务: 10 个 (含卫星位置: 0 个)
+2025-08-05 17:32:22,884 - src.utils.timeline_converter - INFO -    虚拟原子任务: 32 个
+2025-08-05 17:32:22,895 - src.data_management.unified_data_manager - INFO - 💾 第 2 次采集数据已保存到统一目录
+2025-08-05 17:32:22,895 - src.data_management.unified_data_manager - INFO -    原始数据: collection_002_original.json
+2025-08-05 17:32:22,896 - src.meta_task.rolling_data_collector - INFO - 💾 数据已保存到统一目录:
+2025-08-05 17:32:22,896 - src.meta_task.rolling_data_collector - INFO -    original_data: collection_002_original.json
+2025-08-05 17:32:22,897 - src.meta_task.rolling_data_collector - INFO -    timeline_data: collection_002_timeline.json
+2025-08-05 17:32:22,897 - src.meta_task.rolling_data_collector - INFO -    summary: collection_002_summary.json
+2025-08-05 17:32:22,897 - src.meta_task.rolling_data_collector - INFO - 💾 采集数据仅保存到统一目录
+2025-08-05 17:32:22,897 - src.meta_task.rolling_data_collector - INFO - 📊 第 2 次采集：开始生成甘特图...
+2025-08-05 17:32:22,898 - src.meta_task.rolling_data_collector - WARNING - ⚠️ 甘特图生成异常: No module named 'aerospace_meta_task_gantt'
+2025-08-05 17:32:22,898 - src.meta_task.rolling_data_collector - WARNING - ⚠️ 详细错误: Traceback (most recent call last):
+  File "D:\work\llm\code\augment\data_generate\src\meta_task\rolling_data_collector.py", line 685, in _generate_collection_visualizations
+    from aerospace_meta_task_gantt import AerospaceMetaTaskGantt
+ModuleNotFoundError: No module named 'aerospace_meta_task_gantt'
+
+2025-08-05 17:32:22,899 - src.meta_task.rolling_data_collector - INFO - 📄 统一目录模式：采集信息已包含在会话汇总中
+2025-08-05 17:32:22,899 - src.meta_task.rolling_data_collector - INFO - ✅ 第 2 次数据采集成功，数据仅保存到统一目录
+2025-08-05 17:32:22,899 - src.meta_task.rolling_data_collector - INFO - ✅ 第 2 次采集完成
+2025-08-05 17:32:22,899 - src.meta_task.rolling_data_collector - INFO - 
+================================================================================
+2025-08-05 17:32:22,899 - src.meta_task.rolling_data_collector - INFO - 🎉 滚动数据采集完成！
+2025-08-05 17:32:22,899 - src.meta_task.rolling_data_collector - INFO -    总采集次数: 2
+2025-08-05 17:32:22,900 - src.meta_task.rolling_data_collector - INFO -    总导弹数: 4
+2025-08-05 17:32:22,900 - src.meta_task_main - INFO - ✅ 滚动数据采集完成，共采集 2 次
+2025-08-05 17:32:22,900 - src.meta_task_main - INFO - 💾 滚动采集汇总数据保存已禁用，只保存到统一目录
+2025-08-05 17:32:22,900 - __main__ - INFO - 
+================================================================================
+2025-08-05 17:32:22,900 - __main__ - INFO - 🎉 滚动元任务数据采集系统运行成功！
+2025-08-05 17:32:22,901 - __main__ - INFO - 📊 采集结果统计:
+2025-08-05 17:32:22,901 - __main__ - INFO -    成功采集次数: 2
+2025-08-05 17:32:22,901 - __main__ - INFO -    总导弹数: 4
+2025-08-05 17:32:22,901 - __main__ - INFO -    会话目录: output\unified_collections\session_gantt_fix_test_20250805_173033
+2025-08-05 17:32:22,901 - __main__ - INFO -    第1次采集: 1个中段飞行导弹
+2025-08-05 17:32:22,901 - __main__ - INFO -    第2次采集: 2个中段飞行导弹
+2025-08-05 17:32:22,902 - src.meta_task.rolling_data_collector - INFO - 📋 生成会话汇总...
+2025-08-05 17:32:22,903 - src.data_management.unified_data_manager - INFO - 📋 会话汇总已保存:
+2025-08-05 17:32:22,903 - src.data_management.unified_data_manager - INFO -    JSON格式: output\unified_collections\session_conflict_resolution_20250805_173203_20250805_173203\session_summary.json
+2025-08-05 17:32:22,903 - src.data_management.unified_data_manager - INFO -    文本格式: output\unified_collections\session_conflict_resolution_20250805_173203_20250805_173203\session_summary.txt
+2025-08-05 17:32:22,904 - src.meta_task.rolling_data_collector - INFO - 📋 会话汇总已保存: output\unified_collections\session_conflict_resolution_20250805_173203_20250805_173203\session_summary.json
+2025-08-05 17:32:22,904 - src.meta_task.rolling_data_collector - INFO - 🎉 统一数据采集会话完成:
+2025-08-05 17:32:22,904 - src.meta_task.rolling_data_collector - INFO -    会话目录: output\unified_collections\session_conflict_resolution_20250805_173203_20250805_173203
+2025-08-05 17:32:22,905 - src.meta_task.rolling_data_collector - INFO -    总采集次数: 2
+2025-08-05 17:32:22,905 - src.meta_task.rolling_data_collector - INFO -    总元任务数: 12
+2025-08-05 17:32:22,905 - src.meta_task.rolling_data_collector - INFO -    总可见任务数: 16
+2025-08-05 17:32:22,906 - src.meta_task.rolling_data_collector - INFO -    总导弹数: 3
+2025-08-05 17:32:22,906 - __main__ - INFO - 📋 生成会话汇总报告...
+2025-08-05 17:32:22,907 - __main__ - INFO - 📋 会话汇总报告已保存:
+2025-08-05 17:32:22,907 - __main__ - INFO -    JSON格式: output\unified_collections\session_gantt_fix_test_20250805_173033\session_summary.json
+2025-08-05 17:32:22,907 - __main__ - INFO -    文本格式: output\unified_collections\session_gantt_fix_test_20250805_173033\session_summary.txt

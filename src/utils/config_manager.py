@@ -95,9 +95,12 @@ class ConfigManager:
                 }
             },
             "simulation": {
+                # 注意：这些是备用默认值，应该在配置文件中明确设置
                 "start_time": "2025/07/26 04:00:00",
                 "end_time": "2025/07/26 08:00:00",
                 "epoch_time": "2025/07/26 04:00:00",
+                "time_step": 60,
+                "time_format": "%Y/%m/%d %H:%M:%S",
                 "data_collection": {
                     "interval_range": [60, 300],
                     "save_frequency": 10,
@@ -216,6 +219,37 @@ class ConfigManager:
             },
             "delays": {
                 "collection_loop": 0.2
+            }
+        })
+
+    def get_missile_pool_config(self) -> Dict[str, Any]:
+        """获取导弹池配置"""
+        return self.config.get("missile_pool", {
+            "enable": True,
+            "pool_size": 30,
+            "active_limit": 5,
+            "default_flight_duration": 1800,
+            "id_random_range": [1000, 9999]
+        })
+
+    def get_output_config(self) -> Dict[str, Any]:
+        """获取输出配置"""
+        return self.config.get("output", {
+            "base_directory": "output",
+            "data_directory": "output/data",
+            "log_directory": "logs",
+            "visualization_directory": "output/visualization",
+            "charts_directory": "output/charts",
+            "rolling_collections": {
+                "base_directory": "output/rolling_collections",
+                "default_fallback": "output/data"
+            },
+            "file_naming": {
+                "session_prefix": "session_",
+                "collection_prefix": "collection_",
+                "log_prefix": "rolling_collection_",
+                "data_filename": "meta_task_data.json",
+                "gantt_filename_template": "collection_{:02d}_aerospace_meta_task_gantt.png"
             }
         })
     

@@ -44,15 +44,18 @@ class MetaTaskDataCollector:
     
     def collect_complete_meta_task_data(self, collection_time: datetime) -> Dict[str, Any]:
         """
-        采集完整的元任务数据，包括星座位置姿态、元任务、可见元任务数据
-        
+        采集完整的元任务数据，包括星座位置、元任务、可见元任务数据
+
         Args:
             collection_time: 采集时间
-            
+
         Returns:
             完整的元任务数据
         """
         try:
+            # 设置采集时间为实例属性
+            self.collection_time = collection_time
+
             logger.info("=" * 80)
             logger.info(f"🎯 【元任务数据采集】开始")
             logger.info(f"⏰ 采集时间: {collection_time}")
@@ -62,9 +65,9 @@ class MetaTaskDataCollector:
             logger.info("📋 步骤1: 生成元任务...")
             meta_task_result = self._generate_meta_tasks(collection_time)
             
-            # 2. 采集星座位置与姿态信息
-            logger.info("🛰️ 步骤2: 采集星座位置与姿态信息...")
-            constellation_data = self._collect_constellation_position_attitude_data()
+            # 2. 采集星座位置信息
+            logger.info("🛰️ 步骤2: 采集星座位置信息...")
+            constellation_data = self._collect_constellation_position_data()
             
             # 3. 计算可见元任务
             logger.info("👁️ 步骤3: 计算可见元任务...")
@@ -144,10 +147,10 @@ class MetaTaskDataCollector:
             logger.error(f"❌ 元任务生成异常: {e}")
             return {}
     
-    def _collect_constellation_position_attitude_data(self) -> Dict[str, Any]:
+    def _collect_constellation_position_data(self) -> Dict[str, Any]:
         """
-        采集星座位置与姿态信息
-        
+        采集星座位置信息（不包含姿态数据）
+
         Returns:
             星座数据
         """
@@ -163,19 +166,16 @@ class MetaTaskDataCollector:
             
             for satellite_id in satellite_list:
                 try:
-                    # 获取卫星位置数据
-                    position_data = self.stk_manager.get_satellite_position(satellite_id)
-                    
-                    # 获取卫星姿态数据（如果可用）
-                    attitude_data = self._get_satellite_attitude(satellite_id)
-                    
+                    # 获取卫星位置数据 - 使用采集时间
+                    time_str = self.collection_time.strftime("%d %b %Y %H:%M:%S.000")
+                    position_data = self.stk_manager.get_satellite_position(satellite_id, time_str)
+
                     # 获取载荷状态
                     payload_status = self._get_payload_status(satellite_id)
-                    
+
                     satellite_info = {
                         "satellite_id": satellite_id,
                         "position": position_data,
-                        "attitude": attitude_data,
                         "payload_status": payload_status,
                         "data_quality": "good" if position_data else "poor"
                     }
@@ -231,53 +231,7 @@ class MetaTaskDataCollector:
             logger.error(f"❌ 可见元任务计算异常: {e}")
             return {}
     
-    def _get_satellite_attitude(self, satellite_id: str) -> Optional[Dict[str, Any]]:
-        """
-        获取卫星姿态数据
-        
-        Args:
-            satellite_id: 卫星ID
-            
-        Returns:
-            姿态数据字典
-        """
-        try:
-            # 尝试从STK获取姿态数据
-            if self.stk_manager and self.stk_manager.scenario:
-                try:
-                    satellite = self.stk_manager.scenario.Children.Item(satellite_id)
-                    
-                    # 尝试获取姿态数据提供者
-                    dp = satellite.DataProviders.Item("Attitude")
-                    start_time = self.stk_manager.scenario.StartTime
-                    end_time = self.stk_manager.scenario.StartTime
-                    result = dp.Exec(start_time, end_time)
-                    
-                    if result and result.DataSets.Count > 0:
-                        dataset = result.DataSets.Item(0)
-                        if dataset.RowCount > 0:
-                            # 提取姿态角度（假设为欧拉角）
-                            yaw = dataset.GetValue(0, 1)    # 偏航角
-                            pitch = dataset.GetValue(0, 2)  # 俯仰角
-                            roll = dataset.GetValue(0, 3)   # 滚转角
-                            
-                            return {
-                                "time": start_time,
-                                "yaw": float(yaw),
-                                "pitch": float(pitch),
-                                "roll": float(roll),
-                                "data_source": "STK_DataProvider"
-                            }
-                except Exception as stk_error:
-                    logger.debug(f"STK姿态数据获取失败: {stk_error}")
-            
-            # 如果STK数据不可用，返回None而不是虚拟数据
-            logger.error(f"无法从STK获取卫星 {satellite_id} 姿态数据")
-            return None
-            
-        except Exception as e:
-            logger.debug(f"获取卫星 {satellite_id} 姿态失败: {e}")
-            return None
+
     
     def _get_payload_status(self, satellite_id: str) -> Dict[str, Any]:
         """
@@ -392,7 +346,7 @@ class MetaTaskDataCollector:
     
     def save_data_to_file(self, filename: Optional[str] = None) -> str:
         """
-        保存数据到文件
+        保存数据到文件 - 已禁用，只保存到统一目录
 
         Args:
             filename: 文件名（可选）
@@ -401,26 +355,8 @@ class MetaTaskDataCollector:
             保存的文件路径
         """
         try:
-            import json
-            from pathlib import Path
-
-            if not filename:
-                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                filename = f"meta_task_data_{timestamp}.json"
-
-            output_dir = Path("output/data")
-            output_dir.mkdir(parents=True, exist_ok=True)
-
-            file_path = output_dir / filename
-
-            # 转换数据为JSON可序列化格式
-            serializable_data = self._convert_to_serializable(self.collected_meta_task_data)
-
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(serializable_data, f, indent=2, ensure_ascii=False)
-
-            logger.info(f"✅ 元任务数据已保存到: {file_path}")
-            return str(file_path)
+            logger.info(f"💾 元任务数据保存已禁用，只保存到统一目录")
+            return ""
 
         except Exception as e:
             logger.error(f"❌ 保存数据失败: {e}")

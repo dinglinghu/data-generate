@@ -34,7 +34,10 @@ class MetaTaskManager:
         # 存储元任务数据
         self.meta_tasks = {}  # 存储所有导弹的元任务
         self.atomic_task_sets = {}  # 存储元子任务集
-        
+
+        # 存储导弹轨迹数据缓存
+        self.missile_trajectory_cache = {}  # 缓存导弹轨迹数据，避免重复获取
+
         logger.info("🎯 元任务管理器初始化完成")
         logger.info(f"   元子任务时间间隔: {self.atomic_task_interval}秒")
     
@@ -555,6 +558,208 @@ class MetaTaskManager:
             logger.error(f"❌ 获取导弹 {missile_id} 中段飞行时间失败: {e}")
             return None
 
+    def _get_or_cache_missile_trajectory(self, missile_id: str) -> Optional[Dict[str, Any]]:
+        """
+        获取或缓存导弹轨迹数据
+
+        Args:
+            missile_id: 导弹ID
+
+        Returns:
+            导弹轨迹数据
+        """
+        try:
+            # 检查缓存
+            if missile_id in self.missile_trajectory_cache:
+                logger.debug(f"🎯 使用缓存的轨迹数据: {missile_id}")
+                return self.missile_trajectory_cache[missile_id]
+
+            # 获取轨迹数据
+            logger.info(f"🎯 获取导弹轨迹数据: {missile_id}")
+            trajectory_data = self.missile_manager.get_missile_trajectory_info(missile_id)
+
+            if trajectory_data:
+                # 缓存轨迹数据
+                self.missile_trajectory_cache[missile_id] = trajectory_data
+                logger.info(f"✅ 导弹 {missile_id} 轨迹数据获取并缓存成功")
+
+                # 记录轨迹数据统计
+                trajectory_points = trajectory_data.get("trajectory_points", [])
+                logger.info(f"   轨迹点数: {len(trajectory_points)}")
+
+                if trajectory_points:
+                    logger.info(f"   时间范围: {trajectory_points[0].get('time')} -> {trajectory_points[-1].get('time')}")
+
+                return trajectory_data
+            else:
+                logger.warning(f"⚠️ 无法获取导弹 {missile_id} 的轨迹数据")
+                return None
+
+        except Exception as e:
+            logger.error(f"❌ 获取导弹 {missile_id} 轨迹数据失败: {e}")
+            return None
+
+    def _find_missile_position_at_time(self, missile_id: str, target_time: datetime) -> Optional[Dict[str, Any]]:
+        """
+        从已有轨迹数据中查找指定时刻的导弹位置
+
+        Args:
+            missile_id: 导弹ID
+            target_time: 目标时间
+
+        Returns:
+            位置信息字典
+        """
+        try:
+            # 获取轨迹数据
+            trajectory_data = self._get_or_cache_missile_trajectory(missile_id)
+            if not trajectory_data:
+                return None
+
+            trajectory_points = trajectory_data.get("trajectory_points", [])
+            if not trajectory_points:
+                return None
+
+            # 查找最接近目标时间的轨迹点，支持插值
+            closest_point = None
+            min_time_diff = float('inf')
+            before_point = None
+            after_point = None
+
+            # 获取导弹发射时间
+            missile_info = self.missile_manager.missile_targets.get(missile_id)
+            if not missile_info:
+                logger.warning(f"⚠️ 未找到导弹 {missile_id} 的配置信息")
+                return None
+
+            launch_time = missile_info.get("launch_time")
+            if not launch_time:
+                logger.warning(f"⚠️ 未找到导弹 {missile_id} 的发射时间")
+                return None
+
+            # 解析所有轨迹点的时间并排序
+            parsed_points = []
+            for point in trajectory_points:
+                point_time = point.get("time")
+
+                # 处理不同的时间格式
+                if isinstance(point_time, datetime):
+                    # 如果已经是datetime对象，直接使用
+                    abs_time = point_time
+                elif isinstance(point_time, (int, float)):
+                    # 如果是相对秒数，转换为绝对时间
+                    abs_time = launch_time + timedelta(seconds=float(point_time))
+                elif isinstance(point_time, str):
+                    # 如果是字符串，尝试多种解析方式
+                    try:
+                        # 方法1: ISO格式
+                        abs_time = datetime.fromisoformat(point_time.replace('Z', '+00:00'))
+                    except:
+                        try:
+                            # 方法2: STK格式 "26 Jul 2025 00:01:00.000000000"
+                            abs_time = datetime.strptime(point_time.split('.')[0], "%d %b %Y %H:%M:%S")
+                        except:
+                            try:
+                                # 方法3: 其他常见格式
+                                abs_time = datetime.strptime(point_time, "%Y-%m-%d %H:%M:%S")
+                            except:
+                                logger.debug(f"   ⚠️ 无法解析时间格式: {point_time}")
+                                continue
+                else:
+                    continue
+
+                # 添加到解析点列表
+                parsed_points.append({
+                    'abs_time': abs_time,
+                    'point': point,
+                    'time_diff': abs((abs_time - target_time).total_seconds())
+                })
+
+            # 按时间排序
+            parsed_points.sort(key=lambda x: x['abs_time'])
+
+            # 查找最接近的点
+            for parsed_point in parsed_points:
+                if parsed_point['time_diff'] < min_time_diff:
+                    min_time_diff = parsed_point['time_diff']
+                    closest_point = parsed_point['point']
+                    closest_abs_time = parsed_point['abs_time']
+
+            # 尝试找到目标时间前后的点进行插值
+            target_timestamp = target_time.timestamp()
+            for i, parsed_point in enumerate(parsed_points):
+                point_timestamp = parsed_point['abs_time'].timestamp()
+
+                if point_timestamp <= target_timestamp:
+                    before_point = parsed_point
+                elif point_timestamp > target_timestamp and before_point is not None:
+                    after_point = parsed_point
+                    break
+
+            # 尝试插值计算更精确的位置
+            interpolated_position = None
+            if before_point and after_point and min_time_diff > 15.0:  # 如果时间差大于15秒，尝试插值
+                try:
+                    before_time = before_point['abs_time']
+                    after_time = after_point['abs_time']
+                    before_pos = before_point['point']
+                    after_pos = after_point['point']
+
+                    # 计算插值权重
+                    total_duration = (after_time - before_time).total_seconds()
+                    if total_duration > 0:
+                        weight = (target_time - before_time).total_seconds() / total_duration
+
+                        # 线性插值计算位置
+                        interpolated_lat = before_pos.get("lat", 0) + weight * (after_pos.get("lat", 0) - before_pos.get("lat", 0))
+                        interpolated_lon = before_pos.get("lon", 0) + weight * (after_pos.get("lon", 0) - before_pos.get("lon", 0))
+                        interpolated_alt = before_pos.get("alt", 0) + weight * (after_pos.get("alt", 0) - before_pos.get("alt", 0))
+
+                        interpolated_position = {
+                            "latitude": interpolated_lat,
+                            "longitude": interpolated_lon,
+                            "altitude": interpolated_alt,
+                            "altitude_km": interpolated_alt / 1000.0 if interpolated_alt else None
+                        }
+
+                        logger.debug(f"✅ 使用插值计算导弹 {missile_id} 在 {target_time} 的位置")
+
+                except Exception as interp_error:
+                    logger.debug(f"⚠️ 插值计算失败: {interp_error}")
+
+            if closest_point or interpolated_position:
+                # 构建位置信息
+                position_info = {
+                    "missile_id": missile_id,
+                    "query_time": target_time.isoformat(),
+                    "actual_time": closest_abs_time.isoformat() if 'closest_abs_time' in locals() else closest_point.get("time"),
+                    "time_difference_seconds": min_time_diff if not interpolated_position else 0.0,
+                    "position": interpolated_position if interpolated_position else {
+                        "latitude": closest_point.get("lat"),
+                        "longitude": closest_point.get("lon"),
+                        "altitude": closest_point.get("alt"),
+                        "altitude_km": closest_point.get("alt", 0) / 1000.0 if closest_point.get("alt") else None
+                    },
+                    "data_source": "interpolated_trajectory" if interpolated_position else "cached_trajectory",
+                    "trajectory_analysis": trajectory_data.get("trajectory_analysis", {})
+                }
+
+                # 检查时间差是否在合理范围内（插值的话直接接受，否则允许最大60秒的时间差）
+                if interpolated_position or min_time_diff <= 60.0:
+                    method = "插值" if interpolated_position else f"最近点(时间差: {min_time_diff:.1f}秒)"
+                    logger.debug(f"✅ 找到导弹 {missile_id} 在 {target_time} 的位置 ({method})")
+                    return position_info
+                else:
+                    logger.warning(f"⚠️ 导弹 {missile_id} 在 {target_time} 的最近位置时间差过大: {min_time_diff:.1f}秒")
+                    return None
+            else:
+                logger.warning(f"⚠️ 未找到导弹 {missile_id} 在 {target_time} 的位置数据")
+                return None
+
+        except Exception as e:
+            logger.error(f"❌ 查找导弹 {missile_id} 位置失败: {e}")
+            return None
+
     def _generate_missile_specific_tasks(self, missile_id: str, time_grid: List[Dict[str, Any]],
                                        midcourse_info: Dict[str, Any],
                                        planning_cycle: Dict[str, Any]) -> Dict[str, Any]:
@@ -585,6 +790,10 @@ class MetaTaskManager:
                 # 判断该时间槽是否与导弹中段飞行时间重叠
                 is_real_task = self._is_time_overlap(slot_start, slot_end, midcourse_start, midcourse_end)
 
+                # 获取任务起始时刻的导弹位置信息（从已有轨迹数据中查找）
+                missile_position_start = self._find_missile_position_at_time(missile_id, slot_start)
+                missile_position_end = self._find_missile_position_at_time(missile_id, slot_end)
+
                 # 创建任务
                 task = {
                     "task_id": time_slot["task_id"],
@@ -594,7 +803,14 @@ class MetaTaskManager:
                     "duration_seconds": time_slot["duration_seconds"],
                     "start_time_iso": time_slot["start_time_iso"],
                     "end_time_iso": time_slot["end_time_iso"],
-                    "task_type": "real_meta_task" if is_real_task else "virtual_meta_task"
+                    "task_type": "real_meta_task" if is_real_task else "virtual_meta_task",
+
+                    # 导弹位置信息
+                    "missile_position": {
+                        "start_position": missile_position_start,
+                        "end_position": missile_position_end,
+                        "has_position_data": missile_position_start is not None and missile_position_end is not None
+                    }
                 }
 
                 # 分类任务

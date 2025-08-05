@@ -52,9 +52,10 @@ class MetaTaskDataCollectionSystem:
             self.missile_manager, self.time_manager, self.config_manager
         )
         
-        # 初始化可见元子任务计算器
+        # 初始化可见元子任务计算器（传递STK管理器和时间管理器以支持位置同步）
         self.visible_meta_task_calculator = VisibleMetaTaskCalculator(
-            self.visibility_calculator, self.meta_task_manager, self.config_manager
+            self.visibility_calculator, self.meta_task_manager, self.config_manager,
+            self.stk_manager, self.time_manager
         )
         
         # 初始化元任务数据采集器
@@ -365,18 +366,8 @@ class MetaTaskDataCollectionSystem:
                 "summary_statistics": self._calculate_rolling_statistics(collection_results)
             }
 
-            # 保存文件
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"rolling_meta_task_data_{timestamp}.json"
-            filepath = Path("output/data") / filename
-
-            # 确保目录存在
-            filepath.parent.mkdir(parents=True, exist_ok=True)
-
-            with open(filepath, 'w', encoding='utf-8') as f:
-                json.dump(summary, f, indent=2, ensure_ascii=False, default=str)
-
-            logger.info(f"💾 滚动采集汇总数据已保存: {filepath}")
+            # 保存文件 - 已禁用，只保存到统一目录
+            logger.info(f"💾 滚动采集汇总数据保存已禁用，只保存到统一目录")
 
         except Exception as e:
             logger.error(f"❌ 保存滚动采集汇总失败: {e}")

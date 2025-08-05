@@ -7,7 +7,8 @@
 import logging
 import random
 from datetime import datetime, timedelta
-from typing import Tuple, Optional
+from typing import Tuple
+from .unified_time_manager import get_unified_time_manager, UnifiedTimeManager as NewUnifiedTimeManager, Optional
 from .config_manager import get_config_manager
 
 logger = logging.getLogger(__name__)
@@ -28,34 +29,53 @@ class UnifiedTimeManager:
     def _load_time_config(self):
         """加载时间配置"""
         sim_config = self.config_manager.get_simulation_config()
-        
-        # 解析仿真时间
-        start_time_str = sim_config.get("start_time", "2025/07/26 04:00:00")
-        end_time_str = sim_config.get("end_time", "2025/07/26 08:00:00")
-        epoch_time_str = sim_config.get("epoch_time", "2025/07/26 04:00:00")
-        
+
+        # 获取时间格式
+        time_format = sim_config.get("time_format", "%Y/%m/%d %H:%M:%S")
+
+        # 解析仿真时间（移除魔数，完全依赖配置文件）
+        start_time_str = sim_config.get("start_time")
+        end_time_str = sim_config.get("end_time")
+        epoch_time_str = sim_config.get("epoch_time")
+
+        if not all([start_time_str, end_time_str, epoch_time_str]):
+            logger.error("❌ 配置文件中缺少必要的时间配置项")
+            raise ValueError("仿真时间配置不完整，请检查配置文件中的 simulation 部分")
+
         try:
-            self.start_time = datetime.strptime(start_time_str, "%Y/%m/%d %H:%M:%S")
-            self.end_time = datetime.strptime(end_time_str, "%Y/%m/%d %H:%M:%S")
-            self.epoch_time = datetime.strptime(epoch_time_str, "%Y/%m/%d %H:%M:%S")
+            self.start_time = datetime.strptime(start_time_str, time_format)
+            self.end_time = datetime.strptime(end_time_str, time_format)
+            self.epoch_time = datetime.strptime(epoch_time_str, time_format)
+
+            # 验证时间逻辑
+            if self.start_time >= self.end_time:
+                raise ValueError("开始时间必须早于结束时间")
+
+            logger.info(f"⏰ 仿真时间配置加载成功:")
+            logger.info(f"   开始时间: {self.start_time}")
+            logger.info(f"   结束时间: {self.end_time}")
+            logger.info(f"   基准时间: {self.epoch_time}")
+            logger.info(f"   场景时长: {self.end_time - self.start_time}")
+
         except ValueError as e:
             logger.error(f"❌ 时间格式解析失败: {e}")
-            # 使用默认时间
-            self.start_time = datetime(2025, 7, 26, 4, 0, 0)
-            self.end_time = datetime(2025, 7, 26, 8, 0, 0)
-            self.epoch_time = datetime(2025, 7, 26, 4, 0, 0)
+            logger.error(f"   请检查配置文件中的时间格式是否为: {time_format}")
+            raise
         
-        # 数据采集配置
-        data_config = self.config_manager.get_data_collection_config()
+        # 数据采集配置（从仿真配置中获取）
+        data_config = sim_config.get("data_collection", {})
         self.collection_interval_range = data_config.get("interval_range", [60, 300])
         self.save_frequency = data_config.get("save_frequency", 10)
-        self.total_collections = data_config.get("total_collections", 50)  # 总采集次数目标
-        
+        self.total_collections = data_config.get("total_collections", 50)
+
+        # 时间步长配置
+        self.time_step = sim_config.get("time_step", 60)
+
         # 导弹配置
         missile_config = self.config_manager.get_missile_config()
         self.missile_launch_interval_range = missile_config.get("launch_interval_range", [300, 1800])
         self.max_concurrent_missiles = missile_config.get("max_concurrent_missiles", 5)
-        
+
         # 任务规划配置
         task_config = self.config_manager.get_task_planning_config()
         self.atomic_task_duration = task_config.get("atomic_task_duration", 300)
@@ -238,8 +258,17 @@ class UnifiedTimeManager:
 _time_manager = None
 
 def get_time_manager(config_manager=None) -> UnifiedTimeManager:
-    """获取全局时间管理器实例"""
+    """获取全局时间管理器实例（旧版兼容）"""
     global _time_manager
     if _time_manager is None:
         _time_manager = UnifiedTimeManager(config_manager)
     return _time_manager
+
+def get_new_unified_time_manager(config_manager=None) -> NewUnifiedTimeManager:
+    """获取新的统一时间管理器实例"""
+    return get_unified_time_manager(config_manager)
+
+def reset_time_manager():
+    """重置时间管理器实例"""
+    global _time_manager
+    _time_manager = None

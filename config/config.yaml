@@ -1,21 +1,64 @@
 # STK卫星星座数据采集系统配置文件
 # 严格按照ADK官网文档要求进行配置
 
+# 仿真场景时间配置
+simulation:
+  start_time: "2025/07/26 00:00:00"    # 仿真开始时间
+  end_time: "2025/07/28 00:00:00"      # 仿真结束时间
+  epoch_time: "2025/07/26 00:00:00"    # 仿真基准时间
+  time_step: 60                        # 仿真时间步长(秒)
+  time_format: "%Y/%m/%d %H:%M:%S"     # 时间格式
+
+  # 数据采集配置
+  data_collection:
+    interval_range: [60, 300]          # 采集时间间隔范围(秒)
+    save_frequency: 10                  # 保存频率
+    total_collections: 50               # 总采集次数目标
+
 # Walker星座配置
 constellation:
   type: "Walker"
   planes: 3                    # 轨道面数量
   satellites_per_plane: 3      # 每个轨道面的卫星数量
   total_satellites: 9          # 总卫星数量
+
+  # Walker星座参考卫星轨道参数
+  reference_satellite:
+    altitude: 1800             # 轨道高度(km) - 对应半长轴约8171km
+    inclination: 51.856        # 轨道倾角(度) - 类似ISS轨道
+    eccentricity: 0.0          # 偏心率 - 圆轨道
+    arg_of_perigee: 0.0        # 近地点幅角(度) - 圆轨道时无意义，设为0
+    raan_offset: 0.0           # RAAN起始偏移(度) - 第一个轨道面的RAAN
+    mean_anomaly_offset: 0.0   # 平近点角起始偏移(度) - 第一颗卫星的初始位置
+
+  # Walker星座特有参数
+  walker_parameters:
+    phase_factor: 1            # 相位因子F - 控制轨道面间卫星相对位置
+    pattern_type: "delta"      # Walker模式: "delta" 或 "star"
   
 # 载荷参数配置
 payload:
   type: "Optical_Sensor"
   mounting: "Nadir"            # 载荷安装方向：天底方向
+  sensor_pattern: "Conic"      # 传感器模式：锥形
+  inner_cone_half_angle: 66.1  # 内锥半角(度)
+  outer_cone_half_angle: 85.0  # 外锥半角(度)
+  clockwise_angle_min: 0.0     # 最小时钟角(度)
+  clockwise_angle_max: 360.0   # 最大时钟角(度)
+  pointing:
+    azimuth: 0.0              # 指向方位角(度)
+    elevation: 90.0           # 指向俯仰角(度)
+  constraints_range:
+    min_range: 0              # 最小距离(km)
+    max_range: 5000           # 最大距离(km)
+    active: true              # 是否启用约束
 
 # 导弹目标配置
 missile:
   max_concurrent_missiles: 5   # 场景中同时在中段飞行的导弹数量最大值
+  flight_altitude:             # 导弹飞行高度配置
+    min_altitude: 300          # 最低飞行高度(km)
+    max_altitude: 1500         # 最高飞行高度(km)
 
 # 任务规划配置
 task_planning:
@@ -27,6 +70,25 @@ meta_task_management:
   # 元子任务时间间隔配置
   atomic_task_interval: 300          # 元子任务时间间隔(秒) - 5分钟
 
+  # 可见任务判定标准
+  visible_task_criteria:
+    coverage_requirement: "partial"   # 覆盖要求: complete(完全覆盖), partial(部分覆盖)
+    minimum_overlap_ratio: 0.1        # 最小重叠比例 (0.0-1.0) - 10%重叠即可
+    enable_position_sync: true        # 启用卫星位置同步功能
+
+  # 位置同步配置
+  position_sync:
+    sample_interval_seconds: 30       # 位置采样间隔(秒)
+    max_samples_per_task: 20          # 每个任务最大采样点数
+    enable_statistics: true           # 启用位置统计计算
+    export_detailed_data: false       # 导出详细位置数据
+
+    # 并发处理配置
+    enable_concurrent: true           # 启用并发处理
+    max_workers: 4                    # 最大工作线程数
+    concurrent_batch_size: 10         # 并发批处理大小
+    stk_com_timeout: 30               # STK COM接口超时时间(秒)
+
 # 数据采集配置
 data_collection:
   # 滚动数据采集配置
@@ -36,11 +98,17 @@ data_collection:
     interval_range: [300, 600]       # 采集时间间隔范围(秒) 5-10分钟
     max_scenario_duration: 86400     # 最大场景持续时间(秒) 24小时
 
-    # 导弹动态添加配置
+    # 导弹动态管理配置
     dynamic_missiles:
-      add_per_collection: 1          # 每次采集添加的导弹数量
+      # 导弹数量控制
+      missile_count_range: [3, 10]    # 每次采集创建的导弹数量范围 [最小, 最大]
+      clear_existing_missiles: true  # 每次采集前是否清理现有导弹
       launch_at_collection_time: true # 导弹发射时间为当前采集时刻
       only_midcourse_targets: true   # 只采集中段飞行的导弹
+
+      # 导弹飞行参数
+      flight_duration_range: [1800, 2400]  # 飞行时间范围(秒) 30-40分钟
+      launch_time_offset_range: [-300, 300] # 发射时间相对采集时间的偏移范围(秒)
 
 # STK软件配置
 stk:
@@ -48,6 +116,62 @@ stk:
   existing_project_wait_time: 5      # 现有项目检测等待时间(秒)
   max_connections: 5                 # 最大连接数
   connection_timeout: 30             # 连接超时时间(秒)
+  com_timeout: 30                    # STK COM接口超时时间(秒)
+
+# 导弹池配置
+missile_pool:
+  enable: true                       # 启用导弹池
+  pool_size: 10                      # 导弹池大小
+  active_limit: 5                    # 同时活跃导弹数限制
+  default_flight_duration: 1800     # 默认飞行时间(秒)
+  id_random_range: [1000, 9999]     # 导弹ID随机数范围
+
+# 导弹管理配置
+missile_management:
+  position_generation:
+    min_distance_deg: 10             # 最小距离(度)
+    max_attempts: 10                 # 最大尝试次数
+    id_range: [1000, 9999]           # ID范围
+  flight_time:
+    default_minutes: 30              # 默认飞行时间(分钟)
+  trajectory_data:
+    time_step_seconds: 30            # 轨迹数据时间步长(秒)
+    default_column_count: 4          # 默认DataSet列数(Time, Lat, Lon, Alt)
+
+# 可见性计算配置
+visibility:
+  random_windows:
+    count_range: [1, 3]              # 随机窗口数量范围
+    start_offset_range: [300, 900]   # 开始偏移范围(秒)
+    duration_range: [180, 600]       # 持续时间范围(秒)
+    interval_multiplier: 600         # 间隔乘数
+  access_constraints:
+    min_altitude: 20.0               # 最小高度角(度)
+    sun_elevation_min: -10.0         # 最小太阳高度角(度)
+  cache:
+    timeout: 300                     # 缓存超时时间(秒)
+
+# 数据模拟配置
+data_simulation:
+  payload_status:
+    power_consumption: 80.0          # 功耗(瓦)
+    temperature: 25.0                # 温度(摄氏度)
+    operational_default: true        # 默认运行状态
+
+# 系统配置
+system:
+  testing:
+    initial_missile_count: 3         # 初始导弹数量
+    missile_add_probability: 0.3     # 导弹添加概率
+  missile_management_range:
+    target_min: 5                    # 目标最小值
+    target_max: 20                   # 目标最大值
+  delays:
+    collection_loop: 0.2             # 采集循环延迟(秒)
+
+# 物理常数配置
+physics:
+  earth_radius: 6371                 # 地球半径(km)
 
 # 可视化配置
 visualization:
@@ -87,8 +211,8 @@ visualization:
 
     # Y轴配置
     y_axis:
-      spacing_between_missiles: 0.5  # 导弹间间隔
-      spacing_between_combos: 0.5    # 导弹-卫星组合间间隔
+      spacing_between_missiles: 1.0  # 导弹间间隔
+      spacing_between_combos: 1.5    # 导弹-卫星组合间间隔
       label_fontsize_meta: 10        # 元任务Y轴标签字体大小
       label_fontsize_visible: 9      # 可见任务Y轴标签字体大小
 
@@ -131,12 +255,16 @@ visualization:
       real_meta_border: "#2e7d32"        # 深绿边框
 
       # 虚拟元子任务颜色
-      virtual_meta_task: "#ff9800"       # 橙色 - 虚拟元子任务
-      virtual_meta_border: "#f57c00"     # 深橙边框
+      virtual_meta_task: "#e8f4fd"       # 浅蓝背景 - 虚拟元子任务（使用元子任务样式）
+      virtual_meta_border: "#1e88e5"     # 深蓝边框 - 虚拟元子任务（使用元子任务样式）
 
       # 虚拟原子任务颜色
       virtual_atomic_task: "#ff9800"     # 橙色 - 虚拟原子任务
       virtual_atomic_border: "#f57c00"   # 深橙边框
+
+      # 可见虚拟原子任务颜色（用于可见元任务甘特图）
+      visible_virtual_atomic_task: "#e0e0e0"    # 灰色底色 - 可见虚拟原子任务
+      visible_virtual_atomic_border: "#1976d2"  # 蓝色边框 - 可见虚拟原子任务
 
       # 导弹飞行相关颜色
       missile_flight: "#f44336"          # 红色 - 导弹飞行
@@ -177,7 +305,22 @@ visualization:
 
 # 输出配置
 output:
-  data_directory: "output/data"      # 数据输出目录
-  log_directory: "output/logs"       # 日志输出目录
-  visualization_directory: "output/visualization"  # 可视化输出目录
-  charts_directory: "output/charts"  # 图表输出目录
+  # 基础输出目录
+  base_directory: "output"                          # 基础输出目录
+  data_directory: "output/data"                     # 数据输出目录
+  log_directory: "logs"                             # 日志输出目录
+  visualization_directory: "output/visualization"   # 可视化输出目录
+  charts_directory: "output/charts"                 # 图表输出目录
+
+  # 滚动采集输出配置
+  rolling_collections:
+    base_directory: "output/rolling_collections"    # 滚动采集基础目录
+    default_fallback: "output/data"                 # 默认回退目录
+
+  # 文件命名配置
+  file_naming:
+    session_prefix: "session_"                      # 会话前缀
+    collection_prefix: "collection_"                # 采集前缀
+    log_prefix: "rolling_collection_"               # 日志前缀
+    data_filename: "meta_task_data.json"            # 数据文件名
+    gantt_filename_template: "collection_{:02d}_aerospace_meta_task_gantt.png"  # 甘特图文件名模板

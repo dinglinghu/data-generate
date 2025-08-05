@@ -1,6 +1,6 @@
 """
 数据采集器
-负责采集卫星位置姿态、载荷参数、导弹轨迹、可见性时间窗口等数据
+负责采集卫星位置、载荷参数、导弹轨迹、可见性时间窗口等数据
 """
 
 import json
@@ -38,7 +38,10 @@ class DataCollector:
         
         # 数据存储
         self.collected_data = []
-        self.output_dir = Path("output/data")
+
+        # 从配置获取输出目录
+        output_config = self.config_manager.get_output_config()
+        self.output_dir = Path(output_config.get("data_directory", "output/data"))
         self.output_dir.mkdir(parents=True, exist_ok=True)
         
         logger.info("📊 数据采集器初始化完成")
@@ -276,44 +279,19 @@ class DataCollector:
     
     def save_collected_data(self) -> Optional[str]:
         """
-        保存采集的数据到文件
-        
+        保存采集的数据到文件 - 已禁用，只保存到统一目录
+
         Returns:
             保存的文件路径
         """
         try:
-            if not self.collected_data:
-                logger.warning("⚠️ 没有数据需要保存")
-                return None
-            
-            # 生成文件名
-            filename = self.time_manager.get_data_filename()
-            file_path = self.output_dir / filename
-            
-            # 准备保存的数据
-            save_data = {
-                "metadata": {
-                    "collection_start_time": self.time_manager.start_time.isoformat(),
-                    "collection_end_time": self.time_manager.current_simulation_time.isoformat(),
-                    "total_collections": len(self.collected_data),
-                    "constellation_info": self.constellation_manager.get_constellation_info(),
-                    "simulation_config": self.config_manager.get_simulation_config()
-                },
-                "data_snapshots": self.collected_data
-            }
-            
-            # 保存到JSON文件
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(save_data, f, indent=2, ensure_ascii=False, default=str)
-            
-            logger.info(f"💾 数据保存成功: {file_path}")
-            logger.info(f"   数据快照数量: {len(self.collected_data)}")
-            
+            logger.info(f"💾 数据保存已禁用，只保存到统一目录")
+
             # 清空已保存的数据
             self.collected_data.clear()
-            
-            return str(file_path)
-            
+
+            return None
+
         except Exception as e:
             logger.error(f"❌ 数据保存失败: {e}")
             return None

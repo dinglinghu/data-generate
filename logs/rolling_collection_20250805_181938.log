@@ -1,0 +1,35 @@
+2025-08-05 18:19:38,312 - __main__ - INFO - 启动STK滚动元任务数据采集系统
+2025-08-05 18:19:38,312 - __main__ - INFO - ================================================================================
+2025-08-05 18:19:38,313 - __main__ - INFO - 会话目录: output\unified_collections\session_gantt_fix_test_20250805_181938
+2025-08-05 18:19:38,314 - __main__ - INFO - 甘特图生成: 启用 (--enable-gantt)
+2025-08-05 18:19:38,326 - src.meta_task_main - INFO - 🎯 初始化元任务数据采集系统...
+2025-08-05 18:19:38,330 - src.utils.time_manager - INFO - ⏰ 仿真时间配置加载成功:
+2025-08-05 18:19:38,331 - src.utils.time_manager - INFO -    开始时间: 2025-07-26 00:00:00
+2025-08-05 18:19:38,332 - src.utils.time_manager - INFO -    结束时间: 2025-07-28 00:00:00
+2025-08-05 18:19:38,332 - src.utils.time_manager - INFO -    基准时间: 2025-07-26 00:00:00
+2025-08-05 18:19:38,332 - src.utils.time_manager - INFO -    场景时长: 2 days, 0:00:00
+2025-08-05 18:19:38,333 - src.utils.time_manager - INFO - 🕐 时间管理器初始化完成:
+2025-08-05 18:19:38,333 - src.utils.time_manager - INFO -    仿真时间范围: 2025-07-26 00:00:00 - 2025-07-28 00:00:00
+2025-08-05 18:19:38,333 - src.utils.time_manager - INFO -    历元时间: 2025-07-26 00:00:00
+2025-08-05 18:19:38,333 - src.utils.time_manager - INFO -    数据采集间隔: [60, 300]秒
+2025-08-05 18:19:38,333 - src.utils.time_manager - INFO -    保存频率: 每10次采集保存一次
+2025-08-05 18:19:38,333 - src.utils.time_manager - INFO -    总采集次数目标: 50次
+2025-08-05 18:19:38,333 - src.utils.time_manager - INFO -    导弹发射间隔: [300, 1800]秒
+2025-08-05 18:19:38,334 - src.constellation.constellation_manager - INFO - 🌟 星座管理器初始化完成
+2025-08-05 18:19:38,334 - src.data_collection.data_collector - INFO - 📊 数据采集器初始化完成
+2025-08-05 18:19:38,334 - src.meta_task.meta_task_manager - INFO - 🎯 元任务管理器初始化完成
+2025-08-05 18:19:38,334 - src.meta_task.meta_task_manager - INFO -    元子任务时间间隔: 300秒
+2025-08-05 18:19:38,336 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 卫星位置同步器初始化完成
+2025-08-05 18:19:38,337 - src.meta_task.satellite_position_synchronizer - INFO -    采样间隔: 30秒
+2025-08-05 18:19:38,337 - src.meta_task.satellite_position_synchronizer - INFO -    最大采样点数: 20
+2025-08-05 18:19:38,337 - src.meta_task.satellite_position_synchronizer - INFO -    统计计算: 启用
+2025-08-05 18:19:38,337 - src.meta_task.satellite_position_synchronizer - INFO -    并发处理: 启用
+2025-08-05 18:19:38,338 - src.meta_task.satellite_position_synchronizer - INFO -    最大工作线程: 4
+2025-08-05 18:19:38,339 - src.meta_task.satellite_position_synchronizer - INFO -    批处理大小: 10
+2025-08-05 18:19:38,339 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 位置同步器已启用
+2025-08-05 18:19:38,339 - src.meta_task.visible_meta_task_calculator - INFO - 👁️ 可见元子任务计算器初始化完成
+2025-08-05 18:19:38,340 - src.meta_task.visible_meta_task_calculator - INFO -    覆盖要求: partial
+2025-08-05 18:19:38,340 - src.meta_task.visible_meta_task_calculator - INFO -    最小重叠比例: 0.1
+2025-08-05 18:19:38,340 - src.meta_task.visible_meta_task_calculator - INFO -    位置同步: 启用
+2025-08-05 18:19:38,340 - src.meta_task.meta_task_data_collector - INFO - 🎯 元任务数据采集器初始化完成
+2025-08-05 18:19:41,679 - __main__ - INFO - ⚠️ 用户中断程序

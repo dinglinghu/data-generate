@@ -7,6 +7,7 @@ import logging
 import math
 from typing import Dict, List, Any, Optional
 from ..utils.config_manager import get_config_manager
+from ..utils.walker_constellation_calculator import get_walker_calculator, WalkerParameters
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +26,11 @@ class ConstellationManager:
         self.config_manager = config_manager or get_config_manager()
         self.constellation_config = self.config_manager.get_constellation_config()
         self.payload_config = self.config_manager.get_payload_config()
-        
+        self.satellite_list = []
+
+        # 初始化Walker星座计算器
+        self.walker_calculator = get_walker_calculator()
+
         logger.info("🌟 星座管理器初始化完成")
         
     def create_walker_constellation(self) -> bool:
@@ -73,55 +78,79 @@ class ConstellationManager:
     def _create_walker_satellites(self, planes: int, sats_per_plane: int) -> bool:
         """
         创建Walker星座中的所有卫星
-        
+
         Args:
             planes: 轨道面数量
             sats_per_plane: 每个轨道面的卫星数量
-            
+
         Returns:
             创建是否成功
         """
         try:
+            # 获取Walker星座参数
+            total_satellites = planes * sats_per_plane
+            walker_params_config = self.constellation_config.get("walker_parameters", {})
+            phase_factor = walker_params_config.get("phase_factor", 1)
+            pattern_type = walker_params_config.get("pattern_type", "delta")
+
+            # 创建Walker参数对象
+            walker_params = WalkerParameters(
+                total_satellites=total_satellites,
+                num_planes=planes,
+                phase_factor=phase_factor,
+                pattern_type=pattern_type
+            )
+
+            # 验证Walker参数
+            if not self.walker_calculator.validate_walker_parameters(
+                total_satellites, planes, phase_factor):
+                logger.error("❌ Walker星座参数验证失败")
+                return False
+
+            # 获取参考轨道参数
             reference_params = self.constellation_config.get("reference_satellite", {})
-            
-            # 基础轨道参数
-            base_altitude = reference_params.get("altitude", 1800)  # km
-            base_inclination = reference_params.get("inclination", 51.856)  # 度
-            base_eccentricity = reference_params.get("eccentricity", 0.0)
-            base_arg_perigee = reference_params.get("arg_of_perigee", 12)  # 度
-            raan_offset = reference_params.get("raan_offset", 24)  # 度
-            mean_anomaly_offset = reference_params.get("mean_anomaly_offset", 180)  # 度
-            
-            # 计算Walker星座参数
-            raan_spacing = 360.0 / planes  # 轨道面间的RAAN间隔
-            mean_anomaly_spacing = 360.0 / sats_per_plane  # 同轨道面内卫星的平近点角间隔
-            
+
+            # 使用Walker计算器计算所有卫星的轨道参数
+            satellites_orbital_data = self.walker_calculator.calculate_constellation(
+                walker_params, reference_params)
+
+            logger.info(f"📊 Walker星座计算完成:")
+            constellation_info = self.walker_calculator.get_constellation_info(walker_params)
+            logger.info(f"   星座记号: {constellation_info['notation']}")
+            logger.info(f"   模式类型: {constellation_info['pattern_type']}")
+            logger.info(f"   RAAN间隔: {constellation_info['raan_spacing']:.1f}°")
+            logger.info(f"   平近点角间隔: {constellation_info['mean_anomaly_spacing']:.1f}°")
+            logger.info(f"   相位偏移: {constellation_info['phase_offset_per_plane']:.1f}°/面")
+
             satellite_count = 0
             
-            for plane_idx in range(planes):
-                for sat_idx in range(sats_per_plane):
-                    satellite_count += 1
-                    satellite_id = f"Satellite{satellite_count:02d}"
-                    
-                    # 计算该卫星的轨道参数
-                    orbital_params = self._calculate_satellite_orbital_params(
-                        base_altitude, base_inclination, base_eccentricity, base_arg_perigee,
-                        plane_idx, sat_idx, raan_spacing, mean_anomaly_spacing,
-                        raan_offset, mean_anomaly_offset
-                    )
-                    
-                    # 创建卫星
-                    success = self.stk_manager.create_satellite(satellite_id, orbital_params)
-                    if not success:
-                        logger.error(f"❌ 卫星创建失败: {satellite_id}")
-                        return False
-                    
-                    # 为卫星创建载荷
-                    payload_success = self.stk_manager.create_sensor(satellite_id, self.payload_config)
-                    if not payload_success:
-                        logger.warning(f"⚠️ 载荷创建失败: {satellite_id}")
-                    
-                    logger.info(f"✅ 卫星创建成功: {satellite_id} (轨道面{plane_idx+1}, 位置{sat_idx+1})")
+            # 使用计算好的轨道数据创建卫星
+            for satellite_id, orbital_elements in satellites_orbital_data:
+                satellite_count += 1
+
+                # 转换为STK需要的格式
+                orbital_params = orbital_elements.to_dict()
+
+                # 创建卫星
+                success = self.stk_manager.create_satellite(satellite_id, orbital_params)
+                if not success:
+                    logger.error(f"❌ 卫星创建失败: {satellite_id}")
+                    return False
+
+                # 为卫星创建载荷
+                payload_success = self.stk_manager.create_sensor(satellite_id, self.payload_config)
+                if not payload_success:
+                    logger.warning(f"⚠️ 载荷创建失败: {satellite_id}")
+
+                # 计算轨道面和位置信息用于日志
+                plane_idx = (satellite_count - 1) // sats_per_plane
+                sat_idx = (satellite_count - 1) % sats_per_plane
+
+                logger.info(f"✅ 卫星创建成功: {satellite_id} (轨道面{plane_idx+1}, 位置{sat_idx+1})")
+                logger.debug(f"   轨道参数: RAAN={orbital_elements.raan:.1f}°, 平近点角={orbital_elements.mean_anomaly:.1f}°")
+
+                # 添加到卫星列表
+                self.satellite_list.append(satellite_id)
             
             logger.info(f"🌟 Walker星座创建完成，共创建{satellite_count}颗卫星")
             return True
@@ -130,73 +159,29 @@ class ConstellationManager:
             logger.error(f"❌ 创建Walker卫星失败: {e}")
             return False
     
-    def _calculate_satellite_orbital_params(self, base_altitude: float, base_inclination: float,
-                                          base_eccentricity: float, base_arg_perigee: float,
-                                          plane_idx: int, sat_idx: int,
-                                          raan_spacing: float, mean_anomaly_spacing: float,
-                                          raan_offset: float, mean_anomaly_offset: float) -> Dict[str, float]:
-        """
-        计算单颗卫星的轨道参数
-        
-        Args:
-            base_altitude: 基础高度 (km)
-            base_inclination: 基础倾角 (度)
-            base_eccentricity: 基础偏心率
-            base_arg_perigee: 基础近地点幅角 (度)
-            plane_idx: 轨道面索引 (0开始)
-            sat_idx: 卫星在轨道面内的索引 (0开始)
-            raan_spacing: 轨道面间RAAN间隔 (度)
-            mean_anomaly_spacing: 同轨道面内卫星平近点角间隔 (度)
-            raan_offset: RAAN偏移 (度)
-            mean_anomaly_offset: 平近点角偏移 (度)
-            
-        Returns:
-            轨道参数字典
-        """
-        # 地球半径 (km)
-        earth_radius = 6371.0
-        
-        # 计算半长轴 (km)
-        semi_major_axis = earth_radius + base_altitude
-        
-        # 计算该卫星的RAAN (升交点赤经)
-        raan = (plane_idx * raan_spacing + raan_offset) % 360.0
-        
-        # 计算该卫星的平近点角
-        mean_anomaly = (sat_idx * mean_anomaly_spacing + mean_anomaly_offset) % 360.0
-        
-        orbital_params = {
-            "semi_axis": semi_major_axis,
-            "eccentricity": base_eccentricity,
-            "inclination": base_inclination,
-            "raan": raan,
-            "arg_of_perigee": base_arg_perigee,
-            "mean_anomaly": mean_anomaly
-        }
-        
-        logger.debug(f"🛰️ 轨道参数计算: 轨道面{plane_idx+1}, 卫星{sat_idx+1}")
-        logger.debug(f"   半长轴: {semi_major_axis:.1f} km")
-        logger.debug(f"   倾角: {base_inclination:.3f}°")
-        logger.debug(f"   RAAN: {raan:.1f}°")
-        logger.debug(f"   平近点角: {mean_anomaly:.1f}°")
-        
-        return orbital_params
+    # 旧的轨道参数计算方法已被Walker星座计算器替代
+    # 保留此方法以防向后兼容需要，但建议使用walker_constellation_calculator
     
     def get_satellite_list(self) -> List[str]:
         """
         获取星座中的卫星列表
-        
+
         Returns:
             卫星ID列表
         """
+        # 如果已经有卫星列表，直接返回
+        if self.satellite_list:
+            return self.satellite_list.copy()
+
+        # 否则根据配置生成列表
         try:
             total_satellites = self.constellation_config.get("total_satellites", 9)
             satellite_list = []
-            
+
             for i in range(1, total_satellites + 1):
                 satellite_id = f"Satellite{i:02d}"
                 satellite_list.append(satellite_id)
-            
+
             return satellite_list
             
         except Exception as e:
