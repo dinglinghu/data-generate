@@ -42,6 +42,15 @@ class VisibleMetaTaskCalculator:
         # 存储可见元任务集
         self.constellation_visible_task_sets = {}
 
+        # 性能监控
+        self.performance_stats = {
+            "total_calculations": 0,
+            "batch_calculations": 0,
+            "cache_hits": 0,
+            "total_time": 0.0,
+            "batch_time": 0.0
+        }
+
         # 初始化位置同步器
         if self.enable_position_sync and self.stk_manager and self.time_manager:
             from .satellite_position_synchronizer import SatellitePositionSynchronizer
@@ -75,17 +84,20 @@ class VisibleMetaTaskCalculator:
             logger.info(f"👁️ 开始计算星座可见元任务集")
             logger.info(f"   卫星数量: {len(satellite_ids)}")
             logger.info(f"   导弹数量: {len(missile_ids)}")
-            
+
             constellation_results = {}
-            
+
+            # 优化：使用批量可见性计算
+            batch_visibility_results = self._calculate_batch_visibility(satellite_ids, missile_ids)
+
             # 为每颗卫星计算可见元任务集
             for satellite_id in satellite_ids:
                 logger.info(f"🛰️ 计算卫星 {satellite_id} 的可见元任务集...")
-                
-                satellite_visible_tasks = self._calculate_satellite_visible_meta_tasks(
-                    satellite_id, missile_ids
+
+                satellite_visible_tasks = self._calculate_satellite_visible_meta_tasks_optimized(
+                    satellite_id, missile_ids, batch_visibility_results
                 )
-                
+
                 constellation_results[satellite_id] = satellite_visible_tasks
                 
                 # 统计信息
@@ -125,8 +137,104 @@ class VisibleMetaTaskCalculator:
         except Exception as e:
             logger.error(f"❌ 星座可见元任务集计算失败: {e}")
             return {}
-    
-    def _calculate_satellite_visible_meta_tasks(self, satellite_id: str, 
+
+    def _calculate_batch_visibility(self, satellite_ids: List[str], missile_ids: List[str]) -> Dict[str, Dict[str, Any]]:
+        """
+        批量计算所有卫星对所有导弹的可见性
+        优化：一次性计算所有组合，避免重复的STK对象查找
+
+        Args:
+            satellite_ids: 卫星ID列表
+            missile_ids: 导弹ID列表
+
+        Returns:
+            嵌套字典: {satellite_id: {missile_id: visibility_result}}
+        """
+        try:
+            logger.info(f"🚀 开始批量可见性计算: {len(satellite_ids)}×{len(missile_ids)} = {len(satellite_ids)*len(missile_ids)}个组合")
+
+            # 构建约束条件
+            visibility_config = self.config_manager.config.get("visibility", {})
+            access_constraints = visibility_config.get("access_constraints", {})
+            payload_config = self.config_manager.config.get("payload", {})
+            range_constraints = payload_config.get("constraints_range", {})
+
+            constraints = {}
+            min_elevation = access_constraints.get("min_altitude", -10.0)
+            constraints["min_elevation_angle"] = min_elevation
+
+            if range_constraints.get("active", True):
+                constraints["min_range_km"] = range_constraints.get("min_range", 0)
+                constraints["max_range_km"] = range_constraints.get("max_range", 5000)
+
+            # 使用可见性计算器的批量方法
+            if hasattr(self.visibility_calculator, 'batch_calculate_access'):
+                batch_results = self.visibility_calculator.batch_calculate_access(
+                    satellite_ids, missile_ids, constraints
+                )
+
+                # 重新组织结果格式
+                organized_results = {}
+                for satellite_id in satellite_ids:
+                    organized_results[satellite_id] = {}
+                    for missile_id in missile_ids:
+                        key = f"{satellite_id}->{missile_id}"
+                        organized_results[satellite_id][missile_id] = batch_results.get(key, {})
+
+                logger.info(f"✅ 批量可见性计算完成")
+                return organized_results
+            else:
+                logger.warning("⚠️ 可见性计算器不支持批量计算，回退到逐个计算")
+                return {}
+
+        except Exception as e:
+            logger.error(f"❌ 批量可见性计算失败: {e}")
+            return {}
+
+    def _calculate_satellite_visible_meta_tasks_optimized(self, satellite_id: str,
+                                                        missile_ids: List[str],
+                                                        batch_visibility_results: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        使用预计算的可见性结果计算卫星可见元任务（优化版本）
+
+        Args:
+            satellite_id: 卫星ID
+            missile_ids: 导弹ID列表
+            batch_visibility_results: 预计算的可见性结果
+
+        Returns:
+            卫星可见元任务字典
+        """
+        try:
+            satellite_results = {
+                "satellite_id": satellite_id,
+                "missile_tasks": {},
+                "total_visible_tasks": 0,
+                "total_virtual_tasks": 0,
+                "calculation_time": datetime.now().isoformat()
+            }
+
+            satellite_visibility = batch_visibility_results.get(satellite_id, {})
+
+            # 对每个导弹计算可见元任务
+            for missile_id in missile_ids:
+                visibility_result = satellite_visibility.get(missile_id, {})
+
+                missile_visible_tasks = self._calculate_missile_visible_meta_tasks_optimized(
+                    satellite_id, missile_id, visibility_result
+                )
+
+                satellite_results["missile_tasks"][missile_id] = missile_visible_tasks
+                satellite_results["total_visible_tasks"] += len(missile_visible_tasks.get("visible_tasks", []))
+                satellite_results["total_virtual_tasks"] += len(missile_visible_tasks.get("virtual_tasks", []))
+
+            return satellite_results
+
+        except Exception as e:
+            logger.error(f"❌ 计算卫星 {satellite_id} 可见元任务失败: {e}")
+            return {}
+
+    def _calculate_satellite_visible_meta_tasks(self, satellite_id: str,
                                               missile_ids: List[str]) -> Dict[str, Any]:
         """
         计算单颗卫星对所有导弹的可见元任务
@@ -162,8 +270,105 @@ class VisibleMetaTaskCalculator:
         except Exception as e:
             logger.error(f"❌ 计算卫星 {satellite_id} 可见元任务失败: {e}")
             return {}
-    
-    def _calculate_missile_visible_meta_tasks(self, satellite_id: str, 
+
+    def _calculate_missile_visible_meta_tasks_optimized(self, satellite_id: str,
+                                                      missile_id: str,
+                                                      visibility_result: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        使用预计算的可见性结果计算导弹可见元任务（优化版本）
+
+        Args:
+            satellite_id: 卫星ID
+            missile_id: 导弹ID
+            visibility_result: 预计算的可见性结果
+
+        Returns:
+            导弹可见元任务字典
+        """
+        try:
+            logger.debug(f"🔍 计算 {satellite_id} -> {missile_id} 可见元任务（优化版本）")
+
+            # 1. 获取导弹的元子任务集
+            missile_meta_tasks = self.meta_task_manager.get_meta_tasks_for_missile(missile_id)
+            if not missile_meta_tasks:
+                logger.warning(f"⚠️ 导弹 {missile_id} 没有元任务")
+                return {"visible_tasks": [], "virtual_tasks": []}
+
+            atomic_tasks = missile_meta_tasks.get("atomic_tasks", [])
+
+            # 2. 使用预计算的可见性结果
+            if not visibility_result or not visibility_result.get("success"):
+                logger.debug(f"   无可见性数据，所有任务为虚拟任务")
+                return {
+                    "visible_tasks": [],
+                    "virtual_tasks": atomic_tasks.copy(),
+                    "access_intervals": [],
+                    "has_access": False
+                }
+
+            # 转换可见性结果格式
+            access_intervals = []
+            if visibility_result.get("has_access") and visibility_result.get("intervals"):
+                for interval in visibility_result["intervals"]:
+                    access_intervals.append({
+                        "start": interval.get("start"),
+                        "end": interval.get("stop") or interval.get("end")
+                    })
+
+            logger.debug(f"   📊 获取到 {len(access_intervals)} 个可见窗口")
+
+            # 3. 逐一比较元子任务与可见窗口
+            visible_tasks = []
+            virtual_tasks = []
+
+            for atomic_task in atomic_tasks:
+                is_visible = self._is_atomic_task_visible(atomic_task, access_intervals)
+
+                logger.debug(f"   🔍 元子任务 {atomic_task.get('task_id', 'N/A')}: "
+                           f"{atomic_task.get('start_time', 'N/A')} - {atomic_task.get('end_time', 'N/A')} "
+                           f"→ {'✅可见' if is_visible else '❌虚拟'}")
+
+                if is_visible:
+                    # 添加可见性信息
+                    visible_task = atomic_task.copy()
+                    visible_task["visibility_info"] = {
+                        "is_visible": True,
+                        "overlapping_windows": self._get_overlapping_windows(atomic_task, access_intervals),
+                        "coverage_ratio": self._calculate_coverage_ratio(atomic_task, access_intervals)
+                    }
+                    visible_tasks.append(visible_task)
+                else:
+                    # 虚拟原子任务
+                    virtual_task = atomic_task.copy()
+                    virtual_task["visibility_info"] = {
+                        "is_visible": False,
+                        "reason": "no_coverage_or_insufficient_overlap"
+                    }
+                    virtual_tasks.append(virtual_task)
+
+            result = {
+                "visible_tasks": visible_tasks,
+                "virtual_tasks": virtual_tasks,
+                "access_intervals": access_intervals,
+                "has_access": len(access_intervals) > 0,
+                "visibility_summary": {
+                    "total_tasks": len(atomic_tasks),
+                    "visible_count": len(visible_tasks),
+                    "virtual_count": len(virtual_tasks),
+                    "visibility_ratio": len(visible_tasks) / len(atomic_tasks) if atomic_tasks else 0
+                }
+            }
+
+            logger.debug(f"   ✅ {satellite_id} -> {missile_id}: "
+                        f"可见 {len(visible_tasks)}, 虚拟 {len(virtual_tasks)}")
+
+            return result
+
+        except Exception as e:
+            logger.error(f"❌ 计算 {satellite_id} -> {missile_id} 可见元任务失败: {e}")
+            return {"visible_tasks": [], "virtual_tasks": []}
+
+    def _calculate_missile_visible_meta_tasks(self, satellite_id: str,
                                             missile_id: str) -> Dict[str, Any]:
         """
         计算卫星对单个导弹的可见元任务
@@ -186,10 +391,54 @@ class VisibleMetaTaskCalculator:
             
             atomic_tasks = missile_meta_tasks.get("atomic_tasks", [])
             
-            # 2. 获取卫星对导弹的可见窗口
-            visibility_result = self.visibility_calculator.calculate_satellite_to_missile_access(
-                satellite_id, missile_id
+            # 2. 获取卫星对导弹的可见窗口，应用合理的约束条件
+            # 从配置文件获取约束参数
+            visibility_config = self.config_manager.config.get("visibility", {})
+            access_constraints = visibility_config.get("access_constraints", {})
+            payload_config = self.config_manager.config.get("payload", {})
+            range_constraints = payload_config.get("constraints_range", {})
+
+            # 构建约束字典，使用更宽松的约束以增加可见性
+            constraints = {}
+
+            # 高度角约束 - 使用更低的最小高度角
+            min_elevation = access_constraints.get("min_altitude", -10.0)
+            # 为了增加可见性，将最小高度角降低到10度
+            # constraints["min_elevation_angle"] = min(min_elevation, 10.0)
+            constraints["min_elevation_angle"] = min_elevation
+
+            # 距离约束 - 使用配置的范围
+            if range_constraints.get("active", True):
+                constraints["min_range_km"] = range_constraints.get("min_range", 0)
+                constraints["max_range_km"] = range_constraints.get("max_range", 5000)
+
+            logger.debug(f"   🔧 应用约束条件: 最小高度角={constraints.get('min_elevation_angle')}°, "
+                        f"距离范围={constraints.get('min_range_km', 0)}-{constraints.get('max_range_km', 5000)}km")
+
+            # 使用带约束的可见性计算方法
+            visibility_result = self.visibility_calculator.calculate_access(
+                satellite_id, missile_id, constraints
             )
+
+            # 转换结果格式以保持兼容性
+            if visibility_result and visibility_result.get("success"):
+                visibility_result = {
+                    "satellite_id": satellite_id,
+                    "missile_id": missile_id,
+                    "success": True,
+                    "has_access": visibility_result.get("has_access", False),
+                    "access_intervals": visibility_result.get("intervals", []),
+                    "total_intervals": visibility_result.get("interval_count", 0)
+                }
+            else:
+                visibility_result = {
+                    "satellite_id": satellite_id,
+                    "missile_id": missile_id,
+                    "success": False,
+                    "has_access": False,
+                    "access_intervals": [],
+                    "total_intervals": 0
+                }
             
             if not visibility_result or not visibility_result.get("success"):
                 logger.debug(f"   无可见性数据，所有任务为虚拟任务")
@@ -545,3 +794,34 @@ class VisibleMetaTaskCalculator:
             卫星可见元任务字典
         """
         return self.constellation_visible_task_sets.get(satellite_id)
+
+    def get_performance_stats(self) -> Dict[str, Any]:
+        """
+        获取性能统计信息
+
+        Returns:
+            性能统计字典
+        """
+        stats = self.performance_stats.copy()
+
+        if stats["total_calculations"] > 0:
+            stats["average_time_per_calculation"] = stats["total_time"] / stats["total_calculations"]
+        else:
+            stats["average_time_per_calculation"] = 0.0
+
+        if stats["batch_calculations"] > 0:
+            stats["average_batch_time"] = stats["batch_time"] / stats["batch_calculations"]
+        else:
+            stats["average_batch_time"] = 0.0
+
+        return stats
+
+    def reset_performance_stats(self):
+        """重置性能统计"""
+        self.performance_stats = {
+            "total_calculations": 0,
+            "batch_calculations": 0,
+            "cache_hits": 0,
+            "total_time": 0.0,
+            "batch_time": 0.0
+        }

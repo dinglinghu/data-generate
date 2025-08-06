@@ -38,9 +38,56 @@ class MetaTaskManager:
         # 存储导弹轨迹数据缓存
         self.missile_trajectory_cache = {}  # 缓存导弹轨迹数据，避免重复获取
 
-        logger.info("🎯 元任务管理器初始化完成")
+        # 批量处理缓存
+        self._batch_altitude_analysis_cache = {}  # 批量高度分析缓存
+
+        logger.info("🎯 元任务管理器初始化完成，批量处理已准备")
         logger.info(f"   元子任务时间间隔: {self.atomic_task_interval}秒")
-    
+
+    def batch_analyze_missile_altitudes(self, missile_ids: List[str]) -> Dict[str, Optional[Dict[str, Any]]]:
+        """
+        批量分析多个导弹的高度数据，优化性能
+
+        Args:
+            missile_ids: 导弹ID列表
+
+        Returns:
+            字典: {missile_id: altitude_analysis}
+        """
+        logger.info(f"🚀 批量分析 {len(missile_ids)} 个导弹的高度数据...")
+
+        # 检查是否有导弹管理器的批量方法
+        if hasattr(self.missile_manager, 'batch_get_missile_flight_phases_by_altitude'):
+            return self.missile_manager.batch_get_missile_flight_phases_by_altitude(missile_ids)
+        else:
+            # 回退到逐个处理
+            results = {}
+            for missile_id in missile_ids:
+                results[missile_id] = self.missile_manager.get_missile_flight_phases_by_altitude(missile_id)
+            return results
+
+    def batch_get_missile_trajectories(self, missile_ids: List[str]) -> Dict[str, Optional[Dict[str, Any]]]:
+        """
+        批量获取多个导弹的轨迹数据，优化性能
+
+        Args:
+            missile_ids: 导弹ID列表
+
+        Returns:
+            字典: {missile_id: trajectory_data}
+        """
+        logger.info(f"🚀 批量获取 {len(missile_ids)} 个导弹的轨迹数据...")
+
+        # 检查是否有导弹管理器的批量方法
+        if hasattr(self.missile_manager, 'batch_get_missile_trajectory_info'):
+            return self.missile_manager.batch_get_missile_trajectory_info(missile_ids)
+        else:
+            # 回退到逐个处理
+            results = {}
+            for missile_id in missile_ids:
+                results[missile_id] = self.get_missile_trajectory_data(missile_id)
+            return results
+
     def generate_meta_tasks_for_all_missiles(self, current_planning_time: datetime) -> Dict[str, Any]:
         """
         为所有导弹目标生成独立的元任务
@@ -207,11 +254,12 @@ class MetaTaskManager:
                 # 如果未启用标准化，返回原始时间
                 return earliest_start, latest_end
 
-            # 获取标准化参数
-            standard_duration = standardized_config.get("standard_duration", 2400)  # 40分钟
-            min_duration = standardized_config.get("min_duration", 1800)  # 30分钟
-            max_duration = standardized_config.get("max_duration", 2700)  # 45分钟
-            overlap_duration = standardized_config.get("overlap_duration", 300)  # 5分钟
+            # 获取标准化参数（从配置文件）
+            standardization_config = self.meta_task_config.get("standardization", {})
+            standard_duration = standardization_config.get("standard_duration", 2400)  # 40分钟
+            min_duration = standardization_config.get("min_duration", 1800)  # 30分钟
+            max_duration = standardization_config.get("max_duration", 2700)  # 45分钟
+            overlap_duration = standardization_config.get("overlap_duration", 300)  # 5分钟
 
             # 计算原始持续时间
             original_duration = (latest_end - earliest_start).total_seconds()
@@ -258,12 +306,12 @@ class MetaTaskManager:
     
     def _calculate_missile_midcourse_period(self, missile_id: str, missile_info: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """
-        计算导弹的中段飞行时间段
-        
+        基于真实轨迹高度数据计算导弹的中段飞行时间段
+
         Args:
             missile_id: 导弹ID
             missile_info: 导弹信息
-            
+
         Returns:
             中段飞行时间段信息
         """
@@ -273,40 +321,132 @@ class MetaTaskManager:
             if not isinstance(launch_time, datetime):
                 logger.debug(f"导弹 {missile_id} 发射时间无效")
                 return None
+
+            # 优先使用基于真实轨迹高度的飞行阶段分析
+            logger.info(f"🎯 分析导弹 {missile_id} 的真实轨迹高度数据...")
+            flight_phases_analysis = self.missile_manager.get_missile_flight_phases_by_altitude(missile_id)
+            if flight_phases_analysis:
+                logger.info(f"✅ 使用基于真实轨迹高度的飞行阶段分析")
+
+                # 使用轨迹高度分析的结果
+                launch_time = flight_phases_analysis["launch_time"]
+                impact_time = flight_phases_analysis["impact_time"]
+                total_flight_time = timedelta(seconds=flight_phases_analysis["total_flight_time"])
+
+                # 直接使用分析得到的飞行阶段
+                flight_phases = flight_phases_analysis["flight_phases"]
+                midcourse_start = flight_phases["midcourse"]["start"]
+                midcourse_end = flight_phases["midcourse"]["end"]
+                midcourse_duration = timedelta(seconds=flight_phases["midcourse"]["duration_seconds"])
+
+                # 验证中段飞行时间的合理性
+                midcourse_info = flight_phases["midcourse"]
+                altitude_above_threshold = midcourse_info.get("altitude_above_threshold", False)
+                max_altitude = midcourse_info.get("max_altitude", 0)
+                min_altitude_threshold = midcourse_info.get("min_altitude_threshold", 100)
+
+                logger.info(f"🎯 基于真实轨迹高度的飞行阶段分析:")
+                logger.info(f"   发射时间: {launch_time}")
+                logger.info(f"   撞击时间: {impact_time}")
+                logger.info(f"   最大飞行高度: {flight_phases_analysis['max_altitude']:.1f}km")
+                logger.info(f"   中段高度阈值: {min_altitude_threshold}km")
+                logger.info(f"   中段最大高度: {max_altitude:.1f}km")
+                logger.info(f"   高度满足阈值: {'是' if altitude_above_threshold else '否'}")
+                logger.info(f"   助推段: {flight_phases['boost']['start']} - {flight_phases['boost']['end']} ({flight_phases['boost']['duration_seconds']:.0f}秒)")
+                logger.info(f"   中段: {midcourse_start} - {midcourse_end} ({midcourse_duration.total_seconds():.0f}秒)")
+                logger.info(f"   末段: {flight_phases['terminal']['start']} - {flight_phases['terminal']['end']} ({flight_phases['terminal']['duration_seconds']:.0f}秒)")
+
+                # 跳过后续的时间计算，直接使用分析结果
+                use_altitude_analysis = True
+            else:
+                # 回退到时间范围分析
+                logger.warning(f"⚠️ 无法进行轨迹高度分析，回退到时间范围分析")
+                missile_time_range = self.missile_manager.get_missile_actual_time_range(missile_id)
+                if missile_time_range:
+                    actual_launch_time, actual_impact_time = missile_time_range
+                    logger.info(f"✅ 使用导弹真实时间范围: {actual_launch_time} - {actual_impact_time}")
+                    # 使用真实的发射和撞击时间
+                    launch_time = actual_launch_time
+                    impact_time = actual_impact_time
+                    total_flight_time = impact_time - launch_time
+                else:
+                    # 最后回退到估算时间
+                    logger.warning(f"⚠️ 无法获取导弹 {missile_id} 真实时间，使用估算时间")
+                    flight_time_config = self.config_manager.config.get("missile_management", {}).get("flight_time", {})
+                    default_flight_minutes = flight_time_config.get("default_minutes", 30)
+                    total_flight_time = timedelta(minutes=default_flight_minutes)
+                    impact_time = launch_time + total_flight_time
+
+                use_altitude_analysis = False
             
-            # 估算导弹飞行总时间（默认30分钟）
-            flight_time_config = self.config_manager.config.get("missile_management", {}).get("flight_time", {})
-            default_flight_minutes = flight_time_config.get("default_minutes", 30)
-            total_flight_time = timedelta(minutes=default_flight_minutes)
+            # 只有在没有使用高度分析时才进行传统的时间比例计算
+            if not use_altitude_analysis:
+                # 基于真实飞行时间计算各阶段时间
+                flight_phases_config = self.meta_task_config.get("flight_phases", {})
+                boost_phase_ratio = flight_phases_config.get("boost_phase_ratio", 0.1)    # 助推段占比10%
+                terminal_phase_ratio = flight_phases_config.get("terminal_phase_ratio", 0.1)  # 末段占比10%
+                midcourse_ratio = 1.0 - boost_phase_ratio - terminal_phase_ratio  # 中段占比80%
+
+                logger.info(f"📊 飞行阶段配置: 助推段{boost_phase_ratio*100:.1f}%, 中段{midcourse_ratio*100:.1f}%, 末段{terminal_phase_ratio*100:.1f}%")
+
+                # 基于真实飞行时间计算各阶段时间
+                total_flight_seconds = total_flight_time.total_seconds()
+                boost_duration_seconds = total_flight_seconds * boost_phase_ratio
+                terminal_duration_seconds = total_flight_seconds * terminal_phase_ratio
+
+                # 中段开始和结束时间（基于真实时间范围）
+                midcourse_start = launch_time + timedelta(seconds=boost_duration_seconds)
+                midcourse_end = impact_time - timedelta(seconds=terminal_duration_seconds)
+                midcourse_duration = midcourse_end - midcourse_start
+
+                logger.info(f"⏰ 真实时间范围: 发射{launch_time} - 撞击{impact_time}")
+                logger.info(f"⏰ 中段时间范围: {midcourse_start} - {midcourse_end}")
+                logger.info(f"⏰ 中段持续时间: {midcourse_duration.total_seconds():.1f}秒")
             
-            # 计算撞击时间
-            impact_time = launch_time + total_flight_time
-            
-            # 中段飞行阶段：假设为飞行时间的中间60%（跳过起始和结束各20%）
-            boost_phase_ratio = 0.2  # 助推段占20%
-            terminal_phase_ratio = 0.2  # 末段占20%
-            midcourse_ratio = 1.0 - boost_phase_ratio - terminal_phase_ratio  # 中段占60%
-            
-            boost_duration = total_flight_time * boost_phase_ratio
-            midcourse_duration = total_flight_time * midcourse_ratio
-            
-            midcourse_start = launch_time + boost_duration
-            midcourse_end = midcourse_start + midcourse_duration
-            
-            midcourse_period = {
-                "start_time": midcourse_start,
-                "end_time": midcourse_end,
-                "duration_seconds": midcourse_duration.total_seconds(),
-                "launch_time": launch_time,
-                "impact_time": impact_time,
-                "flight_phases": {
-                    "boost": {"start": launch_time, "end": midcourse_start},
-                    "midcourse": {"start": midcourse_start, "end": midcourse_end},
-                    "terminal": {"start": midcourse_end, "end": impact_time}
+            # 构建元任务结果
+            if use_altitude_analysis:
+                # 使用高度分析的结果
+                midcourse_period = {
+                    "start_time": midcourse_start,
+                    "end_time": midcourse_end,
+                    "duration_seconds": midcourse_duration.total_seconds(),
+                    "launch_time": launch_time,
+                    "impact_time": impact_time,
+                    "flight_phases": flight_phases_analysis["flight_phases"],
+                    "altitude_analysis": flight_phases_analysis["altitude_analysis"],
+                    "max_altitude": flight_phases_analysis["max_altitude"],
+                    "time_source": "trajectory_altitude_analysis"  # 标记时间来源
                 }
-            }
+                logger.info(f"✅ 使用轨迹高度分析结果构建元任务")
+            else:
+                # 使用传统时间比例分析的结果
+                midcourse_period = {
+                    "start_time": midcourse_start,
+                    "end_time": midcourse_end,
+                    "duration_seconds": midcourse_duration.total_seconds(),
+                    "launch_time": launch_time,
+                    "impact_time": impact_time,
+                    "flight_phases": {
+                        "boost": {"start": launch_time, "end": midcourse_start},
+                        "midcourse": {"start": midcourse_start, "end": midcourse_end},
+                        "terminal": {"start": midcourse_end, "end": impact_time}
+                    },
+                    "time_source": "missile_actual_time"  # 标记时间来源
+                }
+                logger.info(f"✅ 使用时间范围分析结果构建元任务")
             
-            logger.debug(f"导弹 {missile_id} 中段飞行时间: {midcourse_start} -> {midcourse_end}")
+            # 输出最终的时间范围分析结果
+            logger.info(f"🚀 导弹 {missile_id} 最终时间范围分析:")
+            logger.info(f"   发射时间: {launch_time}")
+            logger.info(f"   撞击时间: {impact_time}")
+            logger.info(f"   总飞行时间: {total_flight_time.total_seconds():.1f}秒")
+            logger.info(f"   中段飞行: {midcourse_start} -> {midcourse_end} ({midcourse_duration.total_seconds():.1f}秒)")
+            logger.info(f"   元任务时间窗口: {midcourse_start} -> {midcourse_end}")
+            logger.info(f"   时间来源: {midcourse_period.get('time_source', 'unknown')}")
+
+            if use_altitude_analysis:
+                logger.info(f"   最大高度: {flight_phases_analysis['max_altitude']:.1f}m")
+                logger.info(f"   高度范围: {flight_phases_analysis['altitude_analysis']['altitude_range']:.1f}m")
             
             return midcourse_period
             
@@ -745,12 +885,18 @@ class MetaTaskManager:
                 }
 
                 # 检查时间差是否在合理范围内（插值的话直接接受，否则允许最大60秒的时间差）
-                if interpolated_position or min_time_diff <= 60.0:
+                # 从配置获取最大时间差阈值
+                max_time_diff = self.config_manager.get_task_planning_config().get("altitude_analysis", {}).get("max_time_difference", 600)
+
+                if interpolated_position or min_time_diff <= max_time_diff:
                     method = "插值" if interpolated_position else f"最近点(时间差: {min_time_diff:.1f}秒)"
-                    logger.debug(f"✅ 找到导弹 {missile_id} 在 {target_time} 的位置 ({method})")
+                    if min_time_diff > 60.0:
+                        logger.debug(f"✅ 找到导弹 {missile_id} 在 {target_time} 的位置 ({method}) - 时间差较大但在允许范围内")
+                    else:
+                        logger.debug(f"✅ 找到导弹 {missile_id} 在 {target_time} 的位置 ({method})")
                     return position_info
                 else:
-                    logger.warning(f"⚠️ 导弹 {missile_id} 在 {target_time} 的最近位置时间差过大: {min_time_diff:.1f}秒")
+                    logger.warning(f"⚠️ 导弹 {missile_id} 在 {target_time} 的最近位置时间差过大: {min_time_diff:.1f}秒 (阈值: {max_time_diff}秒)")
                     return None
             else:
                 logger.warning(f"⚠️ 未找到导弹 {missile_id} 在 {target_time} 的位置数据")

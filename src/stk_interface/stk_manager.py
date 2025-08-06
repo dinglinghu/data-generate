@@ -481,9 +481,14 @@ class STKManager:
             logger.debug(f"查找卫星失败: {e}")
             return None
 
-    def get_satellite_position(self, satellite_id: str, time_str: str) -> Optional[Dict]:
+    def get_satellite_position(self, satellite_id: str, time_str: str, timeout: int = 30) -> Optional[Dict]:
         """
         获取卫星位置 - 基于原始成功实现的多方法尝试
+
+        Args:
+            satellite_id: 卫星ID
+            time_str: 时间字符串
+            timeout: 超时时间(秒)，默认30秒
         """
         try:
             satellite = self._find_satellite(satellite_id)

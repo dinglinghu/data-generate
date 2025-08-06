@@ -1,0 +1,24 @@
+{
+  "collection_info": {
+    "index": 2,
+    "time": "2025-07-26T00:13:27.700000",
+    "midcourse_missiles": [
+      "PoolMissile_006_1159"
+    ],
+    "total_missiles_in_scenario": 3
+  },
+  "statistics": {
+    "total_missiles": 3,
+    "total_meta_tasks": 27,
+    "total_real_tasks": 22,
+    "total_virtual_tasks": 5,
+    "total_satellites": 24,
+    "total_visible_tasks": 34,
+    "total_virtual_visible_tasks": 614
+  },
+  "conflict_resolution": {
+    "data_available": true,
+    "enhanced_with_positions": true,
+    "timeline_complete": true
+  }
+}

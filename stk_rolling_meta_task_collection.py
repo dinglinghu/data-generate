@@ -88,9 +88,9 @@ def parse_arguments():
     parser.add_argument("--interval", "-i", type=str,
                        help="采集间隔范围，格式: min,max (秒)")
     parser.add_argument("--missiles", "-m", type=int,
-                       help="最大并发导弹数")
-    parser.add_argument("--output-dir", type=str, default="output/unified_collections",
-                       help="输出目录（默认: output/unified_collections）")
+                       help="每次采集的导弹数量")
+    parser.add_argument("--output-dir", type=str, default="output/collections",
+                       help="输出目录（默认: output/collections）")
 
     return parser.parse_args()
 
@@ -130,9 +130,8 @@ async def main():
         safe_log_info(logger, "启动STK滚动元任务数据采集系统")
         logger.info("=" * 80)
 
-        # 创建会话目录
-        session_dir = create_session_directory(args.output_dir, args.session_name)
-        safe_log_info(logger, f"会话目录: {session_dir}")
+        # 会话目录将由统一数据管理器创建
+        safe_log_info(logger, f"会话名称: {args.session_name if args.session_name else '默认时间戳'}")
 
         # 确定甘特图生成设置 - 修复逻辑
         enable_gantt = True  # 默认启用
@@ -165,21 +164,21 @@ async def main():
                 logger.warning(f"采集间隔格式错误: {args.interval}，使用默认值")
 
         if args.missiles:
-            system.rolling_data_collector.max_concurrent_missiles = args.missiles
-            safe_log_info(logger, f"设置最大并发导弹数: {args.missiles}")
+            # 将命令行导弹数参数应用到导弹数量范围
+            system.rolling_data_collector.missile_count_range = [args.missiles, args.missiles]
+            safe_log_info(logger, f"设置导弹数量: {args.missiles}")
 
-        # 配置输出目录和甘特图设置
-        system.rolling_data_collector.output_base_dir = session_dir
+        # 配置甘特图设置和会话名称
         system.rolling_data_collector.enable_gantt = enable_gantt
+        system.rolling_data_collector.session_name = args.session_name
 
         # 显示配置信息
         logger.info("📋 滚动采集配置:")
         logger.info(f"   总采集次数: {system.rolling_data_collector.total_collections}")
         logger.info(f"   采集间隔: {system.rolling_data_collector.interval_range[0]}-{system.rolling_data_collector.interval_range[1]}秒")
-        logger.info(f"   最大并发导弹: {system.rolling_data_collector.max_concurrent_missiles}")
         logger.info(f"   导弹数量范围: {system.rolling_data_collector.missile_count_range}")
         logger.info(f"   清理现有导弹: {system.rolling_data_collector.clear_existing_missiles}")
-        logger.info(f"   输出目录: {session_dir}")
+        logger.info(f"   输出目录: 将由统一数据管理器创建")
 
         # 运行滚动数据采集系统
         logger.info("\n🚀 开始滚动数据采集...")
@@ -195,7 +194,13 @@ async def main():
                 logger.info(f"📊 采集结果统计:")
                 logger.info(f"   成功采集次数: {len(results)}")
                 logger.info(f"   总导弹数: {len(system.rolling_data_collector.all_missiles)}")
-                logger.info(f"   会话目录: {session_dir}")
+                # 获取实际的会话目录（从统一数据管理器）
+                actual_session_dir = None
+                if hasattr(system.rolling_data_collector, 'unified_data_manager') and system.rolling_data_collector.unified_data_manager.session_dir:
+                    actual_session_dir = system.rolling_data_collector.unified_data_manager.session_dir
+                    logger.info(f"   会话目录: {actual_session_dir}")
+                else:
+                    logger.info(f"   会话目录: 未创建（无数据采集）")
 
                 # 统计每次采集的导弹数
                 for i, result in enumerate(results, 1):
@@ -206,8 +211,11 @@ async def main():
                 # 结束统一数据管理会话
                 await system.rolling_data_collector.finalize_session()
 
-                # 生成会话汇总报告
-                await generate_session_summary(session_dir, results, system, enable_gantt)
+                # 生成会话汇总报告（使用实际的会话目录）
+                if actual_session_dir:
+                    await generate_session_summary(actual_session_dir, results, system, enable_gantt)
+                else:
+                    logger.info("📋 跳过会话汇总报告生成（无实际会话目录）")
 
         else:
             logger.error("❌ 滚动元任务数据采集系统运行失败")
@@ -239,7 +247,6 @@ async def generate_session_summary(session_dir: Path, results: list, system, ena
             "configuration": {
                 "total_collections": system.rolling_data_collector.total_collections,
                 "interval_range": system.rolling_data_collector.interval_range,
-                "max_concurrent_missiles": system.rolling_data_collector.max_concurrent_missiles,
                 "missile_count_range": system.rolling_data_collector.missile_count_range,
                 "clear_existing_missiles": system.rolling_data_collector.clear_existing_missiles
             },
@@ -288,7 +295,6 @@ async def generate_session_summary(session_dir: Path, results: list, system, ena
             f.write("配置信息:\n")
             f.write(f"  计划采集次数: {summary_data['configuration']['total_collections']}\n")
             f.write(f"  采集间隔: {summary_data['configuration']['interval_range']}秒\n")
-            f.write(f"  最大并发导弹: {summary_data['configuration']['max_concurrent_missiles']}\n")
             f.write(f"  导弹数量范围: {summary_data['configuration']['missile_count_range']}\n")
             f.write(f"  清理现有导弹: {summary_data['configuration']['clear_existing_missiles']}\n\n")
 
@@ -349,7 +355,7 @@ python stk_rolling_meta_task_collection.py --session-name "test_scenario" --no-g
   --session-name NAME     自定义会话名称
   --collections N         总采集次数
   --interval MIN,MAX      采集间隔范围（秒）
-  --missiles N            最大并发导弹数
+  --missiles N            每次采集的导弹数量
   --output-dir DIR        输出目录
 
 输出结构:
@@ -367,7 +373,7 @@ output/unified_collections/session_YYYYMMDD_HHMMSS/
 └── session_summary.txt   # 会话汇总报告（文本）
 
 配置文件: config/config.yaml
-- missile.max_concurrent_missiles: 最大并发导弹数
+- data_collection.rolling_collection.dynamic_missiles.missile_count_range: 导弹数量范围
 - data_collection.rolling_collection: 滚动采集配置
 
 性能建议:

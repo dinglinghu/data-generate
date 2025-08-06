@@ -14,6 +14,8 @@ import concurrent.futures
 import threading
 from functools import partial
 
+from .parallel_position_manager import ParallelPositionManager, PositionRequest, PositionResult
+
 logger = logging.getLogger(__name__)
 
 class SatellitePositionSynchronizer:
@@ -58,11 +60,21 @@ class SatellitePositionSynchronizer:
         # STK COM接口线程安全锁
         self._stk_lock = threading.Lock()
 
+        # 初始化并行位置管理器
+        self.parallel_position_manager = ParallelPositionManager(
+            stk_manager=self.stk_manager,
+            config_manager=self.config_manager
+        )
+
+        # 并行处理配置
+        self.enable_parallel_optimization = position_sync_config.get("enable_parallel_optimization", True)
+
         logger.info("🛰️ 卫星位置同步器初始化完成")
         logger.info(f"   采样间隔: {self.position_sample_interval}秒")
         logger.info(f"   最大采样点数: {self.max_samples_per_task}")
         logger.info(f"   统计计算: {'启用' if self.enable_statistics else '禁用'}")
         logger.info(f"   并发处理: {'启用' if self.enable_concurrent else '禁用'}")
+        logger.info(f"   并行优化: {'启用' if self.enable_parallel_optimization else '禁用'}")
         if self.enable_concurrent:
             logger.info(f"   最大工作线程: {self.max_workers}")
             logger.info(f"   批处理大小: {self.concurrent_batch_size}")
@@ -86,11 +98,22 @@ class SatellitePositionSynchronizer:
             # 获取星座可见任务集
             constellation_visible_task_sets = enhanced_visible_tasks.get("constellation_visible_task_sets", {})
 
-            # 🔧 修复：由于STK COM接口的多线程问题，暂时禁用并发处理
-            logger.info("🔧 使用串行处理模式（避免STK COM多线程问题）")
-            total_tasks_processed, total_positions_collected = self._process_tasks_serially(
-                constellation_visible_task_sets
-            )
+            # 选择最优的处理模式
+            if self.enable_parallel_optimization:
+                logger.info("🚀 使用并行优化模式")
+                total_tasks_processed, total_positions_collected = self._process_tasks_parallel_optimized(
+                    constellation_visible_task_sets
+                )
+            elif self.enable_concurrent:
+                logger.info("🧵 使用并发处理模式")
+                total_tasks_processed, total_positions_collected = self._process_tasks_concurrently(
+                    constellation_visible_task_sets
+                )
+            else:
+                logger.info("📝 使用串行处理模式")
+                total_tasks_processed, total_positions_collected = self._process_tasks_serially(
+                    constellation_visible_task_sets
+                )
 
             # 计算处理时间
             processing_time = (datetime.now() - start_time).total_seconds()
@@ -120,6 +143,92 @@ class SatellitePositionSynchronizer:
             import traceback
             logger.error(f"错误详情: {traceback.format_exc()}")
             return visible_meta_tasks
+
+    def _process_tasks_parallel_optimized(self, constellation_visible_task_sets: Dict[str, Any]) -> Tuple[int, int]:
+        """
+        使用并行位置管理器优化处理所有可见任务的位置同步
+
+        Args:
+            constellation_visible_task_sets: 星座可见任务集
+
+        Returns:
+            (处理任务数, 采集位置点数)
+        """
+        try:
+            logger.info("🚀 开始并行优化位置同步...")
+
+            # 1. 收集所有位置请求
+            position_requests = []
+            task_mapping = {}  # 用于映射请求到任务
+
+            for satellite_id, satellite_tasks in constellation_visible_task_sets.items():
+                missile_tasks = satellite_tasks.get("missile_tasks", {})
+
+                for missile_id, missile_task_data in missile_tasks.items():
+                    visible_tasks = missile_task_data.get("visible_tasks", [])
+
+                    for task in visible_tasks:
+                        # 为每个任务生成位置请求
+                        task_requests = self._generate_position_requests_for_task(satellite_id, task)
+                        position_requests.extend(task_requests)
+
+                        # 建立映射关系
+                        task_id = task.get("task_id")
+                        task_mapping[task_id] = {
+                            "satellite_id": satellite_id,
+                            "task": task,
+                            "request_indices": list(range(len(position_requests) - len(task_requests), len(position_requests)))
+                        }
+
+            logger.info(f"📊 收集到 {len(position_requests)} 个位置请求，覆盖 {len(task_mapping)} 个任务")
+
+            # 2. 并行获取所有位置
+            if position_requests:
+                position_results = self.parallel_position_manager.get_positions_parallel(position_requests)
+
+                # 3. 组织结果并更新任务
+                total_tasks_processed = 0
+                total_positions_collected = 0
+
+                for task_id, mapping_info in task_mapping.items():
+                    satellite_id = mapping_info["satellite_id"]
+                    task = mapping_info["task"]
+                    request_indices = mapping_info["request_indices"]
+
+                    # 提取该任务的位置结果
+                    task_position_results = [position_results[i] for i in request_indices if i < len(position_results)]
+
+                    # 构建位置同步数据
+                    position_sync_data = self._build_position_sync_data_from_results(
+                        satellite_id, task, task_position_results
+                    )
+
+                    if position_sync_data:
+                        task["satellite_position_sync"] = position_sync_data
+                        total_positions_collected += len(position_sync_data.get("position_samples", []))
+                        total_tasks_processed += 1
+                        logger.debug(f"✅ 任务 {task_id} 并行位置同步完成")
+                    else:
+                        logger.warning(f"⚠️ 任务 {task_id} 并行位置同步失败")
+
+                # 4. 输出性能统计
+                parallel_stats = self.parallel_position_manager.get_stats()
+                logger.info("📊 并行位置同步性能统计:")
+                logger.info(f"   总请求数: {parallel_stats.get('total_requests', 0)}")
+                logger.info(f"   成功率: {parallel_stats.get('success_rate', 0):.1f}%")
+                logger.info(f"   缓存命中率: {parallel_stats.get('cache_hit_rate', 0):.1f}%")
+                logger.info(f"   平均处理时间: {parallel_stats.get('average_time_per_request', 0):.3f}s")
+
+                return total_tasks_processed, total_positions_collected
+            else:
+                logger.warning("⚠️ 没有位置请求需要处理")
+                return 0, 0
+
+        except Exception as e:
+            logger.error(f"❌ 并行优化位置同步失败: {e}")
+            # 回退到串行处理
+            logger.info("🔄 回退到串行处理模式...")
+            return self._process_tasks_serially(constellation_visible_task_sets)
 
     def _process_tasks_concurrently(self, constellation_visible_task_sets: Dict[str, Any]) -> Tuple[int, int]:
         """
@@ -450,3 +559,126 @@ class SatellitePositionSynchronizer:
             
         except Exception as e:
             logger.error(f"❌ 导出位置同步数据失败: {e}")
+
+    def _generate_position_requests_for_task(self, satellite_id: str, task: Dict[str, Any]) -> List[PositionRequest]:
+        """
+        为单个任务生成位置请求列表
+
+        Args:
+            satellite_id: 卫星ID
+            task: 任务信息
+
+        Returns:
+            位置请求列表
+        """
+        try:
+            # 解析任务时间范围
+            start_time_str = task.get("start_time")
+            end_time_str = task.get("end_time")
+            task_id = task.get("task_id")
+
+            if not start_time_str or not end_time_str:
+                logger.warning(f"⚠️ 任务 {task_id} 时间范围无效")
+                return []
+
+            # 转换时间格式
+            start_time = datetime.fromisoformat(start_time_str.replace('Z', '+00:00'))
+            end_time = datetime.fromisoformat(end_time_str.replace('Z', '+00:00'))
+
+            # 计算采样时间点
+            sample_times = self._calculate_sample_times(start_time, end_time)
+
+            # 生成位置请求
+            requests = []
+            for sample_time in sample_times:
+                time_offset = self._calculate_time_offset(sample_time)
+
+                request = PositionRequest(
+                    satellite_id=satellite_id,
+                    time_offset=time_offset,
+                    sample_time=sample_time,
+                    task_id=task_id,
+                    priority=1  # 高优先级
+                )
+                requests.append(request)
+
+            return requests
+
+        except Exception as e:
+            logger.error(f"❌ 生成任务 {task.get('task_id')} 位置请求失败: {e}")
+            return []
+
+    def _build_position_sync_data_from_results(self, satellite_id: str, task: Dict[str, Any],
+                                             position_results: List[PositionResult]) -> Optional[Dict[str, Any]]:
+        """
+        从位置结果构建位置同步数据
+
+        Args:
+            satellite_id: 卫星ID
+            task: 任务信息
+            position_results: 位置结果列表
+
+        Returns:
+            位置同步数据
+        """
+        try:
+            # 过滤成功的结果
+            successful_results = [r for r in position_results if r.success and r.position_data]
+
+            if not successful_results:
+                logger.warning(f"⚠️ 任务 {task.get('task_id')} 没有成功的位置数据")
+                return None
+
+            # 构建位置样本
+            position_samples = []
+            for result in successful_results:
+                enhanced_position = {
+                    "sample_time": result.request.sample_time.isoformat(),
+                    "time_offset_seconds": result.request.time_offset,
+                    "position": result.position_data,
+                    "task_relative_time": (result.request.sample_time -
+                                         datetime.fromisoformat(task.get("start_time").replace('Z', '+00:00'))).total_seconds(),
+                    "processing_time": result.processing_time
+                }
+                position_samples.append(enhanced_position)
+
+            # 计算位置统计信息
+            position_stats = self._calculate_position_statistics(position_samples)
+
+            # 解析任务时间范围
+            start_time_str = task.get("start_time")
+            end_time_str = task.get("end_time")
+            start_time = datetime.fromisoformat(start_time_str.replace('Z', '+00:00'))
+            end_time = datetime.fromisoformat(end_time_str.replace('Z', '+00:00'))
+
+            return {
+                "task_id": task.get("task_id"),
+                "satellite_id": satellite_id,
+                "task_time_range": {
+                    "start_time": start_time.isoformat(),
+                    "end_time": end_time.isoformat(),
+                    "duration_seconds": (end_time - start_time).total_seconds()
+                },
+                "position_samples": position_samples,
+                "position_statistics": position_stats,
+                "sample_count": len(position_samples),
+                "sample_interval_seconds": self.position_sample_interval,
+                "parallel_processing": True,
+                "success_rate": len(successful_results) / len(position_results) * 100 if position_results else 0
+            }
+
+        except Exception as e:
+            logger.error(f"❌ 构建任务 {task.get('task_id')} 位置同步数据失败: {e}")
+            return None
+
+    def get_parallel_performance_stats(self) -> Dict[str, Any]:
+        """获取并行处理性能统计"""
+        if hasattr(self, 'parallel_position_manager'):
+            return self.parallel_position_manager.get_stats()
+        return {}
+
+    def clear_parallel_cache(self):
+        """清空并行处理缓存"""
+        if hasattr(self, 'parallel_position_manager'):
+            self.parallel_position_manager.clear_cache()
+            logger.info("🧹 并行位置缓存已清空")

@@ -18,32 +18,99 @@ class VisibilityCalculator:
     def __init__(self, stk_manager):
         """初始化可见性计算器"""
         self.stk_manager = stk_manager
-        
+
         # 从配置获取参数
         from src.utils.config_manager import get_config_manager
         config_manager = get_config_manager()
         stk_config = config_manager.get_stk_config()
-        
+
         self.wait_times = stk_config.get("wait_times", {"access_computation": 1.0})
-        
+
         # 约束类型 (基于实际使用)
         self.constraint_types = {
             "elevation_angle": 1,
             "range": 34,
             "lighting": 15
         }
-    
-    def calculate_access(self, satellite_id: str, missile_id: str, 
+
+        # 对象缓存 - 避免重复查找STK对象
+        self._satellite_cache = {}
+        self._missile_cache = {}
+        self._sensor_cache = {}
+        self._cache_initialized = False
+
+        logger.info("👁️ 可见性计算器初始化完成，对象缓存已准备")
+
+    def _initialize_object_cache(self):
+        """
+        初始化对象缓存 - 一次性建立所有STK对象的索引
+        这样避免每次计算时都要遍历场景对象
+        """
+        if self._cache_initialized:
+            return
+
+        try:
+            logger.info("🔄 开始初始化STK对象缓存...")
+            scenario = self.stk_manager.scenario
+
+            # 清空缓存
+            self._satellite_cache.clear()
+            self._missile_cache.clear()
+            self._sensor_cache.clear()
+
+            # 一次性遍历所有场景对象
+            total_objects = scenario.Children.Count
+            satellites_found = 0
+            missiles_found = 0
+
+            for i in range(total_objects):
+                try:
+                    child = scenario.Children.Item(i)
+                    child_class = getattr(child, 'ClassName', None)
+                    child_name = getattr(child, 'InstanceName', None)
+
+                    if child_class == 'Satellite' and child_name:
+                        self._satellite_cache[child_name] = child
+                        satellites_found += 1
+
+                        # 同时缓存卫星的传感器
+                        sensor = self._find_satellite_sensor_direct(child)
+                        if sensor:
+                            self._sensor_cache[child_name] = sensor
+
+                    elif child_class == 'Missile' and child_name:
+                        self._missile_cache[child_name] = child
+                        missiles_found += 1
+
+                except Exception as e:
+                    logger.debug(f"跳过对象 {i}: {e}")
+                    continue
+
+            self._cache_initialized = True
+            logger.info(f"✅ STK对象缓存初始化完成:")
+            logger.info(f"   🛰️ 卫星: {satellites_found} 个")
+            logger.info(f"   🚀 导弹: {missiles_found} 个")
+            logger.info(f"   📡 传感器: {len(self._sensor_cache)} 个")
+
+        except Exception as e:
+            logger.error(f"❌ 对象缓存初始化失败: {e}")
+            self._cache_initialized = False
+
+    def calculate_access(self, satellite_id: str, missile_id: str,
                         constraints: Optional[Dict] = None) -> Dict[str, Any]:
         """
         计算可见性 - 重构版本，基于实际使用的STK API方法
         """
         try:
             logger.info(f"🔍 开始计算可见性: {satellite_id} -> {missile_id}")
-            
-            # 查找对象
-            satellite = self._find_satellite(satellite_id)
-            missile = self._find_missile(missile_id)
+
+            # 确保对象缓存已初始化
+            if not self._cache_initialized:
+                self._initialize_object_cache()
+
+            # 从缓存中快速获取对象
+            satellite = self._get_satellite_from_cache(satellite_id)
+            missile = self._get_missile_from_cache(missile_id)
             
             if not satellite:
                 logger.error(f"❌ 卫星 {satellite_id} 不存在")
@@ -113,8 +180,10 @@ class VisibilityCalculator:
         使用STK API计算访问 - 基于实际成功的方法
         """
         try:
-            # 获取卫星的传感器 (如果存在)
-            sensor = self._find_satellite_sensor(satellite)
+            # 从缓存获取卫星的传感器 (如果存在)
+            satellite_name = getattr(satellite, 'InstanceName', None)
+            sensor = self._sensor_cache.get(satellite_name) if satellite_name else None
+
             if sensor:
                 logger.info("🔭 使用传感器计算访问")
                 from_object = sensor
@@ -126,9 +195,9 @@ class VisibilityCalculator:
             access = from_object.GetAccessToObject(missile)
             logger.info("✅ STK访问对象创建成功")
             
-            # 设置约束 (如果提供)
-            if constraints:
-                self._apply_access_constraints_optimized(access, constraints)
+            # # 设置约束 (如果提供) 暂时停止使用约束（linghuding）
+            # if constraints:
+            #     self._apply_access_constraints_optimized(access, constraints)
             
             # 计算访问
             access.ComputeAccess()
@@ -155,7 +224,44 @@ class VisibilityCalculator:
         except Exception as e:
             logger.error(f"❌ STK访问计算失败: {e}")
             return self._create_error_result(str(e))
-    
+
+    def _get_satellite_from_cache(self, satellite_id: str):
+        """从缓存中快速获取卫星对象"""
+        satellite = self._satellite_cache.get(satellite_id)
+        if satellite:
+            logger.debug(f"✅ 从缓存获取卫星: {satellite_id}")
+            return satellite
+        else:
+            logger.warning(f"⚠️ 缓存中未找到卫星: {satellite_id}")
+            # 尝试重新初始化缓存
+            self._cache_initialized = False
+            self._initialize_object_cache()
+            return self._satellite_cache.get(satellite_id)
+
+    def _get_missile_from_cache(self, missile_id: str):
+        """从缓存中快速获取导弹对象"""
+        missile = self._missile_cache.get(missile_id)
+        if missile:
+            logger.debug(f"✅ 从缓存获取导弹: {missile_id}")
+            return missile
+        else:
+            logger.warning(f"⚠️ 缓存中未找到导弹: {missile_id}")
+            # 尝试重新初始化缓存
+            self._cache_initialized = False
+            self._initialize_object_cache()
+            return self._missile_cache.get(missile_id)
+
+    def _find_satellite_sensor_direct(self, satellite):
+        """直接查找卫星的传感器（用于缓存初始化）"""
+        try:
+            for i in range(satellite.Children.Count):
+                child = satellite.Children.Item(i)
+                if getattr(child, 'ClassName', None) == 'Sensor':
+                    return child
+            return None
+        except Exception:
+            return None
+
     def _find_satellite(self, satellite_id: str):
         """查找卫星对象"""
         try:

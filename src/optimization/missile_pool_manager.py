@@ -40,6 +40,24 @@ class MissilePoolManager:
         self.active_limit = pool_config.get("active_limit", 5)  # 同时活跃导弹数限制
         self.default_flight_duration = pool_config.get("default_flight_duration", 1800)  # 默认飞行时间
         self.id_random_range = pool_config.get("id_random_range", [1000, 9999])  # ID随机数范围
+
+        # 激活配置
+        activation_config = pool_config.get("activation", {})
+        self.launch_time_offset_range = activation_config.get("launch_time_offset_range", [-300, 300])
+        self.flight_duration_range = activation_config.get("flight_duration_range", [1800, 2400])
+
+        # 位置生成配置
+        position_config = pool_config.get("position_generation", {})
+        self.launch_position_config = position_config.get("launch_positions", {
+            "lat_range": [30.0, 50.0], "lon_range": [100.0, 140.0], "alt": 0.0
+        })
+        self.target_position_config = position_config.get("target_positions", {
+            "lat_range": [35.0, 45.0], "lon_range": [-125.0, -70.0], "alt": 0.0
+        })
+
+        # 性能配置
+        performance_config = pool_config.get("performance", {})
+        self.creation_time_multiplier = performance_config.get("creation_time_multiplier", 10)
         
         # 导弹池
         self.missile_pool: Dict[str, MissilePoolItem] = {}
@@ -181,10 +199,10 @@ class MissilePoolManager:
             
             selection_time = (datetime.now() - start_time).total_seconds()
             self.stats["pool_hits"] += len(selected_missiles)
-            self.stats["creation_time_saved"] += selection_time * 10  # 估算节省的时间
-            
+            self.stats["creation_time_saved"] += selection_time * self.creation_time_multiplier  # 使用配置的倍数
+
             logger.info(f"✅ 成功从池中获取 {len(selected_missiles)} 个导弹")
-            logger.info(f"   选择耗时: {selection_time:.3f}秒 (vs 创建耗时 ~{selection_time*10:.1f}秒)")
+            logger.info(f"   选择耗时: {selection_time:.3f}秒 (vs 创建耗时 ~{selection_time*self.creation_time_multiplier:.1f}秒)")
             
             return selected_missiles
             
@@ -195,14 +213,12 @@ class MissilePoolManager:
     def _activate_missile(self, pool_item: MissilePoolItem, collection_time: datetime) -> bool:
         """激活池中的导弹"""
         try:
-            # 生成新的发射时间和飞行时间
-            offset_range = [-300, 300]  # ±5分钟
-            offset = random.randint(*offset_range)
+            # 生成新的发射时间和飞行时间（使用配置参数）
+            offset = random.randint(*self.launch_time_offset_range)
             launch_time = collection_time + timedelta(seconds=offset)
-            
-            # 生成飞行时间
-            duration_range = [1800, 2400]  # 30-40分钟
-            flight_duration = random.randint(*duration_range)
+
+            # 生成飞行时间（使用配置参数）
+            flight_duration = random.randint(*self.flight_duration_range)
             
             # 更新池项目
             pool_item.is_active = True
@@ -264,19 +280,21 @@ class MissilePoolManager:
             logger.error(f"❌ 释放导弹失败: {e}")
     
     def _generate_random_launch_position(self) -> Dict[str, float]:
-        """生成随机发射位置"""
+        """生成随机发射位置（使用配置参数）"""
+        config = self.launch_position_config
         return {
-            "lat": random.uniform(30.0, 50.0),
-            "lon": random.uniform(100.0, 140.0),
-            "alt": 0.0
+            "lat": random.uniform(*config["lat_range"]),
+            "lon": random.uniform(*config["lon_range"]),
+            "alt": config["alt"]
         }
-    
+
     def _generate_random_target_position(self) -> Dict[str, float]:
-        """生成随机目标位置"""
+        """生成随机目标位置（使用配置参数）"""
+        config = self.target_position_config
         return {
-            "lat": random.uniform(35.0, 45.0),
-            "lon": random.uniform(-125.0, -70.0),
-            "alt": 0.0
+            "lat": random.uniform(*config["lat_range"]),
+            "lon": random.uniform(*config["lon_range"]),
+            "alt": config["alt"]
         }
     
     def get_performance_stats(self) -> Dict[str, Any]:

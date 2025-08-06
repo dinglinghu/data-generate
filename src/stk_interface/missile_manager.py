@@ -39,17 +39,154 @@ class MissileManager:
         from src.utils.config_manager import get_config_manager
         config_manager = get_config_manager()
         stk_config = config_manager.get_stk_config()
+        missile_config = config_manager.config.get("missile", {})
 
-        self.object_types = stk_config.get("object_types", {"missile": 13})  # 13 = eMissile
+        self.object_types = stk_config.get("object_types", {"missile": 19})  # 19 = eMissile
         self.wait_times = stk_config.get("wait_times", {"object_creation": 2.0})
+
+        # 获取导弹飞行高度配置
+        flight_altitude_config = missile_config.get("flight_altitude", {})
+        self.min_altitude = flight_altitude_config.get("min_altitude", 300)
+        self.max_altitude = flight_altitude_config.get("max_altitude", 1500)
         
         # 轨迹类型 (基于日志分析)
         self.trajectory_types = {
             "ballistic": 10,  # 日志显示使用SetTrajectoryType(10)
             "astrogator": 11
         }
-    
-    def create_missile(self, missile_id: str, launch_time: datetime, 
+
+        # 性能优化缓存
+        self._trajectory_cache = {}           # 轨迹数据缓存
+        self._altitude_analysis_cache = {}    # 高度分析结果缓存
+        self._dataprovider_cache = {}         # DataProvider结果缓存
+        self._missile_object_cache = {}       # 导弹对象缓存
+
+        logger.info("🚀 导弹管理器初始化完成，性能缓存已准备")
+
+    def _get_cached_trajectory_data(self, missile_id: str):
+        """从缓存获取轨迹数据，避免重复STK调用"""
+        cache_key = f"trajectory_{missile_id}"
+        if cache_key in self._trajectory_cache:
+            logger.debug(f"✅ 使用缓存的轨迹数据: {missile_id}")
+            return self._trajectory_cache[cache_key]
+        return None
+
+    def _cache_trajectory_data(self, missile_id: str, trajectory_data):
+        """缓存轨迹数据"""
+        cache_key = f"trajectory_{missile_id}"
+        self._trajectory_cache[cache_key] = trajectory_data
+        logger.debug(f"💾 缓存轨迹数据: {missile_id}")
+
+    def _get_cached_altitude_analysis(self, missile_id: str):
+        """从缓存获取高度分析结果"""
+        cache_key = f"altitude_{missile_id}"
+        if cache_key in self._altitude_analysis_cache:
+            logger.debug(f"✅ 使用缓存的高度分析: {missile_id}")
+            return self._altitude_analysis_cache[cache_key]
+        return None
+
+    def _cache_altitude_analysis(self, missile_id: str, analysis_result):
+        """缓存高度分析结果"""
+        cache_key = f"altitude_{missile_id}"
+        self._altitude_analysis_cache[cache_key] = analysis_result
+        logger.debug(f"💾 缓存高度分析: {missile_id}")
+
+    def clear_cache(self):
+        """清空所有缓存"""
+        self._trajectory_cache.clear()
+        self._altitude_analysis_cache.clear()
+        self._dataprovider_cache.clear()
+        self._missile_object_cache.clear()
+        logger.info("🧹 已清空所有缓存")
+
+    def _get_cached_missile_object(self, missile_id: str):
+        """获取缓存的导弹对象，避免重复STK查找"""
+        if missile_id in self._missile_object_cache:
+            logger.debug(f"✅ 使用缓存的导弹对象: {missile_id}")
+            return self._missile_object_cache[missile_id]
+
+        try:
+            # 从STK获取导弹对象
+            missile = self.stk_manager.scenario.Children.Item(missile_id)
+            self._missile_object_cache[missile_id] = missile
+            logger.debug(f"💾 缓存导弹对象: {missile_id}")
+            return missile
+        except Exception as e:
+            logger.error(f"❌ 获取导弹对象失败 {missile_id}: {e}")
+            return None
+
+    def get_cache_stats(self):
+        """获取缓存统计信息"""
+        return {
+            "trajectory_cache_size": len(self._trajectory_cache),
+            "altitude_cache_size": len(self._altitude_analysis_cache),
+            "dataprovider_cache_size": len(self._dataprovider_cache),
+            "missile_object_cache_size": len(self._missile_object_cache)
+        }
+
+    def batch_get_missile_trajectory_info(self, missile_ids: List[str]) -> Dict[str, Optional[Dict[str, Any]]]:
+        """
+        批量获取多个导弹的轨迹信息，优化性能
+
+        Args:
+            missile_ids: 导弹ID列表
+
+        Returns:
+            字典: {missile_id: trajectory_info}
+        """
+        logger.info(f"🚀 批量获取 {len(missile_ids)} 个导弹的轨迹信息...")
+
+        results = {}
+        cache_hits = 0
+        new_calculations = 0
+
+        for missile_id in missile_ids:
+            # 检查缓存
+            cached_data = self._get_cached_trajectory_data(missile_id)
+            if cached_data:
+                results[missile_id] = cached_data
+                cache_hits += 1
+            else:
+                # 获取新数据
+                trajectory_info = self.get_missile_trajectory_info(missile_id)
+                results[missile_id] = trajectory_info
+                new_calculations += 1
+
+        logger.info(f"✅ 批量轨迹获取完成: 缓存命中 {cache_hits}, 新计算 {new_calculations}")
+        return results
+
+    def batch_get_missile_flight_phases_by_altitude(self, missile_ids: List[str]) -> Dict[str, Optional[Dict[str, Any]]]:
+        """
+        批量获取多个导弹的高度分析结果，优化性能
+
+        Args:
+            missile_ids: 导弹ID列表
+
+        Returns:
+            字典: {missile_id: altitude_analysis}
+        """
+        logger.info(f"🚀 批量获取 {len(missile_ids)} 个导弹的高度分析...")
+
+        results = {}
+        cache_hits = 0
+        new_calculations = 0
+
+        for missile_id in missile_ids:
+            # 检查缓存
+            cached_analysis = self._get_cached_altitude_analysis(missile_id)
+            if cached_analysis:
+                results[missile_id] = cached_analysis
+                cache_hits += 1
+            else:
+                # 获取新分析
+                altitude_analysis = self.get_missile_flight_phases_by_altitude(missile_id)
+                results[missile_id] = altitude_analysis
+                new_calculations += 1
+
+        logger.info(f"✅ 批量高度分析完成: 缓存命中 {cache_hits}, 新计算 {new_calculations}")
+        return results
+
+    def create_missile(self, missile_id: str, launch_time: datetime,
                       trajectory_params: Dict) -> bool:
         """
         创建导弹 - 重构版本，基于实际使用的方法
@@ -133,10 +270,10 @@ class MissileManager:
                 trajectory.ImpactLocation.Impact.Alt = target_pos["alt"]
                 logger.info(f"✅ 撞击位置设置成功")
 
-                # 设置发射控制类型和远地点高度
+                # 设置发射控制类型和远地点高度（使用配置参数）
                 import random
-                apogee_alt_km = random.uniform(1500, 1800)
-                logger.info(f"✅ 随机飞行高度: {apogee_alt_km:.1f}km")
+                apogee_alt_km = random.uniform(self.min_altitude, self.max_altitude)
+                logger.info(f"✅ 随机飞行高度: {apogee_alt_km:.1f}km (范围: {self.min_altitude}-{self.max_altitude}km)")
 
                 trajectory.ImpactLocation.SetLaunchControlType(0)
                 trajectory.ImpactLocation.LaunchControl.ApogeeAlt = apogee_alt_km
@@ -533,6 +670,80 @@ class MissileManager:
         if launch_time:
             logger.info(f"   发射时间: {launch_time}")
 
+    def create_missile_in_stk(self, missile_id: str) -> bool:
+        """
+        在STK中创建导弹对象 - 简化版本用于测试
+
+        Args:
+            missile_id: 导弹ID
+
+        Returns:
+            创建是否成功
+        """
+        try:
+            if missile_id not in self.missile_targets:
+                logger.error(f"❌ 导弹配置不存在: {missile_id}")
+                return False
+
+            missile_config = self.missile_targets[missile_id]
+            launch_time = missile_config.get("launch_time", datetime.now())
+
+            # 使用现有的create_missile方法
+            trajectory_params = {
+                "launch_position": missile_config["launch_position"],
+                "target_position": missile_config["target_position"],
+                "flight_time": 1800  # 30分钟飞行时间
+            }
+
+            success = self.create_missile(missile_id, launch_time, trajectory_params)
+            if success:
+                logger.info(f"✅ 导弹 {missile_id} 在STK中创建成功")
+            else:
+                logger.error(f"❌ 导弹 {missile_id} 在STK中创建失败")
+
+            return success
+
+        except Exception as e:
+            logger.error(f"❌ 创建导弹异常 {missile_id}: {e}")
+            return False
+
+    def _parse_stk_time(self, time_str: str) -> Optional[datetime]:
+        """
+        解析STK时间字符串为datetime对象
+
+        Args:
+            time_str: STK时间字符串，如 "26 Jul 2025 02:00:00.000000000"
+
+        Returns:
+            解析后的datetime对象，失败返回None
+        """
+        try:
+            # STK时间格式: "26 Jul 2025 02:00:00.000000000"
+            # 移除纳秒部分，只保留到微秒
+            if '.' in time_str:
+                time_part, fraction_part = time_str.split('.')
+                # 只取前6位作为微秒
+                microseconds = fraction_part[:6].ljust(6, '0')
+                time_str = f"{time_part}.{microseconds}"
+
+            # 解析时间
+            return datetime.strptime(time_str, "%d %b %Y %H:%M:%S.%f")
+
+        except ValueError:
+            try:
+                # 尝试不带微秒的格式
+                return datetime.strptime(time_str, "%d %b %Y %H:%M:%S")
+            except ValueError:
+                try:
+                    # 尝试ISO格式
+                    return datetime.fromisoformat(time_str.replace('Z', '+00:00'))
+                except ValueError:
+                    logger.debug(f"无法解析时间字符串: {time_str}")
+                    return None
+        except Exception as e:
+            logger.debug(f"时间解析异常: {e}")
+            return None
+
     def _generate_random_global_missile(self, start_time: datetime, end_time: datetime, sequence: int) -> Optional[Dict]:
         """生成随机全球导弹场景 - 兼容性方法"""
         try:
@@ -643,12 +854,73 @@ class MissileManager:
             logger.error(f"❌ 导弹时间设置失败: {e}")
             return False  # 异常情况返回失败
 
+    def get_missile_actual_time_range(self, missile_id: str) -> Optional[Tuple[datetime, datetime]]:
+        """
+        获取导弹的实际时间范围（发射时间和撞击时间）
+
+        Returns:
+            (launch_time, impact_time) 或 None（如果获取失败）
+        """
+        try:
+            missile = self.stk_manager.scenario.Children.Item(missile_id)
+            trajectory = missile.Trajectory
+
+            # 确保轨迹已传播
+            try:
+                trajectory.Propagate()
+            except Exception as prop_error:
+                logger.debug(f"轨迹传播失败: {prop_error}")
+
+            # 尝试获取实际时间范围
+            try:
+                launch_time_str = trajectory.LaunchTime
+                impact_time_str = trajectory.ImpactTime
+
+                # 转换为datetime对象
+                launch_time = self._parse_stk_time(launch_time_str)
+                impact_time = self._parse_stk_time(impact_time_str)
+
+                if launch_time and impact_time:
+                    logger.info(f"✅ 导弹 {missile_id} 实际时间范围: {launch_time} - {impact_time}")
+                    return launch_time, impact_time
+
+            except Exception as traj_error:
+                logger.debug(f"从轨迹获取时间失败: {traj_error}")
+
+                # 尝试从EphemerisInterval获取
+                try:
+                    ephemeris = trajectory.EphemerisInterval
+                    start_time_str = ephemeris.StartTime
+                    stop_time_str = ephemeris.StopTime
+
+                    start_time = self._parse_stk_time(start_time_str)
+                    stop_time = self._parse_stk_time(stop_time_str)
+
+                    if start_time and stop_time:
+                        logger.info(f"✅ 导弹 {missile_id} EphemerisInterval时间范围: {start_time} - {stop_time}")
+                        return start_time, stop_time
+
+                except Exception as ephemeris_error:
+                    logger.debug(f"从EphemerisInterval获取时间失败: {ephemeris_error}")
+
+            logger.error(f"❌ 无法获取导弹 {missile_id} 的实际时间范围")
+            return None
+
+        except Exception as e:
+            logger.error(f"❌ 获取导弹时间范围失败 {missile_id}: {e}")
+            return None
+
     def get_missile_trajectory_info(self, missile_id: str) -> Optional[Dict[str, Any]]:
-        """获取导弹轨迹信息 - 修复版本，确保轨迹传播"""
+        """获取导弹轨迹信息 - 优化版本，支持缓存"""
         logger.info(f"🎯 获取导弹轨迹信息: {missile_id}")
 
-        # 获取导弹对象
-        missile = self.stk_manager.scenario.Children.Item(missile_id)
+        # 1. 检查缓存
+        cached_data = self._get_cached_trajectory_data(missile_id)
+        if cached_data:
+            return cached_data
+
+        # 2. 获取导弹对象（使用缓存）
+        missile = self._get_cached_missile_object(missile_id)
         logger.info(f"✅ 导弹对象获取成功: {missile_id}")
 
         # 修复：确保轨迹传播
@@ -662,6 +934,238 @@ class MissileManager:
 
         # 直接从STK DataProvider获取轨迹数据
         return self._get_trajectory_from_stk_dataprovider(missile)
+
+    def get_missile_flight_phases_by_altitude(self, missile_id: str) -> Optional[Dict[str, Any]]:
+        """
+        基于导弹真实轨迹高度分析飞行阶段时间范围（优化版本，支持缓存）
+
+        Returns:
+            包含各飞行阶段时间范围的字典，或None（如果分析失败）
+        """
+        try:
+            logger.info(f"🎯 分析导弹 {missile_id} 轨迹高度以确定飞行阶段")
+
+            # 1. 检查高度分析缓存
+            cached_analysis = self._get_cached_altitude_analysis(missile_id)
+            if cached_analysis:
+                return cached_analysis
+
+            # 2. 获取导弹轨迹数据（使用缓存）
+            trajectory_info = self.get_missile_trajectory_info(missile_id)
+            if not trajectory_info:
+                logger.error(f"❌ 无法获取导弹 {missile_id} 轨迹数据")
+                return None
+
+            trajectory_points = trajectory_info.get("trajectory_points", [])
+            if not trajectory_points:
+                logger.error(f"❌ 导弹 {missile_id} 轨迹数据为空")
+                return None
+
+            logger.info(f"📊 获取到 {len(trajectory_points)} 个轨迹点")
+
+            # 3. 分析高度变化确定飞行阶段
+            analysis_result = self._analyze_flight_phases_by_altitude(trajectory_points, missile_id)
+
+            # 4. 缓存分析结果
+            if analysis_result:
+                self._cache_altitude_analysis(missile_id, analysis_result)
+
+            return analysis_result
+
+        except Exception as e:
+            logger.error(f"❌ 分析导弹飞行阶段失败 {missile_id}: {e}")
+            return None
+
+    def _analyze_flight_phases_by_altitude(self, trajectory_points: List[Dict], missile_id: str) -> Dict[str, Any]:
+        """
+        基于真实轨迹高度数据分析飞行阶段，使用配置的中段高度阈值
+
+        Args:
+            trajectory_points: 轨迹点列表
+            missile_id: 导弹ID
+
+        Returns:
+            飞行阶段分析结果
+        """
+        try:
+            # 获取中段高度阈值配置
+            from ..utils.config_manager import get_config_manager
+            config_manager = get_config_manager()
+            task_planning_config = config_manager.get_task_planning_config()
+            midcourse_altitude_threshold = task_planning_config.get("midcourse_altitude_threshold", 100)  # 默认100km
+
+            logger.info(f"📏 使用中段高度阈值: {midcourse_altitude_threshold}km")
+            logger.info(f"📊 开始解析 {len(trajectory_points)} 个轨迹点的高度数据...")
+
+            # 提取时间和高度数据
+            times = []
+            altitudes = []
+            valid_points = 0
+            parse_errors = 0
+
+            for i, point in enumerate(trajectory_points):
+                time_str = point.get("time")
+                altitude = point.get("alt")  # 修复：使用正确的字段名 "alt"
+
+                if time_str and altitude is not None:
+                    time_obj = self._parse_stk_time(time_str)
+                    if time_obj:
+                        try:
+                            # STK返回的高度数据已经是千米单位，直接使用
+                            altitude_km = float(altitude)
+                            times.append(time_obj)
+                            altitudes.append(altitude_km)
+                            valid_points += 1
+
+                            # 调试信息：显示前几个点的数据
+                            if i < 3:
+                                logger.info(f"   样本点 {i+1}: 时间={time_str}, 高度={altitude_km:.2f}km")
+                        except (ValueError, TypeError) as e:
+                            parse_errors += 1
+                            if parse_errors <= 3:  # 只显示前3个错误
+                                logger.warning(f"   高度解析错误 点{i+1}: {altitude} - {e}")
+                    else:
+                        parse_errors += 1
+                        if parse_errors <= 3:
+                            logger.warning(f"   时间解析错误 点{i+1}: {time_str}")
+                else:
+                    parse_errors += 1
+                    if parse_errors <= 3:
+                        logger.warning(f"   数据缺失 点{i+1}: time={time_str}, alt={altitude}")
+
+            logger.info(f"📊 数据解析结果: 有效点数={valid_points}, 错误数={parse_errors}")
+
+            if len(times) < 3:
+                logger.warning(f"⚠️ 轨迹点数量不足，无法分析飞行阶段: {len(times)}")
+                logger.warning(f"   原始点数: {len(trajectory_points)}, 有效点数: {valid_points}, 错误数: {parse_errors}")
+                return None
+
+            logger.info(f"📈 高度范围: {min(altitudes):.1f}km - {max(altitudes):.1f}km")
+
+            # 基于高度阈值分析飞行阶段
+            phases = self._identify_flight_phases_by_altitude_threshold(
+                times, altitudes, midcourse_altitude_threshold, missile_id
+            )
+
+            # 构建结果
+            result = {
+                "missile_id": missile_id,
+                "launch_time": times[0],
+                "impact_time": times[-1],
+                "total_flight_time": (times[-1] - times[0]).total_seconds(),
+                "max_altitude": max(altitudes),
+                "flight_phases": phases,
+                "trajectory_points_count": len(times),
+                "altitude_analysis": {
+                    "min_altitude": min(altitudes),
+                    "max_altitude": max(altitudes),
+                    "altitude_range": max(altitudes) - min(altitudes)
+                }
+            }
+
+            logger.info(f"✅ 飞行阶段分析完成:")
+            logger.info(f"   助推段: {phases['boost']['start']} - {phases['boost']['end']}")
+            logger.info(f"   中段: {phases['midcourse']['start']} - {phases['midcourse']['end']}")
+            logger.info(f"   末段: {phases['terminal']['start']} - {phases['terminal']['end']}")
+            logger.info(f"   最大高度: {max(altitudes):.1f}m")
+
+            return result
+
+        except Exception as e:
+            logger.error(f"❌ 飞行阶段分析失败: {e}")
+            return None
+
+    def _identify_flight_phases_by_altitude_threshold(self, times: List[datetime], altitudes: List[float],
+                                                    altitude_threshold: float, missile_id: str) -> Dict[str, Dict]:
+        """
+        基于配置的高度阈值识别飞行阶段
+
+        Args:
+            times: 时间列表
+            altitudes: 高度列表 (km)
+            altitude_threshold: 中段高度阈值 (km)
+            missile_id: 导弹ID
+
+        Returns:
+            飞行阶段字典
+        """
+        try:
+            logger.info(f"🎯 基于高度阈值 {altitude_threshold}km 分析飞行阶段...")
+
+            # 找到超过高度阈值的时间段
+            midcourse_start_idx = None
+            midcourse_end_idx = None
+
+            # 寻找第一次超过阈值的点（中段开始）
+            for i, altitude in enumerate(altitudes):
+                if altitude >= altitude_threshold:
+                    midcourse_start_idx = i
+                    break
+
+            # 寻找最后一次超过阈值的点（中段结束）
+            for i in range(len(altitudes) - 1, -1, -1):
+                if altitudes[i] >= altitude_threshold:
+                    midcourse_end_idx = i
+                    break
+
+            # 如果没有找到超过阈值的点，使用传统方法
+            if midcourse_start_idx is None or midcourse_end_idx is None:
+                logger.warning(f"⚠️ 导弹 {missile_id} 未达到中段高度阈值 {altitude_threshold}km，使用传统分析方法")
+                return self._identify_flight_phases_from_altitude(times, altitudes)
+
+            # 确保中段时间段合理
+            if midcourse_start_idx >= midcourse_end_idx:
+                logger.warning(f"⚠️ 中段时间段不合理，使用传统分析方法")
+                return self._identify_flight_phases_from_altitude(times, altitudes)
+
+            # 计算各阶段时间
+            boost_end_time = times[midcourse_start_idx]
+            terminal_start_time = times[midcourse_end_idx]
+
+            # 构建飞行阶段
+            phases = {
+                "boost": {
+                    "start": times[0],
+                    "end": boost_end_time,
+                    "duration_seconds": (boost_end_time - times[0]).total_seconds(),
+                    "max_altitude": max(altitudes[:midcourse_start_idx + 1]) if midcourse_start_idx > 0 else altitudes[0]
+                },
+                "midcourse": {
+                    "start": boost_end_time,
+                    "end": terminal_start_time,
+                    "duration_seconds": (terminal_start_time - boost_end_time).total_seconds(),
+                    "max_altitude": max(altitudes[midcourse_start_idx:midcourse_end_idx + 1]),
+                    "min_altitude_threshold": altitude_threshold,
+                    "actual_min_altitude": min(altitudes[midcourse_start_idx:midcourse_end_idx + 1]),
+                    "altitude_above_threshold": True
+                },
+                "terminal": {
+                    "start": terminal_start_time,
+                    "end": times[-1],
+                    "duration_seconds": (times[-1] - terminal_start_time).total_seconds(),
+                    "max_altitude": max(altitudes[midcourse_end_idx:]) if midcourse_end_idx < len(altitudes) - 1 else altitudes[-1]
+                }
+            }
+
+            # 验证阶段时间的合理性
+            total_duration = (times[-1] - times[0]).total_seconds()
+            midcourse_duration = phases["midcourse"]["duration_seconds"]
+            midcourse_ratio = midcourse_duration / total_duration
+
+            logger.info(f"✅ 基于高度阈值的飞行阶段分析:")
+            logger.info(f"   助推段: {phases['boost']['start']} - {phases['boost']['end']} ({phases['boost']['duration_seconds']:.0f}秒)")
+            logger.info(f"   中段: {phases['midcourse']['start']} - {phases['midcourse']['end']} ({phases['midcourse']['duration_seconds']:.0f}秒)")
+            logger.info(f"   末段: {phases['terminal']['start']} - {phases['terminal']['end']} ({phases['terminal']['duration_seconds']:.0f}秒)")
+            logger.info(f"   中段占比: {midcourse_ratio:.1%}")
+            logger.info(f"   中段最大高度: {phases['midcourse']['max_altitude']:.1f}km")
+            logger.info(f"   中段最小高度: {phases['midcourse']['actual_min_altitude']:.1f}km")
+
+            return phases
+
+        except Exception as e:
+            logger.error(f"❌ 基于高度阈值的飞行阶段分析失败: {e}")
+            # 回退到传统方法
+            return self._identify_flight_phases_from_altitude(times, altitudes)
 
     def _get_trajectory_from_stk_dataprovider(self, missile) -> Dict[str, Any]:
         """从STK DataProvider获取真实轨迹数据"""
@@ -681,6 +1185,133 @@ class MissileManager:
         except Exception as e:
             logger.error(f"❌ STK真实轨迹获取失败: {e}")
             raise Exception(f"无法获取导弹 {missile_id} 的STK真实轨迹数据: {e}")
+
+    def _identify_flight_phases_from_altitude(self, times: List[datetime], altitudes: List[float]) -> Dict[str, Dict]:
+        """
+        基于高度变化识别飞行阶段
+
+        Args:
+            times: 时间列表
+            altitudes: 高度列表
+
+        Returns:
+            飞行阶段字典
+        """
+        try:
+            # 找到最大高度点
+            max_altitude_idx = altitudes.index(max(altitudes))
+            max_altitude_time = times[max_altitude_idx]
+
+            # 计算高度变化率（简化分析）
+            altitude_changes = []
+            for i in range(1, len(altitudes)):
+                dt = (times[i] - times[i-1]).total_seconds()
+                if dt > 0:
+                    rate = (altitudes[i] - altitudes[i-1]) / dt  # m/s
+                    altitude_changes.append(rate)
+                else:
+                    altitude_changes.append(0)
+
+            # 识别助推段结束点（高度变化率显著下降的点）
+            boost_end_idx = self._find_boost_phase_end(altitude_changes)
+            if boost_end_idx >= len(times):
+                boost_end_idx = min(len(times) // 4, len(times) - 1)  # 回退到25%位置
+
+            # 识别末段开始点（高度开始快速下降的点）
+            terminal_start_idx = self._find_terminal_phase_start(altitudes, max_altitude_idx)
+            if terminal_start_idx <= boost_end_idx:
+                terminal_start_idx = max(len(times) * 3 // 4, boost_end_idx + 1)  # 回退到75%位置
+
+            # 构建飞行阶段
+            phases = {
+                "boost": {
+                    "start": times[0],
+                    "end": times[boost_end_idx],
+                    "duration_seconds": (times[boost_end_idx] - times[0]).total_seconds(),
+                    "max_altitude": max(altitudes[:boost_end_idx + 1]),
+                    "altitude_gain": altitudes[boost_end_idx] - altitudes[0]
+                },
+                "midcourse": {
+                    "start": times[boost_end_idx],
+                    "end": times[terminal_start_idx],
+                    "duration_seconds": (times[terminal_start_idx] - times[boost_end_idx]).total_seconds(),
+                    "max_altitude": max(altitudes[boost_end_idx:terminal_start_idx + 1]),
+                    "apogee_time": max_altitude_time
+                },
+                "terminal": {
+                    "start": times[terminal_start_idx],
+                    "end": times[-1],
+                    "duration_seconds": (times[-1] - times[terminal_start_idx]).total_seconds(),
+                    "altitude_loss": altitudes[terminal_start_idx] - altitudes[-1]
+                }
+            }
+
+            return phases
+
+        except Exception as e:
+            logger.error(f"❌ 飞行阶段识别失败: {e}")
+            # 回退到简单的时间比例分割
+            total_time = times[-1] - times[0]
+            boost_end = times[0] + total_time * 0.1
+            terminal_start = times[-1] - total_time * 0.1
+
+            return {
+                "boost": {
+                    "start": times[0],
+                    "end": boost_end,
+                    "duration_seconds": total_time.total_seconds() * 0.1
+                },
+                "midcourse": {
+                    "start": boost_end,
+                    "end": terminal_start,
+                    "duration_seconds": total_time.total_seconds() * 0.8
+                },
+                "terminal": {
+                    "start": terminal_start,
+                    "end": times[-1],
+                    "duration_seconds": total_time.total_seconds() * 0.1
+                }
+            }
+
+    def _find_boost_phase_end(self, altitude_changes: List[float]) -> int:
+        """找到助推段结束点（高度变化率显著下降）"""
+        try:
+            if len(altitude_changes) < 5:
+                return len(altitude_changes) // 4
+
+            # 寻找高度变化率从正值显著下降的点
+            max_rate = max(altitude_changes[:len(altitude_changes)//2])  # 前半段的最大上升率
+            threshold = max_rate * 0.3  # 30%阈值
+
+            for i in range(len(altitude_changes)//4, len(altitude_changes)//2):
+                if altitude_changes[i] < threshold:
+                    return i
+
+            # 回退到25%位置
+            return len(altitude_changes) // 4
+
+        except Exception:
+            return len(altitude_changes) // 4
+
+    def _find_terminal_phase_start(self, altitudes: List[float], max_altitude_idx: int) -> int:
+        """找到末段开始点（高度开始快速下降）"""
+        try:
+            if max_altitude_idx >= len(altitudes) - 5:
+                return len(altitudes) * 3 // 4
+
+            # 从最大高度点开始，寻找高度开始快速下降的点
+            max_altitude = altitudes[max_altitude_idx]
+            threshold_altitude = max_altitude * 0.8  # 80%高度阈值
+
+            for i in range(max_altitude_idx, len(altitudes)):
+                if altitudes[i] < threshold_altitude:
+                    return i
+
+            # 回退到75%位置
+            return len(altitudes) * 3 // 4
+
+        except Exception:
+            return len(altitudes) * 3 // 4
 
     def _extract_real_trajectory_from_stk(self, missile) -> Optional[Dict[str, Any]]:
         """从STK获取真实轨迹数据 - 基于STK官方文档的最佳实践"""
@@ -796,12 +1427,19 @@ class MissileManager:
                 logger.info(f"   ⏰ 时间步长: {time_step}秒")
                 logger.info(f"   ⏰ 时间范围: {start_time_stk} 到 {stop_time_stk}")
 
-                # 基于STK官方文档: 正确的DataProvider.Exec()调用方式
-                logger.info(f"   🚀 执行DataProvider.Exec()...")
+                # 检查DataProvider结果缓存
+                cache_key = f"dataprovider_{missile_id}_{start_time_stk}_{stop_time_stk}_{time_step}"
+                if cache_key in self._dataprovider_cache:
+                    logger.info(f"   ✅ 使用缓存的DataProvider结果")
+                    result = self._dataprovider_cache[cache_key]["result"]
+                    execution_method = self._dataprovider_cache[cache_key]["method"]
+                else:
+                    # 基于STK官方文档: 正确的DataProvider.Exec()调用方式
+                    logger.info(f"   🚀 执行DataProvider.Exec()...")
 
-                # 重要修复: 基于STK官方文档的多种DataProvider执行方法
-                result = None
-                execution_method = None
+                    # 重要修复: 基于STK官方文档的多种DataProvider执行方法
+                    result = None
+                    execution_method = None
 
                 try:
                     # 方法1: 使用ExecElements - 基于官方文档推荐
@@ -839,6 +1477,14 @@ class MissileManager:
 
                 logger.info(f"   ✅ DataProvider.Exec()执行成功，使用方法: {execution_method}")
                 logger.info(f"   📊 DataSets数量: {result.DataSets.Count}")
+
+                # 缓存DataProvider结果（如果不是从缓存获取的）
+                if cache_key not in self._dataprovider_cache:
+                    self._dataprovider_cache[cache_key] = {
+                        "result": result,
+                        "method": execution_method
+                    }
+                    logger.debug(f"   💾 缓存DataProvider结果: {execution_method}")
 
                 # 添加STK数据结构分析
                 logger.info(f"   🔍 开始分析STK DataProvider数据结构...")
@@ -993,7 +1639,8 @@ class MissileManager:
                                 trajectory_points = []
 
                             # 返回完整的轨迹信息
-                            return {
+                            # 构建轨迹数据结果
+                            trajectory_result = {
                                 "missile_id": missile_id,
                                 "launch_time": start_time_stk,
                                 "impact_time": stop_time_stk,
@@ -1001,6 +1648,11 @@ class MissileManager:
                                 "data_available": True,
                                 "total_points": data_count
                             }
+
+                            # 缓存轨迹数据结果
+                            self._cache_trajectory_data(missile_id, trajectory_result)
+
+                            return trajectory_result
                         else:
                             logger.warning(f"   ⚠️ DataSet为空")
                             return None

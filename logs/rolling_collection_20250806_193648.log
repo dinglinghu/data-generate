@@ -1,0 +1,269 @@
+2025-08-06 19:36:48,841 - __main__ - INFO - 启动STK滚动元任务数据采集系统
+2025-08-06 19:36:48,842 - __main__ - INFO - ================================================================================
+2025-08-06 19:36:48,842 - __main__ - INFO - 会话名称: 默认时间戳
+2025-08-06 19:36:48,842 - __main__ - INFO - 甘特图生成: 启用 (默认)
+2025-08-06 19:36:48,855 - src.meta_task_main - INFO - 🎯 初始化元任务数据采集系统...
+2025-08-06 19:36:48,859 - src.utils.time_manager - INFO - ⏰ 仿真时间配置加载成功:
+2025-08-06 19:36:48,859 - src.utils.time_manager - INFO -    开始时间: 2025-07-26 00:00:00
+2025-08-06 19:36:48,859 - src.utils.time_manager - INFO -    结束时间: 2025-07-28 00:00:00
+2025-08-06 19:36:48,860 - src.utils.time_manager - INFO -    基准时间: 2025-07-26 00:00:00
+2025-08-06 19:36:48,860 - src.utils.time_manager - INFO -    场景时长: 2 days, 0:00:00
+2025-08-06 19:36:48,861 - src.utils.time_manager - INFO - 🕐 时间管理器初始化完成:
+2025-08-06 19:36:48,861 - src.utils.time_manager - INFO -    仿真时间范围: 2025-07-26 00:00:00 - 2025-07-28 00:00:00
+2025-08-06 19:36:48,861 - src.utils.time_manager - INFO -    历元时间: 2025-07-26 00:00:00
+2025-08-06 19:36:48,861 - src.utils.time_manager - INFO -    数据采集间隔: [60, 300]秒
+2025-08-06 19:36:48,861 - src.utils.time_manager - INFO -    保存频率: 每10次采集保存一次
+2025-08-06 19:36:48,862 - src.utils.time_manager - INFO -    总采集次数目标: 50次
+2025-08-06 19:36:48,862 - src.utils.time_manager - INFO -    导弹发射间隔: [300, 1800]秒
+2025-08-06 19:36:48,862 - src.constellation.constellation_manager - INFO - 🌟 星座管理器初始化完成
+2025-08-06 19:36:48,862 - src.stk_interface.missile_manager - INFO - 🚀 导弹管理器初始化完成，性能缓存已准备
+2025-08-06 19:36:48,863 - src.stk_interface.visibility_calculator - INFO - 👁️ 可见性计算器初始化完成，对象缓存已准备
+2025-08-06 19:36:48,863 - src.data_collection.data_collector - INFO - 📊 数据采集器初始化完成
+2025-08-06 19:36:48,863 - src.meta_task.meta_task_manager - INFO - 🎯 元任务管理器初始化完成，批量处理已准备
+2025-08-06 19:36:48,863 - src.meta_task.meta_task_manager - INFO -    元子任务时间间隔: 300秒
+2025-08-06 19:36:48,873 - src.meta_task.parallel_position_manager - INFO - 🚀 并行位置管理器初始化完成
+2025-08-06 19:36:48,873 - src.meta_task.parallel_position_manager - INFO -    最大工作线程: 8
+2025-08-06 19:36:48,874 - src.meta_task.parallel_position_manager - INFO -    批处理大小: 20
+2025-08-06 19:36:48,874 - src.meta_task.satellite_position_synchronizer - INFO - 🛰️ 卫星位置同步器初始化完成
+2025-08-06 19:36:48,874 - src.meta_task.satellite_position_synchronizer - INFO -    采样间隔: 30秒
+2025-08-06 19:36:48,874 - src.meta_task.satellite_position_synchronizer - INFO -    最大采样点数: 20
+2025-08-06 19:36:48,874 - src.meta_task.satellite_position_synchronizer - INFO -    统计计算: 启用
+2025-08-06 19:36:48,874 - src.meta_task.satellite_position_synchronizer - INFO -    并发处理: 启用
+2025-08-06 19:36:48,875 - src.meta_task.satellite_position_synchronizer - INFO -    并行优化: 启用
+2025-08-06 19:36:48,875 - src.meta_task.satellite_position_synchronizer - INFO -    最大工作线程: 4
+2025-08-06 19:36:48,875 - src.meta_task.satellite_position_synchronizer - INFO -    批处理大小: 10
+2025-08-06 19:36:48,875 - src.meta_task.visible_meta_task_calculator - INFO - 🛰️ 位置同步器已启用
+2025-08-06 19:36:48,875 - src.meta_task.visible_meta_task_calculator - INFO - 👁️ 可见元子任务计算器初始化完成
+2025-08-06 19:36:48,875 - src.meta_task.visible_meta_task_calculator - INFO -    覆盖要求: partial
+2025-08-06 19:36:48,875 - src.meta_task.visible_meta_task_calculator - INFO -    最小重叠比例: 0.8
+2025-08-06 19:36:48,876 - src.meta_task.visible_meta_task_calculator - INFO -    位置同步: 启用
+2025-08-06 19:36:48,876 - src.meta_task.meta_task_data_collector - INFO - 🎯 元任务数据采集器初始化完成
+2025-08-06 19:36:49,408 - src.meta_task.rolling_data_collector - INFO - 🔄 滚动数据采集管理器初始化完成
+2025-08-06 19:36:49,409 - src.meta_task.rolling_data_collector - INFO -    总采集次数: 10
+2025-08-06 19:36:49,409 - src.meta_task.rolling_data_collector - INFO -    采集间隔: 300-900秒
+2025-08-06 19:36:49,409 - src.meta_task.rolling_data_collector - INFO -    导弹数量范围: 2-5
+2025-08-06 19:36:49,409 - src.meta_task.rolling_data_collector - INFO -    导弹池优化: 启用
+2025-08-06 19:36:49,410 - src.meta_task_main - INFO - ✅ 元任务数据采集系统初始化完成
+2025-08-06 19:36:49,410 - __main__ - INFO - 📋 滚动采集配置:
+2025-08-06 19:36:49,410 - __main__ - INFO -    总采集次数: 10
+2025-08-06 19:36:49,410 - __main__ - INFO -    采集间隔: 300-900秒
+2025-08-06 19:36:49,410 - __main__ - INFO -    导弹数量范围: [2, 5]
+2025-08-06 19:36:49,410 - __main__ - INFO -    清理现有导弹: True
+2025-08-06 19:36:49,410 - __main__ - INFO -    输出目录: 将由统一数据管理器创建
+2025-08-06 19:36:49,411 - __main__ - INFO - 
+🚀 开始滚动数据采集...
+2025-08-06 19:36:49,411 - src.meta_task_main - INFO - 🔄 启动滚动数据采集系统...
+2025-08-06 19:36:49,411 - src.meta_task_main - INFO - 🔧 设置STK环境...
+2025-08-06 19:36:52,979 - src.stk_interface.stk_manager - INFO - ✅ 创建新的STK实例
+2025-08-06 19:36:52,997 - src.stk_interface.stk_manager - INFO - 🔧 当前无场景，创建新场景...
+2025-08-06 19:37:01,895 - src.stk_interface.stk_manager - INFO - ✅ 创建新场景: RefactoredScenario
+2025-08-06 19:37:02,308 - src.stk_interface.stk_manager - INFO - ✅ 场景时间设置: 26 Jul 2025 00:00:00.000 - 28 Jul 2025 00:00:00.000
+2025-08-06 19:37:02,342 - src.stk_interface.stk_manager - INFO - ✅ STK连接成功，场景: RefactoredScenario
+2025-08-06 19:37:02,342 - src.meta_task_main - INFO - ✅ STK环境设置完成
+2025-08-06 19:37:02,342 - src.meta_task_main - INFO - 🌟 设置Walker星座...
+2025-08-06 19:37:02,343 - src.constellation.constellation_manager - INFO - 🌟 开始创建Walker星座...
+2025-08-06 19:37:02,343 - src.constellation.constellation_manager - INFO - 📊 星座配置: Walker, 3个轨道面, 每面8颗卫星
+2025-08-06 19:37:02,343 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO - ✅ Walker参数验证通过: W(24, 3, 1)
+2025-08-06 19:37:02,343 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO - 🌟 开始计算Walker星座轨道参数
+2025-08-06 19:37:02,343 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO -    星座配置: W(24, 3, 1)
+2025-08-06 19:37:02,343 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO -    模式类型: delta
+2025-08-06 19:37:02,343 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO -    参考轨道: 高度=1800km, 倾角=51.856°
+2025-08-06 19:37:02,344 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO -    半长轴: 8171.0km
+2025-08-06 19:37:02,344 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO -    RAAN间隔: 120.0°
+2025-08-06 19:37:02,344 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO -    平近点角间隔: 45.0°
+2025-08-06 19:37:02,344 - src.utils.walker_constellation_calculator.WalkerConstellationCalculator - INFO - ✅ Walker星座轨道计算完成，共24颗卫星
+2025-08-06 19:37:02,344 - src.constellation.constellation_manager - INFO - 📊 Walker星座计算完成:
+2025-08-06 19:37:02,344 - src.constellation.constellation_manager - INFO -    星座记号: W(24, 3, 1)
+2025-08-06 19:37:02,344 - src.constellation.constellation_manager - INFO -    模式类型: delta
+2025-08-06 19:37:02,344 - src.constellation.constellation_manager - INFO -    RAAN间隔: 120.0°
+2025-08-06 19:37:02,344 - src.constellation.constellation_manager - INFO -    平近点角间隔: 45.0°
+2025-08-06 19:37:02,345 - src.constellation.constellation_manager - INFO -    相位偏移: 15.0°/面
+2025-08-06 19:37:02,636 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite01
+2025-08-06 19:37:04,665 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-06 19:37:04,665 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-06 19:37:04,665 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-06 19:37:04,665 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-06 19:37:04,666 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 0.0 验证通过
+2025-08-06 19:37:04,666 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-06 19:37:04,666 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 0.0 验证通过
+2025-08-06 19:37:04,666 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-06 19:37:05,115 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-06 19:37:05,251 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-06 19:37:05,259 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite01
+2025-08-06 19:37:05,391 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite01_Payload
+2025-08-06 19:37:06,406 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-06 19:37:06,622 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-06 19:37:06,633 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 90.0°
+2025-08-06 19:37:06,645 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.0°
+2025-08-06 19:37:06,670 - src.stk_interface.stk_manager - WARNING - ⚠️ 设置圆锥参数失败: (-2147352567, '发生意外。', (0, None, 'Value 1.04719755 rad is invalid. Value range is 5.23598776 rad to 6.28318531 rad', None, 0, -2147220989), None)
+2025-08-06 19:37:06,679 - src.stk_interface.stk_manager - INFO - ✓ 单独设置外锥角成功: 90.0°
+2025-08-06 19:37:06,681 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-06 19:37:06,737 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-06 19:37:07,340 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-06 19:37:07,345 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-06 19:37:07,345 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite01_Payload
+2025-08-06 19:37:07,348 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite01 (轨道面1, 位置1)
+2025-08-06 19:37:07,407 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite02
+2025-08-06 19:37:09,437 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-06 19:37:09,437 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-06 19:37:09,437 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-06 19:37:09,437 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-06 19:37:09,437 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 0.0 验证通过
+2025-08-06 19:37:09,438 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-06 19:37:09,438 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 45.0 验证通过
+2025-08-06 19:37:09,438 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-06 19:37:09,849 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-06 19:37:09,957 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-06 19:37:09,966 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite02
+2025-08-06 19:37:10,090 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite02_Payload
+2025-08-06 19:37:11,102 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-06 19:37:11,319 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-06 19:37:11,330 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 90.0°
+2025-08-06 19:37:11,344 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.0°
+2025-08-06 19:37:11,370 - src.stk_interface.stk_manager - WARNING - ⚠️ 设置圆锥参数失败: (-2147352567, '发生意外。', (0, None, 'Value 1.04719755 rad is invalid. Value range is 5.23598776 rad to 6.28318531 rad', None, 0, -2147220989), None)
+2025-08-06 19:37:11,378 - src.stk_interface.stk_manager - INFO - ✓ 单独设置外锥角成功: 90.0°
+2025-08-06 19:37:11,381 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-06 19:37:11,435 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-06 19:37:12,076 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-06 19:37:12,080 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-06 19:37:12,081 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite02_Payload
+2025-08-06 19:37:12,083 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite02 (轨道面1, 位置2)
+2025-08-06 19:37:12,147 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite03
+2025-08-06 19:37:14,176 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-06 19:37:14,176 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-06 19:37:14,177 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-06 19:37:14,177 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-06 19:37:14,177 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 0.0 验证通过
+2025-08-06 19:37:14,177 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-06 19:37:14,177 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 90.0 验证通过
+2025-08-06 19:37:14,177 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-06 19:37:14,551 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-06 19:37:14,656 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-06 19:37:14,662 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite03
+2025-08-06 19:37:14,774 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite03_Payload
+2025-08-06 19:37:15,789 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-06 19:37:16,007 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-06 19:37:16,019 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 90.0°
+2025-08-06 19:37:16,034 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.0°
+2025-08-06 19:37:16,055 - src.stk_interface.stk_manager - WARNING - ⚠️ 设置圆锥参数失败: (-2147352567, '发生意外。', (0, None, 'Value 1.04719755 rad is invalid. Value range is 5.23598776 rad to 6.28318531 rad', None, 0, -2147220989), None)
+2025-08-06 19:37:16,061 - src.stk_interface.stk_manager - INFO - ✓ 单独设置外锥角成功: 90.0°
+2025-08-06 19:37:16,063 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-06 19:37:16,116 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-06 19:37:16,711 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-06 19:37:16,715 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-06 19:37:16,716 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite03_Payload
+2025-08-06 19:37:16,719 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite03 (轨道面1, 位置3)
+2025-08-06 19:37:16,774 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite04
+2025-08-06 19:37:18,805 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-06 19:37:18,805 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-06 19:37:18,806 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-06 19:37:18,806 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-06 19:37:18,806 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 0.0 验证通过
+2025-08-06 19:37:18,806 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-06 19:37:18,806 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 135.0 验证通过
+2025-08-06 19:37:18,806 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-06 19:37:19,157 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-06 19:37:19,262 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-06 19:37:19,269 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite04
+2025-08-06 19:37:19,384 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite04_Payload
+2025-08-06 19:37:20,402 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-06 19:37:20,613 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-06 19:37:20,622 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 90.0°
+2025-08-06 19:37:20,634 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.0°
+2025-08-06 19:37:20,658 - src.stk_interface.stk_manager - WARNING - ⚠️ 设置圆锥参数失败: (-2147352567, '发生意外。', (0, None, 'Value 1.04719755 rad is invalid. Value range is 5.23598776 rad to 6.28318531 rad', None, 0, -2147220989), None)
+2025-08-06 19:37:20,664 - src.stk_interface.stk_manager - INFO - ✓ 单独设置外锥角成功: 90.0°
+2025-08-06 19:37:20,666 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-06 19:37:20,716 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-06 19:37:21,317 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-06 19:37:21,322 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-06 19:37:21,322 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite04_Payload
+2025-08-06 19:37:21,326 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite04 (轨道面1, 位置4)
+2025-08-06 19:37:21,379 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite05
+2025-08-06 19:37:23,403 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-06 19:37:23,403 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-06 19:37:23,403 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-06 19:37:23,403 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-06 19:37:23,403 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 0.0 验证通过
+2025-08-06 19:37:23,403 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-06 19:37:23,403 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 180.0 验证通过
+2025-08-06 19:37:23,404 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-06 19:37:23,648 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-06 19:37:23,745 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-06 19:37:23,749 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite05
+2025-08-06 19:37:23,839 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite05_Payload
+2025-08-06 19:37:24,851 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-06 19:37:25,065 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-06 19:37:25,076 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 90.0°
+2025-08-06 19:37:25,095 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.0°
+2025-08-06 19:37:25,129 - src.stk_interface.stk_manager - WARNING - ⚠️ 设置圆锥参数失败: (-2147352567, '发生意外。', (0, None, 'Value 1.04719755 rad is invalid. Value range is 5.23598776 rad to 6.28318531 rad', None, 0, -2147220989), None)
+2025-08-06 19:37:25,137 - src.stk_interface.stk_manager - INFO - ✓ 单独设置外锥角成功: 90.0°
+2025-08-06 19:37:25,161 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-06 19:37:25,232 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-06 19:37:25,828 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-06 19:37:25,833 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-06 19:37:25,833 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite05_Payload
+2025-08-06 19:37:25,837 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite05 (轨道面1, 位置5)
+2025-08-06 19:37:25,902 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite06
+2025-08-06 19:37:28,392 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-06 19:37:28,392 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-06 19:37:28,392 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-06 19:37:28,393 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-06 19:37:28,393 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 0.0 验证通过
+2025-08-06 19:37:28,393 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-06 19:37:28,393 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 225.0 验证通过
+2025-08-06 19:37:28,393 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-06 19:37:28,916 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-06 19:37:29,032 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-06 19:37:29,074 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite06
+2025-08-06 19:37:29,566 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite06_Payload
+2025-08-06 19:37:30,724 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-06 19:37:30,971 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-06 19:37:30,990 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 90.0°
+2025-08-06 19:37:31,010 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.0°
+2025-08-06 19:37:31,065 - src.stk_interface.stk_manager - WARNING - ⚠️ 设置圆锥参数失败: (-2147352567, '发生意外。', (0, None, 'Value 1.04719755 rad is invalid. Value range is 5.23598776 rad to 6.28318531 rad', None, 0, -2147220989), None)
+2025-08-06 19:37:31,078 - src.stk_interface.stk_manager - INFO - ✓ 单独设置外锥角成功: 90.0°
+2025-08-06 19:37:31,080 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-06 19:37:31,134 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-06 19:37:31,741 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-06 19:37:31,778 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-06 19:37:31,778 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite06_Payload
+2025-08-06 19:37:31,780 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite06 (轨道面1, 位置6)
+2025-08-06 19:37:32,098 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite07
+2025-08-06 19:37:34,182 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-06 19:37:34,182 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-06 19:37:34,182 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-06 19:37:34,183 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-06 19:37:34,183 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 0.0 验证通过
+2025-08-06 19:37:34,183 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-06 19:37:34,183 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 270.0 验证通过
+2025-08-06 19:37:34,183 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-06 19:37:34,508 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-06 19:37:34,644 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-06 19:37:34,651 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite07
+2025-08-06 19:37:34,795 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite07_Payload
+2025-08-06 19:37:35,823 - src.stk_interface.stk_manager - INFO - ✓ 传感器模式设置为圆锥
+2025-08-06 19:37:36,033 - src.stk_interface.stk_manager - INFO - ✓ 获取Pattern对象成功，类型: <class 'win32com.client.CDispatch'>
+2025-08-06 19:37:36,054 - src.stk_interface.stk_manager - INFO - ✓ 设置外锥角成功: 90.0°
+2025-08-06 19:37:36,074 - src.stk_interface.stk_manager - INFO - ✓ 设置内锥角成功: 66.0°
+2025-08-06 19:37:36,102 - src.stk_interface.stk_manager - WARNING - ⚠️ 设置圆锥参数失败: (-2147352567, '发生意外。', (0, None, 'Value 1.04719755 rad is invalid. Value range is 5.23598776 rad to 6.28318531 rad', None, 0, -2147220989), None)
+2025-08-06 19:37:36,117 - src.stk_interface.stk_manager - INFO - ✓ 单独设置外锥角成功: 90.0°
+2025-08-06 19:37:36,120 - src.stk_interface.stk_manager - INFO - ✅ 圆锥视场配置成功
+2025-08-06 19:37:36,186 - src.stk_interface.stk_manager - INFO - ✅ 指向参数配置成功
+2025-08-06 19:37:36,825 - src.stk_interface.stk_manager - INFO - ✓ 距离约束设置成功: 0-5000km
+2025-08-06 19:37:36,831 - src.stk_interface.stk_manager - INFO - ✅ 约束参数配置成功
+2025-08-06 19:37:36,832 - src.stk_interface.stk_manager - INFO - ✅ 传感器创建成功: Satellite07_Payload
+2025-08-06 19:37:36,837 - src.constellation.constellation_manager - INFO - ✅ 卫星创建成功: Satellite07 (轨道面1, 位置7)
+2025-08-06 19:37:36,903 - src.stk_interface.stk_manager - INFO - 🛰️ 创建卫星对象: Satellite08
+2025-08-06 19:37:38,942 - src.stk_interface.stk_manager - INFO - ✅ 传播器类型设置成功
+2025-08-06 19:37:38,943 - src.stk_interface.stk_manager - INFO - ✅ 参数 semi_axis = 8171.0 验证通过
+2025-08-06 19:37:38,943 - src.stk_interface.stk_manager - INFO - ✅ 参数 eccentricity = 0.0 验证通过
+2025-08-06 19:37:38,944 - src.stk_interface.stk_manager - INFO - ✅ 参数 inclination = 51.856 验证通过
+2025-08-06 19:37:38,953 - src.stk_interface.stk_manager - INFO - ✅ 参数 raan = 0.0 验证通过
+2025-08-06 19:37:38,954 - src.stk_interface.stk_manager - INFO - ✅ 参数 arg_of_perigee = 0.0 验证通过
+2025-08-06 19:37:38,954 - src.stk_interface.stk_manager - INFO - ✅ 参数 mean_anomaly = 315.0 验证通过
+2025-08-06 19:37:38,955 - src.stk_interface.stk_manager - INFO - 🔄 使用Keplerian高度方法...
+2025-08-06 19:37:39,372 - src.stk_interface.stk_manager - INFO - ✅ Keplerian高度方法成功
+2025-08-06 19:37:39,487 - src.stk_interface.stk_manager - INFO - ✅ 地面轨迹配置成功
+2025-08-06 19:37:39,495 - src.stk_interface.stk_manager - INFO - ✅ 卫星创建成功: Satellite08
+2025-08-06 19:37:39,621 - src.stk_interface.stk_manager - INFO - 🔭 创建传感器: Satellite08_Payload
+2025-08-06 19:37:39,745 - __main__ - INFO - ⚠️ 用户中断程序

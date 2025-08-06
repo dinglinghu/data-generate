@@ -51,8 +51,7 @@ class RollingDataCollector:
         self.only_midcourse_targets = self.dynamic_config.get("only_midcourse_targets", True)
         self.flight_duration_range = self.dynamic_config.get("flight_duration_range", [1800, 2400])
         
-        # 并发控制
-        self.max_concurrent_missiles = self.missile_config.get("max_concurrent_missiles", 5)
+        # 并发控制（已移除最大并发导弹数限制）
 
         # 导弹池管理器（性能优化）
         self.use_missile_pool = True  # 启用导弹池优化
@@ -67,6 +66,7 @@ class RollingDataCollector:
         # 输出控制
         self.output_base_dir = None  # 输出基础目录，由外部设置
         self.enable_gantt = True     # 是否生成甘特图，由外部设置
+        self.session_name = None     # 会话名称，由外部设置
 
         # 初始化冲突消解和统一数据管理组件
         from src.conflict_resolution.conflict_data_processor import ConflictResolutionDataProcessor
@@ -79,7 +79,7 @@ class RollingDataCollector:
         logger.info("🔄 滚动数据采集管理器初始化完成")
         logger.info(f"   总采集次数: {self.total_collections}")
         logger.info(f"   采集间隔: {self.interval_range[0]}-{self.interval_range[1]}秒")
-        logger.info(f"   最大并发导弹: {self.max_concurrent_missiles}")
+        logger.info(f"   导弹数量范围: {self.missile_count_range[0]}-{self.missile_count_range[1]}")
         logger.info(f"   导弹池优化: {'启用' if self.use_missile_pool else '禁用'}")
     
     async def initialize_missile_pool(self) -> bool:
@@ -308,10 +308,21 @@ class RollingDataCollector:
         try:
             midcourse_missiles = []
 
+            logger.info(f"🔍 检查中段飞行导弹，当前时间: {current_time}")
+            logger.info(f"   总导弹数: {len(self.all_missiles)}")
+
             for missile_id, missile_config in self.all_missiles.items():
+                logger.info(f"   检查导弹: {missile_id}")
+                logger.info(f"     发射时间: {missile_config.get('launch_time')}")
+                logger.info(f"     飞行时长: {missile_config.get('flight_duration')}秒")
+
                 if self._is_missile_in_midcourse(missile_id, missile_config, current_time):
                     midcourse_missiles.append(missile_id)
+                    logger.info(f"     ✅ 在中段飞行")
+                else:
+                    logger.info(f"     ❌ 不在中段飞行")
 
+            logger.info(f"🎯 中段飞行导弹: {midcourse_missiles}")
             return midcourse_missiles
 
         except Exception as e:
@@ -351,21 +362,49 @@ class RollingDataCollector:
             if not isinstance(launch_time, datetime):
                 return False
 
-            # 计算中段飞行时间
-            flight_duration = missile_config.get("flight_duration", 1800)  # 默认30分钟
-            midcourse_start_offset = flight_duration * 0.1  # 中段开始：飞行时间的10%
-            midcourse_end_offset = flight_duration * 0.9    # 中段结束：飞行时间的90%
+            # 优先使用基于轨迹高度的飞行阶段分析
+            flight_phases_analysis = self.missile_manager.get_missile_flight_phases_by_altitude(missile_id)
+            if flight_phases_analysis:
+                logger.info(f"       ✅ 使用基于轨迹高度的飞行阶段分析")
+                flight_phases = flight_phases_analysis["flight_phases"]
+                midcourse_start = flight_phases["midcourse"]["start"]
+                midcourse_end = flight_phases["midcourse"]["end"]
 
-            midcourse_start = launch_time + timedelta(seconds=midcourse_start_offset)
-            midcourse_end = launch_time + timedelta(seconds=midcourse_end_offset)
+                logger.info(f"       轨迹高度分析结果:")
+                logger.info(f"         最大高度: {flight_phases_analysis['max_altitude']:.1f}m")
+                logger.info(f"         中段时间: {midcourse_start} - {midcourse_end}")
+            else:
+                # 回退到导弹真实时间范围
+                logger.warning(f"       ⚠️ 无法进行轨迹高度分析，回退到时间范围分析")
+                missile_time_range = self.missile_manager.get_missile_actual_time_range(missile_id)
+                if missile_time_range:
+                    actual_launch_time, actual_impact_time = missile_time_range
+                    total_flight_seconds = (actual_impact_time - actual_launch_time).total_seconds()
+
+                    # 使用真实时间计算中段飞行时间
+                    midcourse_start_offset = total_flight_seconds * 0.1  # 中段开始：飞行时间的10%
+                    midcourse_end_offset = total_flight_seconds * 0.1    # 末段时间：飞行时间的10%
+
+                    midcourse_start = actual_launch_time + timedelta(seconds=midcourse_start_offset)
+                    midcourse_end = actual_impact_time - timedelta(seconds=midcourse_end_offset)
+
+                    logger.info(f"       使用导弹真实时间范围: {actual_launch_time} - {actual_impact_time}")
+                else:
+                    # 最后回退到估算时间
+                    logger.warning(f"       ⚠️ 无法获取导弹 {missile_id} 真实时间，使用估算时间")
+                    flight_duration = missile_config.get("flight_duration", 1800)  # 默认30分钟
+                    midcourse_start_offset = flight_duration * 0.1  # 中段开始：飞行时间的10%
+                    midcourse_end_offset = flight_duration * 0.9    # 中段结束：飞行时间的90%
+
+                    midcourse_start = launch_time + timedelta(seconds=midcourse_start_offset)
+                    midcourse_end = launch_time + timedelta(seconds=midcourse_end_offset)
 
             # 判断当前时间是否在中段飞行时间内
             is_in_midcourse = midcourse_start <= current_time <= midcourse_end
 
-            if is_in_midcourse:
-                logger.debug(f"✅ 导弹 {missile_id} 在中段飞行: {midcourse_start} <= {current_time} <= {midcourse_end}")
-            else:
-                logger.debug(f"❌ 导弹 {missile_id} 不在中段飞行: {midcourse_start} <= {current_time} <= {midcourse_end}")
+            logger.info(f"       中段飞行时间: {midcourse_start} - {midcourse_end}")
+            logger.info(f"       当前时间: {current_time}")
+            logger.info(f"       是否在中段: {is_in_midcourse}")
 
             return is_in_midcourse
 
@@ -384,14 +423,18 @@ class RollingDataCollector:
             # 临时设置导弹管理器的目标列表为当前中段飞行的导弹
             original_targets = self.missile_manager.missile_targets.copy()
 
-            # 筛选中段飞行的导弹
-            midcourse_targets = {
-                missile_id: self.all_missiles[missile_id]
-                for missile_id in midcourse_missiles
-                if missile_id in self.all_missiles
-            }
+            # 使用所有激活的导弹进行元任务生成
+            active_targets = self.all_missiles.copy()
+            logger.info(f"   🎯 使用所有激活导弹进行元任务生成: {len(active_targets)} 个")
 
-            self.missile_manager.missile_targets = midcourse_targets
+            # 记录导弹详细信息
+            for missile_id, missile_config in active_targets.items():
+                logger.info(f"     导弹: {missile_id}")
+                logger.info(f"       发射时间: {missile_config.get('launch_time')}")
+                logger.info(f"       发射位置: {missile_config.get('launch_position')}")
+                logger.info(f"       目标位置: {missile_config.get('target_position')}")
+
+            self.missile_manager.missile_targets = active_targets
 
             # 执行数据采集
             collection_result = self.data_collector.collect_complete_meta_task_data(collection_time)
@@ -645,7 +688,11 @@ class RollingDataCollector:
             # 初始化统一会话（如果尚未初始化）
             if not self.unified_session_initialized:
                 from datetime import datetime
-                session_name = f"conflict_resolution_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                # 使用外部设置的会话名称，如果没有则使用默认名称
+                if self.session_name:
+                    session_name = self.session_name
+                else:
+                    session_name = f"conflict_resolution_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
                 self.unified_data_manager.initialize_session(session_name)
                 self.unified_session_initialized = True
                 logger.info(f"📁 统一数据会话已初始化")
