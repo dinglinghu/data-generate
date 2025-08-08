@@ -3,9 +3,9 @@
 
 # 仿真场景时间配置
 simulation:
-  start_time: "2025/07/26 00:00:00"    # 仿真开始时间
-  end_time: "2025/07/28 00:00:00"      # 仿真结束时间
-  epoch_time: "2025/07/26 00:00:00"    # 仿真基准时间
+  start_time: "2025/08/06 00:00:00"    # 仿真开始时间 - 更新为当前日期
+  end_time: "2025/08/13 00:00:00"      # 仿真结束时间 - 7天时间窗口
+  epoch_time: "2025/08/06 00:00:00"    # 仿真基准时间 - 与开始时间一致
   time_step: 60                        # 仿真时间步长(秒)
   time_format: "%Y/%m/%d %H:%M:%S"     # 时间格式
 
@@ -18,14 +18,14 @@ simulation:
 # Walker星座配置
 constellation:
   type: "Walker"
-  planes: 3                    # 轨道面数量
-  satellites_per_plane: 8      # 每个轨道面的卫星数量
+  planes: 4                    # 轨道面数量 - 增加覆盖均匀性
+  satellites_per_plane: 6      # 每个轨道面的卫星数量 - 优化分布
   total_satellites: 24          # 总卫星数量
 
   # Walker星座参考卫星轨道参数
   reference_satellite:
-    altitude: 1800             # 轨道高度(km) - 对应半长轴约8171km
-    inclination: 51.856        # 轨道倾角(度) - 类似ISS轨道
+    altitude: 1600             # 轨道高度(km) - 对应半长轴约8171km
+    inclination: 97.6        # 轨道倾角(度) - 类似ISS轨道
     eccentricity: 0.0          # 偏心率 - 圆轨道
     arg_of_perigee: 0.0        # 近地点幅角(度) - 圆轨道时无意义，设为0
     raan_offset: 0.0           # RAAN起始偏移(度) - 第一个轨道面的RAAN
@@ -39,37 +39,37 @@ constellation:
 # 载荷参数配置
 payload:
   type: "Optical_Sensor"
-  mounting: "Nadir"            # 载荷安装方向：天底方向
-  sensor_pattern: "Conic"      # 传感器模式：锥形
-  inner_cone_half_angle: 66.0  # 内锥半角(度) - 减小以增加探测范围
-  outer_cone_half_angle: 90.0  # 外锥半角(度) - 减小以增加探测范围
-  clockwise_angle_min: 300.0     # 最小时钟角(度)
-  clockwise_angle_max: 60.0   # 最大时钟角(度)
+  mounting: "Gimbal"           # 载荷安装方向：万向节安装，提供导弹跟踪机动性
+  sensor_pattern: "Complex_Conic"  # 传感器模式：复杂圆锥，适合动态目标跟踪
+  inner_cone_half_angle: 40.0  # 内锥半角(度) - 扩大近距离导弹探测范围
+  outer_cone_half_angle: 75.0  # 外锥半角(度) - 减小以增加探测范围
+  clockwise_angle_min: 0.0   # 最小时钟角(度) - STK兼容：240-360度范围
+  clockwise_angle_max: 120.0   # 最大时钟角(度) - 覆盖120度扫描范围
   pointing:
-    azimuth: 0.0              # 指向方位角(度)
-    elevation: 0.0         # 指向俯仰角(度) - 前下方30度，适合地面观测
+    azimuth: 330.0            # 指向方位角(度) - 调整-30度使扫描中心对准前向
+    elevation: 75.0           # 指向俯仰角(度)
   constraints_range:
-    min_range: 0              # 最小距离(km)
-    max_range: 5000           # 最大距离(km)
+    min_range: 100            # 最小距离(km) - 避免近地干扰
+    max_range: 10000           # 最大距离(km)
     active: true              # 是否启用约束
 
 # 导弹目标配置
 missile:
   max_concurrent_missiles: 5   # 场景中同时在中段飞行的导弹数量最大值
   flight_altitude:             # 导弹飞行高度配置
-    min_altitude: 1000          # 最低飞行高度(km)
-    max_altitude: 1800         # 最高飞行高度(km)
+    min_altitude: 1000         # 最低飞行高度(km) - ICBM中段飞行高度
+    max_altitude: 1500         # 最高飞行高度(km) - ICBM最大飞行高度
 
 # 任务规划配置
 task_planning:
   # 中段飞行高度阈值配置
-  midcourse_altitude_threshold: 100  # 中段高度阈值(km) - 导弹高度超过此值时认为进入中段飞行
+  midcourse_altitude_threshold: 800  # 中段高度阈值(km) - ICBM进入中段飞行的高度阈值
   altitude_analysis:
     enable_strict_threshold: true    # 启用严格的高度阈值判断
-    min_midcourse_duration: 600      # 最小中段飞行时间(秒) - 10分钟
-    altitude_buffer: 10              # 高度缓冲区(km) - 避免边界抖动
+    min_midcourse_duration: 900      # 最小中段飞行时间(秒) - 15分钟（ICBM中段飞行时间）
+    altitude_buffer: 50              # 高度缓冲区(km) - ICBM高度变化较大，需要更大缓冲区
     max_time_difference: 600         # 最大时间差阈值(秒) - 超过此值发出警告
-  atomic_task_duration: 300          # 原子任务持续时间(秒)
+  atomic_task_duration: 300          # 原子任务持续时间(秒) - 5分钟适合ICBM跟踪
 
 # 元任务管理配置
 meta_task_management:
@@ -98,7 +98,7 @@ meta_task_management:
 
     # 并行性能优化
     parallel_batch_size: 50            # 并行批处理大小
-    enable_position_cache: true        # 启用位置缓存
+    enable_position_cache: false       # 启用位置缓存
     cache_timeout_minutes: 30          # 缓存超时时间(分钟)
     async_mode: true                   # 启用异步模式
     thread_pool_size: 8                # 线程池大小
@@ -127,21 +127,21 @@ data_collection:
   # 滚动数据采集配置
   rolling_collection:
     enable: true                     # 启用滚动采集
-    total_collections: 3             # 总采集次数（测试用）
-    interval_range: [300, 600]       # 采集时间间隔范围(秒) 5-10分钟
-    max_scenario_duration: 86400     # 最大场景持续时间(秒) 24小时
+    total_collections: 2000          # 总采集次数（支持大规模采集）
+    interval_range: [180, 300]       # 采集时间间隔范围(秒) 3-5分钟（适合ICBM）
+    max_scenario_duration: 6048000    # 最大场景持续时间(秒) 70天（支持长时间采集）
 
     # 导弹动态管理配置
     dynamic_missiles:
       # 导弹数量控制
-      missile_count_range: [3, 10]    # 每次采集创建的导弹数量范围 [最小, 最大]
-      clear_existing_missiles: true  # 每次采集前是否清理现有导弹
+      missile_count_range: [3, 8]    # 每次采集创建的导弹数量范围 [最小, 最大] - 增加数量确保中段飞行
+      clear_existing_missiles: false # 保留现有导弹，确保连续性
       launch_at_collection_time: true # 导弹发射时间为当前采集时刻
       only_midcourse_targets: true   # 只采集中段飞行的导弹
 
       # 导弹飞行参数
-      flight_duration_range: [1800, 2400]  # 飞行时间范围(秒) 30-40分钟
-      launch_time_offset_range: [-300, 300] # 发射时间相对采集时间的偏移范围(秒)
+      flight_duration_range: [1500, 2100]  # 飞行时间范围(秒) 25-35分钟（ICBM）
+      launch_time_offset_range: [-600, 600] # 发射时间相对采集时间的偏移范围(秒) - 扩大范围
 
 # STK软件配置
 stk:
@@ -172,25 +172,25 @@ stk:
 # 导弹池配置
 missile_pool:
   enable: true                       # 启用导弹池
-  pool_size: 10                      # 导弹池大小
-  active_limit: 5                    # 同时活跃导弹数限制
-  default_flight_duration: 1800     # 默认飞行时间(秒)
+  pool_size: 200                      # 导弹池大小
+  active_limit: 20                   # 同时活跃导弹数限制 - 增加以支持大规模采集
+  default_flight_duration: 1800     # 默认飞行时间(秒) - ICBM典型飞行时间
   id_random_range: [1000, 9999]     # 导弹ID随机数范围
 
   # 导弹激活配置
   activation:
-    launch_time_offset_range: [-300, 300]  # 发射时间偏移范围(秒) ±5分钟
-    flight_duration_range: [1800, 2400]    # 飞行时间范围(秒) 30-40分钟
+    launch_time_offset_range: [-600, 600]  # 发射时间偏移范围(秒) ±10分钟 - 扩大范围确保连续性
+    flight_duration_range: [1500, 2100]    # 飞行时间范围(秒) 25-35分钟（ICBM典型飞行时间）
 
   # 位置生成配置
   position_generation:
     launch_positions:
-      lat_range: [30.0, 50.0]        # 发射位置纬度范围(度)
-      lon_range: [100.0, 140.0]      # 发射位置经度范围(度)
+      lat_range: [-60.0, 70.0]       # 发射位置纬度范围(度) - 全球范围（排除极地）
+      lon_range: [-180.0, 180.0]     # 发射位置经度范围(度) - 全球范围
       alt: 0.0                       # 发射位置高度(km)
     target_positions:
-      lat_range: [35.0, 45.0]        # 目标位置纬度范围(度)
-      lon_range: [-125.0, -70.0]     # 目标位置经度范围(度)
+      lat_range: [-60.0, 70.0]       # 目标位置纬度范围(度) - 全球范围（排除极地）
+      lon_range: [-180.0, 180.0]     # 目标位置经度范围(度) - 全球范围
       alt: 0.0                       # 目标位置高度(km)
 
   # 性能统计配置

@@ -201,7 +201,7 @@ class TimelineConverter:
                             end_time_str = task.get('end_time_iso') or task.get('end_time')
                             
                             # 提取卫星位置同步信息
-                            satellite_position_sync = task.get('satellite_position_sync', {})
+                            satellite_position_sync = task.get('satellite_position_sync')
 
                             visible_task = {
                                 'type': 'visible_meta_task',
@@ -221,18 +221,38 @@ class TimelineConverter:
                                 'alpha': self.default_alpha_real
                             }
 
-                            # 添加卫星位置同步信息（如果存在）
-                            if satellite_position_sync:
+                            # 添加卫星位置同步信息（如果存在且有效）
+                            if satellite_position_sync and satellite_position_sync.get('position_samples'):
+                                position_samples = satellite_position_sync.get('position_samples', [])
                                 visible_task['satellite_position_sync'] = {
                                     'sync_time': satellite_position_sync.get('sync_time'),
                                     'sample_count': satellite_position_sync.get('sample_count', 0),
                                     'sample_interval_seconds': satellite_position_sync.get('sample_interval_seconds', 0),
-                                    'position_samples': satellite_position_sync.get('position_samples', []),
-                                    'has_position_data': len(satellite_position_sync.get('position_samples', [])) > 0
+                                    'position_samples': position_samples,
+                                    'has_position_data': len(position_samples) > 0,
+                                    'position_statistics': satellite_position_sync.get('position_statistics', {}),
+                                    'task_time_range': satellite_position_sync.get('task_time_range', {})
                                 }
+
+                                # 添加位置摘要信息到任务级别，便于快速访问
+                                if position_samples:
+                                    # 获取任务开始和结束时的位置
+                                    start_position = position_samples[0] if position_samples else None
+                                    end_position = position_samples[-1] if position_samples else None
+
+                                    visible_task['satellite_positions'] = {
+                                        'start_position': start_position,
+                                        'end_position': end_position,
+                                        'total_samples': len(position_samples),
+                                        'position_source': 'satellite_position_sync'
+                                    }
                             else:
                                 visible_task['satellite_position_sync'] = {
                                     'has_position_data': False
+                                }
+                                visible_task['satellite_positions'] = {
+                                    'has_position_data': False,
+                                    'position_source': 'none'
                                 }
 
                             combo_tasks.append(visible_task)
@@ -244,8 +264,8 @@ class TimelineConverter:
                                 # 优先使用ISO格式时间
                                 start_time_str = task.get('start_time_iso') or task.get('start_time')
                                 end_time_str = task.get('end_time_iso') or task.get('end_time')
-                                
-                                combo_tasks.append({
+
+                                virtual_task = {
                                     'type': 'virtual_atomic_task',
                                     'satellite_id': satellite_id,
                                     'missile_id': missile_id,
@@ -260,7 +280,19 @@ class TimelineConverter:
                                     'visibility_info': task.get('visibility_info', {}),
                                     'color': self.colors.get('virtual_atomic_task', '#ff9800'),
                                     'alpha': self.default_alpha_virtual
-                                })
+                                }
+
+                                # 为虚拟任务添加位置占位符（表明没有实际位置数据）
+                                virtual_task['satellite_position_sync'] = {
+                                    'has_position_data': False,
+                                    'reason': 'virtual_task'
+                                }
+                                virtual_task['satellite_positions'] = {
+                                    'has_position_data': False,
+                                    'position_source': 'virtual_task'
+                                }
+
+                                combo_tasks.append(virtual_task)
                 
                 # 生成完整时间轴填充
                 complete_timeline = self._generate_complete_timeline(
@@ -446,19 +478,44 @@ class TimelineConverter:
                     'missile_count': len(set([t['missile_id'] for t in meta_task_timeline])),
                     'satellite_count': len(set([t['satellite_id'] for t in visible_meta_task_timeline])) if visible_meta_task_timeline else 0,
                     'visibility_ratio': len([t for t in visible_meta_task_timeline if t['type'] == 'visible_meta_task']) /
-                                      len(visible_meta_task_timeline) if visible_meta_task_timeline else 0
+                                      len(visible_meta_task_timeline) if visible_meta_task_timeline else 0,
+                    'position_data_coverage': {
+                        'visible_tasks_with_satellite_positions': len([t for t in visible_meta_task_timeline
+                                                                     if t['type'] == 'visible_meta_task' and
+                                                                     t.get('satellite_position_sync', {}).get('has_position_data', False)]),
+                        'total_visible_tasks': len([t for t in visible_meta_task_timeline if t['type'] == 'visible_meta_task']),
+                        'satellite_position_coverage_ratio': len([t for t in visible_meta_task_timeline
+                                                                if t['type'] == 'visible_meta_task' and
+                                                                t.get('satellite_position_sync', {}).get('has_position_data', False)]) /
+                                                            max(1, len([t for t in visible_meta_task_timeline if t['type'] == 'visible_meta_task']))
+                    }
                 },
                 'original_data': collection_data  # 保留原始数据以备参考
             }
 
             # 统计位置信息
             meta_tasks_with_position = len([t for t in meta_task_timeline if t.get('missile_position', {}).get('has_position_data', False)])
-            visible_tasks_with_position = len([t for t in visible_meta_task_timeline if t.get('satellite_position_sync', {}).get('has_position_data', False)])
+            visible_tasks_with_position = len([t for t in visible_meta_task_timeline
+                                             if t['type'] == 'visible_meta_task' and
+                                             t.get('satellite_position_sync', {}).get('has_position_data', False)])
+            total_visible_tasks = len([t for t in visible_meta_task_timeline if t['type'] == 'visible_meta_task'])
+
+            # 计算位置数据覆盖率
+            satellite_position_coverage = (visible_tasks_with_position / max(1, total_visible_tasks)) * 100
 
             logger.info(f"✅ 时间轴数据转换完成")
             logger.info(f"   元任务: {len(meta_task_timeline)} 个 (含导弹位置: {meta_tasks_with_position} 个)")
-            logger.info(f"   可见任务: {len([t for t in visible_meta_task_timeline if t['type'] == 'visible_meta_task'])} 个 (含卫星位置: {visible_tasks_with_position} 个)")
+            logger.info(f"   可见任务: {total_visible_tasks} 个 (含卫星位置: {visible_tasks_with_position} 个, 覆盖率: {satellite_position_coverage:.1f}%)")
             logger.info(f"   虚拟原子任务: {len([t for t in visible_meta_task_timeline if t['type'] == 'virtual_atomic_task'])} 个")
+
+            # 统计位置样本数量
+            total_position_samples = sum([
+                len(t.get('satellite_position_sync', {}).get('position_samples', []))
+                for t in visible_meta_task_timeline
+                if t['type'] == 'visible_meta_task' and t.get('satellite_position_sync', {}).get('has_position_data', False)
+            ])
+            if total_position_samples > 0:
+                logger.info(f"   卫星位置样本总数: {total_position_samples} 个")
 
             return converted_data
 

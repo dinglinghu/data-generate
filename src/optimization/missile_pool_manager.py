@@ -34,6 +34,10 @@ class MissilePoolManager:
         self.config_manager = config_manager
         self.missile_manager = missile_manager
 
+        # 获取时间管理器，确保使用仿真时间
+        from ..utils.time_manager import get_time_manager
+        self.time_manager = get_time_manager(config_manager)
+
         # 从配置文件获取导弹池配置
         pool_config = self.config_manager.config.get("missile_pool", {})
         self.pool_size = pool_config.get("pool_size", 30)  # 池大小
@@ -78,7 +82,7 @@ class MissilePoolManager:
         try:
             logger.info(f"🏊 开始初始化导弹池，预创建 {self.pool_size} 个导弹...")
             
-            start_time = datetime.now()
+            start_time = self.time_manager.current_simulation_time
             
             for i in range(self.pool_size):
                 missile_id = f"PoolMissile_{i+1:03d}_{random.randint(self.id_random_range[0], self.id_random_range[1])}"
@@ -96,7 +100,7 @@ class MissilePoolManager:
                 else:
                     logger.warning(f"   ⚠️ 池导弹创建失败: {missile_id}")
             
-            creation_time = (datetime.now() - start_time).total_seconds()
+            creation_time = (self.time_manager.current_simulation_time - start_time).total_seconds()
             logger.info(f"✅ 导弹池初始化完成！")
             logger.info(f"   成功创建: {len(self.available_missiles)}/{self.pool_size} 个导弹")
             logger.info(f"   初始化耗时: {creation_time:.2f}秒")
@@ -115,7 +119,7 @@ class MissilePoolManager:
                 "missile_id": missile_id,
                 "launch_position": launch_pos,
                 "target_position": target_pos,
-                "launch_time": datetime.now(),  # 临时时间，后续会调整
+                "launch_time": self.time_manager.start_time,  # 使用仿真开始时间作为临时时间
                 "flight_duration": self.default_flight_duration  # 默认飞行时间
             }
             
@@ -135,7 +139,7 @@ class MissilePoolManager:
                         target_position=target_pos,
                         trajectory_data=None,
                         is_active=False,
-                        creation_time=datetime.now()
+                        creation_time=self.time_manager.current_simulation_time
                     )
                     
                     self.missile_pool[missile_id] = pool_item
@@ -156,7 +160,7 @@ class MissilePoolManager:
         try:
             logger.info(f"🎯 从导弹池获取 {count} 个导弹用于采集...")
             
-            start_time = datetime.now()
+            start_time = self.time_manager.current_simulation_time
             
             # 确保有足够的可用导弹
             if len(self.available_missiles) < count:
@@ -197,7 +201,7 @@ class MissilePoolManager:
                     self.available_missiles.append(missile_id)
                     logger.warning(f"   ⚠️ 激活池导弹失败: {missile_id}")
             
-            selection_time = (datetime.now() - start_time).total_seconds()
+            selection_time = (self.time_manager.current_simulation_time - start_time).total_seconds()
             self.stats["pool_hits"] += len(selected_missiles)
             self.stats["creation_time_saved"] += selection_time * self.creation_time_multiplier  # 使用配置的倍数
 
@@ -219,12 +223,18 @@ class MissilePoolManager:
 
             # 生成飞行时间（使用配置参数）
             flight_duration = random.randint(*self.flight_duration_range)
-            
+
+            logger.info(f"🕐 激活导弹 {pool_item.missile_id}:")
+            logger.info(f"   采集时间: {collection_time}")
+            logger.info(f"   时间偏移: {offset}秒")
+            logger.info(f"   新发射时间: {launch_time}")
+            logger.info(f"   飞行时长: {flight_duration}秒")
+
             # 更新池项目
             pool_item.is_active = True
             pool_item.current_launch_time = launch_time
             pool_item.flight_duration = flight_duration
-            
+
             # 更新STK对象的时间属性
             success = self._update_missile_timing(pool_item, launch_time, flight_duration)
             

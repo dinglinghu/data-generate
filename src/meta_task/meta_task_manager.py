@@ -859,7 +859,7 @@ class MetaTaskManager:
                             "latitude": interpolated_lat,
                             "longitude": interpolated_lon,
                             "altitude": interpolated_alt,
-                            "altitude_km": interpolated_alt / 1000.0 if interpolated_alt else None
+                            "altitude_km": interpolated_alt if interpolated_alt else None
                         }
 
                         logger.debug(f"✅ 使用插值计算导弹 {missile_id} 在 {target_time} 的位置")
@@ -878,7 +878,7 @@ class MetaTaskManager:
                         "latitude": closest_point.get("lat"),
                         "longitude": closest_point.get("lon"),
                         "altitude": closest_point.get("alt"),
-                        "altitude_km": closest_point.get("alt", 0) / 1000.0 if closest_point.get("alt") else None
+                        "altitude_km": closest_point.get("alt", 0) if closest_point.get("alt") else None
                     },
                     "data_source": "interpolated_trajectory" if interpolated_position else "cached_trajectory",
                     "trajectory_analysis": trajectory_data.get("trajectory_analysis", {})

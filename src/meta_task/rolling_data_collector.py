@@ -32,7 +32,8 @@ class RollingDataCollector:
         # 获取配置
         from src.utils.config_manager import get_config_manager
         self.config_manager = get_config_manager()  # 保存为实例属性
-        self.config = self.config_manager.get_data_collection_config()
+        # 直接从顶级配置获取 data_collection，而不是从 simulation.data_collection
+        self.config = self.config_manager.config.get("data_collection", {})
         self.rolling_config = self.config.get("rolling_collection", {})
         self.missile_config = self.config_manager.get_missile_config()
         
@@ -40,7 +41,7 @@ class RollingDataCollector:
         self.enable_rolling = self.rolling_config.get("enable", True)
         self.total_collections = self.rolling_config.get("total_collections", 10)
         self.interval_range = self.rolling_config.get("interval_range", [300, 900])
-        self.max_scenario_duration = self.rolling_config.get("max_scenario_duration", 86400)
+        self.max_scenario_duration = self.rolling_config.get("max_scenario_duration", 604800)
         
         # 导弹动态管理参数
         self.dynamic_config = self.rolling_config.get("dynamic_missiles", {})
@@ -79,6 +80,7 @@ class RollingDataCollector:
         logger.info("🔄 滚动数据采集管理器初始化完成")
         logger.info(f"   总采集次数: {self.total_collections}")
         logger.info(f"   采集间隔: {self.interval_range[0]}-{self.interval_range[1]}秒")
+        logger.info(f"   最大场景持续时间: {self.max_scenario_duration}秒 ({self.max_scenario_duration/3600:.1f}小时)")
         logger.info(f"   导弹数量范围: {self.missile_count_range[0]}-{self.missile_count_range[1]}")
         logger.info(f"   导弹池优化: {'启用' if self.use_missile_pool else '禁用'}")
     
@@ -143,21 +145,25 @@ class RollingDataCollector:
                 # 1. 动态管理导弹（清理旧导弹，创建新导弹）
                 await self._manage_missiles_for_collection(current_time)
                 
-                # 2. 等待导弹进入中段飞行，然后筛选中段飞行的导弹
+                # 2. 筛选有中段飞行阶段的导弹（基于轨迹分析，不依赖采集时间）
                 midcourse_missiles = self._get_midcourse_missiles(current_time)
 
-                if not midcourse_missiles:
-                    # 如果没有中段飞行的导弹，尝试调整采集时间到最早的中段飞行时间
-                    adjusted_time = self._find_next_midcourse_time(current_time)
-                    if adjusted_time and adjusted_time != current_time:
-                        logger.info(f"🔄 调整采集时间到中段飞行时间: {adjusted_time}")
-                        current_time = adjusted_time
-                        midcourse_missiles = self._get_midcourse_missiles(current_time)
+                # 监控导弹池状态
+                if self.use_missile_pool and self.missile_pool_manager:
+                    available_count = len(self.missile_pool_manager.available_missiles)
+                    active_count = len(self.missile_pool_manager.active_missiles)
+                    total_count = len(self.missile_pool_manager.missile_pool)
+                    logger.info(f"📊 导弹池状态: 可用={available_count}, 活跃={active_count}, 总计={total_count}")
 
                 if not midcourse_missiles:
                     logger.warning(f"⚠️ 第 {self.current_collection} 次采集：没有中段飞行的导弹")
                     # 计算下次采集时间
                     current_time = self._calculate_next_collection_time(current_time)
+
+                    # 检查是否超过最大场景时间
+                    if self._is_scenario_time_exceeded(current_time):
+                        logger.warning("⚠️ 场景时间超过最大限制，停止采集")
+                        break
                     continue
                 
                 logger.info(f"🎯 当前中段飞行导弹: {len(midcourse_missiles)} 个")
@@ -166,14 +172,17 @@ class RollingDataCollector:
                 
                 # 3. 执行数据采集
                 collection_result = await self._execute_collection(current_time, midcourse_missiles)
-                
+
                 if collection_result:
                     self.collection_results.append(collection_result)
                     logger.info(f"✅ 第 {self.current_collection} 次采集完成")
                 else:
                     logger.error(f"❌ 第 {self.current_collection} 次采集失败")
+
+                # 4. 立即释放本次采集使用的导弹回池中
+                await self._release_current_missiles()
                 
-                # 4. 计算下次采集时间
+                # 5. 计算下次采集时间
                 if self.current_collection < self.total_collections:
                     current_time = self._calculate_next_collection_time(current_time)
                     
@@ -245,6 +254,22 @@ class RollingDataCollector:
 
         except Exception as e:
             logger.error(f"❌ 导弹管理失败: {e}")
+
+    async def _release_current_missiles(self):
+        """释放当前采集使用的导弹回池中"""
+        try:
+            if self.use_missile_pool and self.missile_pool_manager:
+                # 使用导弹池：释放活跃导弹
+                active_missile_ids = list(self.all_missiles.keys())
+                if active_missile_ids:
+                    self.missile_pool_manager.release_missiles(active_missile_ids)
+                    logger.info(f"🔄 释放 {len(active_missile_ids)} 个导弹回池中")
+
+                    # 清空当前导弹列表，为下次采集做准备
+                    self.all_missiles.clear()
+
+        except Exception as e:
+            logger.error(f"❌ 释放导弹失败: {e}")
 
     async def _clear_existing_missiles(self):
         """清理现有导弹"""
@@ -371,7 +396,7 @@ class RollingDataCollector:
                 midcourse_end = flight_phases["midcourse"]["end"]
 
                 logger.info(f"       轨迹高度分析结果:")
-                logger.info(f"         最大高度: {flight_phases_analysis['max_altitude']:.1f}m")
+                logger.info(f"         最大高度: {flight_phases_analysis['max_altitude']:.1f}km")
                 logger.info(f"         中段时间: {midcourse_start} - {midcourse_end}")
             else:
                 # 回退到导弹真实时间范围
@@ -399,14 +424,22 @@ class RollingDataCollector:
                     midcourse_start = launch_time + timedelta(seconds=midcourse_start_offset)
                     midcourse_end = launch_time + timedelta(seconds=midcourse_end_offset)
 
-            # 判断当前时间是否在中段飞行时间内
-            is_in_midcourse = midcourse_start <= current_time <= midcourse_end
+            # 判断导弹是否有中段飞行阶段（基于轨迹分析，而不是当前时间）
+            # 如果导弹有中段飞行时间段，说明它达到了中段高度阈值
+            has_midcourse_phase = midcourse_start is not None and midcourse_end is not None
+
+            if has_midcourse_phase:
+                # 进一步检查中段时间段的合理性（至少5分钟）
+                midcourse_duration = (midcourse_end - midcourse_start).total_seconds()
+                has_valid_midcourse = midcourse_duration >= 300  # 至少5分钟
+            else:
+                has_valid_midcourse = False
 
             logger.info(f"       中段飞行时间: {midcourse_start} - {midcourse_end}")
-            logger.info(f"       当前时间: {current_time}")
-            logger.info(f"       是否在中段: {is_in_midcourse}")
+            logger.info(f"       中段飞行时长: {midcourse_duration if has_midcourse_phase else 0:.0f}秒")
+            logger.info(f"       是否有中段飞行: {has_valid_midcourse}")
 
-            return is_in_midcourse
+            return has_valid_midcourse
 
         except Exception as e:
             logger.error(f"❌ 判断导弹中段飞行状态失败 {missile_id}: {e}")
@@ -511,7 +544,7 @@ class RollingDataCollector:
                 "launch_time": launch_time,
                 "flight_duration": flight_duration,
                 "collection_time": collection_time,
-                "creation_time": datetime.now().isoformat()
+                "creation_time": collection_time.isoformat()  # 使用仿真时间而非系统时间
             }
 
         except Exception as e:
@@ -584,8 +617,9 @@ class RollingDataCollector:
                 logger.warning(f"⚠️ 使用STK场景时间作为备用: {scenario_start}")
                 return scenario_start
             except:
-                logger.error(f"❌ STK场景时间获取也失败，使用当前时间")
-                return datetime.now()
+                logger.error(f"❌ STK场景时间获取也失败，使用配置默认时间")
+                # 使用配置文件中的默认开始时间
+                return datetime.strptime("2025/08/06 00:00:00", "%Y/%m/%d %H:%M:%S")
 
     def _is_scenario_time_exceeded(self, current_time: datetime) -> bool:
         """检查是否超过最大场景时间"""

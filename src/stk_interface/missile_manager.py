@@ -643,6 +643,15 @@ class MissileManager:
             success = self.create_missile(missile_id, launch_time, trajectory_params)
 
             if success:
+                # 自动添加到missile_targets字典中，供元任务管理器使用
+                self.add_missile_target(
+                    missile_id,
+                    missile_config.get("launch_position"),
+                    missile_config.get("target_position"),
+                    missile_config.get("launch_sequence", 1),
+                    launch_time
+                )
+
                 return {
                     "success": True,
                     "missile_id": missile_id,
@@ -1067,7 +1076,7 @@ class MissileManager:
             logger.info(f"   助推段: {phases['boost']['start']} - {phases['boost']['end']}")
             logger.info(f"   中段: {phases['midcourse']['start']} - {phases['midcourse']['end']}")
             logger.info(f"   末段: {phases['terminal']['start']} - {phases['terminal']['end']}")
-            logger.info(f"   最大高度: {max(altitudes):.1f}m")
+            logger.info(f"   最大高度: {max(altitudes):.1f}km")
 
             return result
 

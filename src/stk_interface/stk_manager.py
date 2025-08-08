@@ -8,7 +8,7 @@ import logging
 import math
 import time
 from typing import Dict, Any, Optional, List, Tuple
-from datetime import datetime
+from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
@@ -106,8 +106,28 @@ class STKManager:
             return False
 
     def should_skip_creation(self) -> bool:
-        """检查是否应该跳过创建 - 兼容性方法"""
-        return False  # 重构版本总是创建新对象
+        """检查是否应该跳过创建 - 检测已存在的卫星"""
+        try:
+            if not self.scenario:
+                return False
+
+            # 检查场景中是否已有卫星
+            satellite_count = 0
+            for i in range(self.scenario.Children.Count):
+                child = self.scenario.Children.Item(i)
+                if getattr(child, 'ClassName', '') == 'Satellite':
+                    satellite_count += 1
+
+            # 如果已有卫星，跳过创建
+            if satellite_count > 0:
+                logger.info(f"🔍 检测到场景中已有 {satellite_count} 颗卫星，跳过星座创建")
+                return True
+
+            return False
+
+        except Exception as e:
+            logger.warning(f"⚠️ 检查现有卫星失败: {e}")
+            return False
 
     def set_scenario_time(self, start_time: str, end_time: str) -> bool:
         """设置场景时间 - 兼容性方法"""
@@ -327,14 +347,30 @@ class STKManager:
     def _find_satellite(self, satellite_id: str):
         """查找卫星对象"""
         try:
+            # 兼容带 "Satellite/" 前缀的卫星ID
+            if satellite_id.startswith("Satellite/"):
+                target_name = satellite_id.split("/", 1)[1]
+            else:
+                target_name = satellite_id
+
+            # 列出所有卫星对象进行调试
+            satellites_found = []
             for i in range(self.scenario.Children.Count):
                 child = self.scenario.Children.Item(i)
-                if (getattr(child, 'ClassName', None) == 'Satellite' and 
-                    getattr(child, 'InstanceName', None) == satellite_id):
-                    return child
+                child_class = getattr(child, 'ClassName', None)
+                child_name = getattr(child, 'InstanceName', None)
+
+                if child_class == 'Satellite':
+                    satellites_found.append(child_name)
+                    if child_name == target_name:
+                        logger.debug(f"✅ 找到匹配的卫星: {target_name}")
+                        return child
+
+            logger.warning(f"⚠️ 未找到卫星 {satellite_id} (目标名称: {target_name})")
+            logger.warning(f"   可用卫星: {satellites_found}")
             return None
         except Exception as e:
-            logger.error(f"❌ 查找卫星失败: {e}")
+            logger.error(f"❌ 查找卫星失败 {satellite_id}: {e}")
             return None
     
     def _configure_sensor_optimized(self, sensor, sensor_params: Dict) -> bool:
@@ -467,19 +503,188 @@ class STKManager:
         except Exception as e:
             logger.warning(f"⚠️ 约束配置失败: {e}")
 
-    def _find_satellite(self, satellite_id: str):
-        """查找卫星对象"""
-        try:
-            # 兼容带 "Satellite/" 前缀的卫星ID
-            if satellite_id.startswith("Satellite/"):
-                sat_name = satellite_id.split("/", 1)[1]
-            else:
-                sat_name = satellite_id
 
-            return self.scenario.Children.Item(sat_name)
-        except Exception as e:
-            logger.debug(f"查找卫星失败: {e}")
-            return None
+
+    # def get_satellite_position(self, satellite_id: str, time_str: str, timeout: int = 30) -> Optional[Dict]:
+    #     """
+    #     获取卫星位置 - 基于原始成功实现的多方法尝试
+
+    #     Args:
+    #         satellite_id: 卫星ID
+    #         time_str: 时间字符串
+    #         timeout: 超时时间(秒)，默认30秒
+    #     """
+    #     try:
+    #         logger.info(f"🛰️ 开始获取卫星 {satellite_id} 在时间 {time_str} 的位置")
+
+    #         satellite = self._find_satellite(satellite_id)
+    #         if not satellite:
+    #             logger.error(f"❌ 未找到卫星 {satellite_id}")
+    #             return None
+
+    #         logger.info(f"✅ 找到卫星对象 {satellite_id}")
+
+    #         # 检查传播器状态并传播
+    #         try:
+    #             propagator = satellite.Propagator
+    #             logger.info(f"📡 卫星 {satellite_id} 获取到传播器对象")
+
+    #             # 尝试获取传播器名称（可选）
+    #             try:
+    #                 propagator_name = propagator.PropagatorName
+    #                 logger.info(f"📡 卫星 {satellite_id} 传播器类型: {propagator_name}")
+    #             except:
+    #                 logger.info(f"📡 卫星 {satellite_id} 传播器类型: 未知")
+
+    #             # 执行传播
+    #             propagator.Propagate()
+    #             logger.info(f"✅ 卫星 {satellite_id} 传播完成")
+    #         except Exception as prop_e:
+    #             logger.error(f"❌ 卫星 {satellite_id} 传播失败: {prop_e}")
+    #             # 尝试不传播直接获取位置
+    #             logger.info(f"🔄 尝试不传播直接获取位置...")
+    #             pass  # 继续尝试获取位置
+
+    #         # 使用传入的时间参数，正确处理时间偏移
+    #         try:
+    #             # 尝试将时间字符串转换为数字（时间偏移）
+    #             time_offset_seconds = float(time_str)
+    #             # 如果是时间偏移（秒），需要转换为STK时间格式
+    #             from src.utils.time_manager import get_time_manager
+    #             time_manager = get_time_manager()
+    #             target_time = time_manager.start_time + timedelta(seconds=time_offset_seconds)
+    #             # 转换为STK时间格式
+    #             stk_time = target_time.strftime("%d %b %Y %H:%M:%S.000")
+    #             logger.info(f"⏰ 时间偏移 {time_offset_seconds}s -> STK时间: {stk_time}")
+    #             logger.info(f"📅 场景时间范围: {time_manager.start_time} - {time_manager.end_time}")
+
+    #             # 检查时间是否在场景范围内
+    #             if target_time < time_manager.start_time or target_time > time_manager.end_time:
+    #                 logger.warning(f"⚠️ 目标时间 {target_time} 超出场景时间范围")
+
+    #         except (ValueError, TypeError):
+    #             # 如果不是数字，假设已经是STK时间格式
+    #             stk_time = str(time_str)
+    #             logger.info(f"⏰ 使用直接时间格式: {stk_time}")
+
+    #         # 方法1：使用Cartesian Position数据提供者
+    #         position_data = None
+    #         logger.info(f"🔍 方法1: 尝试使用Cartesian Position获取卫星 {satellite_id} 位置")
+    #         try:
+    #             dp = satellite.DataProviders.Item("Cartesian Position")
+    #             logger.info(f"📊 获取到Cartesian Position数据提供者")
+    #             result = dp.Exec(stk_time, stk_time)
+    #             logger.info(f"📊 执行数据提供者查询完成")
+
+    #             if result and result.DataSets.Count > 0:
+    #                 dataset = result.DataSets.Item(0)
+    #                 logger.info(f"📊 数据集数量: {result.DataSets.Count}, 行数: {dataset.RowCount}")
+    #                 if dataset.RowCount > 0:
+    #                     x = dataset.GetValue(0, 1)
+    #                     y = dataset.GetValue(0, 2)
+    #                     z = dataset.GetValue(0, 3)
+    #                     position_data = {
+    #                         'time': stk_time,
+    #                         'x': float(x),
+    #                         'y': float(y),
+    #                         'z': float(z)
+    #                     }
+    #                     logger.info(f"✅ 方法1成功获取卫星 {satellite_id} 位置: x={x:.2f}, y={y:.2f}, z={z:.2f}")
+    #                 else:
+    #                     logger.warning(f"⚠️ 方法1: 数据集为空")
+    #             else:
+    #                 logger.warning(f"⚠️ 方法1: 无数据集或数据集数量为0")
+    #         except Exception as e1:
+    #             logger.error(f"❌ 方法1失败: {e1}")
+
+    #         # 方法2：如果方法1失败，尝试使用LLA Position
+    #         if position_data is None:
+    #             logger.info(f"🔍 方法2: 尝试使用LLA Position获取卫星 {satellite_id} 位置")
+    #             try:
+    #                 dp = satellite.DataProviders.Item("LLA Position")
+    #                 logger.info(f"📊 获取到LLA Position数据提供者")
+    #                 result = dp.Exec(stk_time, stk_time)
+    #                 logger.info(f"📊 执行LLA数据提供者查询完成")
+
+    #                 if result and result.DataSets.Count > 0:
+    #                     dataset = result.DataSets.Item(0)
+    #                     logger.info(f"📊 LLA数据集数量: {result.DataSets.Count}, 行数: {dataset.RowCount}")
+    #                     if dataset.RowCount > 0:
+    #                         lat = dataset.GetValue(0, 1)
+    #                         lon = dataset.GetValue(0, 2)
+    #                         alt = dataset.GetValue(0, 3)
+    #                         position_data = {
+    #                             'time': stk_time,
+    #                             'latitude': float(lat),
+    #                             'longitude': float(lon),
+    #                             'altitude': float(alt)
+    #                         }
+    #                         logger.info(f"✅ 方法2成功获取卫星 {satellite_id} 位置: lat={lat:.6f}°, lon={lon:.6f}°, alt={alt:.2f}km")
+    #                     else:
+    #                         logger.warning(f"⚠️ 方法2: LLA数据集为空")
+    #                 else:
+    #                     logger.warning(f"⚠️ 方法2: 无LLA数据集或数据集数量为0")
+    #             except Exception as e2:
+    #                 logger.error(f"❌ 方法2失败: {e2}")
+
+    #         # 方法3：如果前两种方法都失败，使用传感器位置（如果存在）
+    #         if position_data is None:
+    #             logger.info(f"🔍 方法3: 尝试使用传感器位置获取卫星 {satellite_id} 位置")
+    #             try:
+    #                 sensor = None
+    #                 logger.info(f"🔍 搜索卫星 {satellite_id} 的传感器，子对象数量: {satellite.Children.Count}")
+    #                 for i in range(satellite.Children.Count):
+    #                     child = satellite.Children.Item(i)
+    #                     if hasattr(child, 'ClassName') and child.ClassName == 'Sensor':
+    #                         sensor = child
+    #                         logger.info(f"✅ 找到传感器: {child.InstanceName}")
+    #                         break
+
+    #                 if sensor:
+    #                     logger.info(f"📊 使用传感器获取位置数据")
+    #                     dp = sensor.DataProviders.Item("Points(ICRF)").Group('Center')
+    #                     result = dp.Exec(stk_time, stk_time, 60)
+    #                     logger.info(f"📊 传感器数据查询完成")
+
+    #                     if result.DataSets.Count > 0:
+    #                         times = result.DataSets.GetDataSetByName("Time").GetValues()
+    #                         x_pos = result.DataSets.GetDataSetByName("x").GetValues()
+    #                         y_pos = result.DataSets.GetDataSetByName("y").GetValues()
+    #                         z_pos = result.DataSets.GetDataSetByName("z").GetValues()
+    #                         logger.info(f"📊 传感器数据集: 时间点数={len(times) if times else 0}")
+    #                         if times and x_pos and y_pos and z_pos and len(times) > 0:
+    #                             position_data = {
+    #                                 'time': stk_time,
+    #                                 'x': float(x_pos[0]),
+    #                                 'y': float(y_pos[0]),
+    #                                 'z': float(z_pos[0])
+    #                             }
+    #                             logger.info(f"✅ 方法3成功获取卫星 {satellite_id} 位置: x={x_pos[0]:.2f}, y={y_pos[0]:.2f}, z={z_pos[0]:.2f}")
+    #                         else:
+    #                             logger.warning(f"⚠️ 方法3: 传感器数据不完整")
+    #                     else:
+    #                         logger.warning(f"⚠️ 方法3: 传感器无数据集")
+    #                 else:
+    #                     logger.warning(f"⚠️ 方法3: 卫星 {satellite_id} 没有传感器")
+    #             except Exception as e3:
+    #                 logger.error(f"❌ 方法3失败: {e3}")
+
+    #         # 最终结果
+    #         if position_data:
+    #             logger.info(f"🎉 成功获取卫星 {satellite_id} 位置数据: {position_data}")
+    #             return position_data
+    #         else:
+    #             logger.error(f"❌ 所有方法都无法获取卫星 {satellite_id} 的位置数据")
+    #             logger.error(f"❌ 位置获取失败详情:")
+    #             logger.error(f"   - 卫星ID: {satellite_id}")
+    #             logger.error(f"   - 请求时间: {time_str}")
+    #             logger.error(f"   - STK时间: {stk_time}")
+    #             logger.error(f"   - 传播器状态: 已检查")
+    #             return None
+
+    #     except Exception as e:
+    #         logger.error(f"❌ 获取卫星位置失败: {e}")
+    #         return None
 
     def get_satellite_position(self, satellite_id: str, time_str: str, timeout: int = 30) -> Optional[Dict]:
         """
@@ -491,99 +696,111 @@ class STKManager:
             timeout: 超时时间(秒)，默认30秒
         """
         try:
+            logger.info(f"🛰️ 开始获取卫星 {satellite_id} 在时间 {time_str} 的位置")
+
             satellite = self._find_satellite(satellite_id)
             if not satellite:
+                logger.error(f"❌ 未找到卫星 {satellite_id}")
                 return None
 
-            # 确保卫星已传播
+            logger.info(f"✅ 找到卫星对象 {satellite_id}")
+
+            # 检查传播器状态并传播
             try:
-                satellite.Propagator.Propagate()
-                logger.debug(f"卫星 {satellite_id} 传播完成")
-            except Exception as prop_e:
-                logger.debug(f"卫星 {satellite_id} 传播失败: {prop_e}")
+                propagator = satellite.Propagator
+                logger.info(f"📡 卫星 {satellite_id} 获取到传播器对象")
 
-            # 使用场景开始时间而不是传入的时间字符串
-            scenario_time = self.scenario.StartTime
-            logger.debug(f"使用场景时间: {scenario_time}")
-
-            # 方法1：使用Cartesian Position数据提供者
-            position_data = None
-            try:
-                dp = satellite.DataProviders.Item("Cartesian Position")
-                result = dp.Exec(scenario_time, scenario_time)
-
-                if result and result.DataSets.Count > 0:
-                    dataset = result.DataSets.Item(0)
-                    if dataset.RowCount > 0:
-                        x = dataset.GetValue(0, 1)
-                        y = dataset.GetValue(0, 2)
-                        z = dataset.GetValue(0, 3)
-                        position_data = {
-                            'time': scenario_time,
-                            'x': float(x),
-                            'y': float(y),
-                            'z': float(z)
-                        }
-                        logger.debug(f"方法1成功获取卫星 {satellite_id} 位置")
-            except Exception as e1:
-                logger.debug(f"方法1失败: {e1}")
-
-            # 方法2：如果方法1失败，尝试使用LLA Position
-            if position_data is None:
+                # 尝试获取传播器名称（可选）
                 try:
-                    dp = satellite.DataProviders.Item("LLA Position")
-                    result = dp.Exec(scenario_time, scenario_time)
+                    propagator_name = propagator.PropagatorName
+                    logger.info(f"📡 卫星 {satellite_id} 传播器类型: {propagator_name}")
+                except:
+                    logger.info(f"📡 卫星 {satellite_id} 传播器类型: 未知")
 
-                    if result and result.DataSets.Count > 0:
-                        dataset = result.DataSets.Item(0)
-                        if dataset.RowCount > 0:
-                            lat = dataset.GetValue(0, 1)
-                            lon = dataset.GetValue(0, 2)
-                            alt = dataset.GetValue(0, 3)
-                            position_data = {
-                                'time': scenario_time,
-                                'latitude': float(lat),
-                                'longitude': float(lon),
-                                'altitude': float(alt)
-                            }
-                            logger.debug(f"方法2成功获取卫星 {satellite_id} 位置")
-                except Exception as e2:
-                    logger.debug(f"方法2失败: {e2}")
+                # 执行传播
+                propagator.Propagate()
+                logger.info(f"✅ 卫星 {satellite_id} 传播完成")
+            except Exception as prop_e:
+                logger.error(f"❌ 卫星 {satellite_id} 传播失败: {prop_e}")
+                # 尝试不传播直接获取位置
+                logger.info(f"🔄 尝试不传播直接获取位置...")
+                pass  # 继续尝试获取位置
 
+            # 使用传入的时间参数，正确处理时间偏移
+            try:
+                # 尝试将时间字符串转换为数字（时间偏移）
+                time_offset_seconds = float(time_str)
+                # 如果是时间偏移（秒），需要转换为STK时间格式
+                from src.utils.time_manager import get_time_manager
+                time_manager = get_time_manager()
+                target_time = time_manager.start_time + timedelta(seconds=time_offset_seconds)
+                # 转换为STK时间格式
+                stk_time = target_time.strftime("%d %b %Y %H:%M:%S.000")
+                logger.info(f"⏰ 时间偏移 {time_offset_seconds}s -> STK时间: {stk_time}")
+                logger.info(f"📅 场景时间范围: {time_manager.start_time} - {time_manager.end_time}")
+
+                # 检查时间是否在场景范围内
+                if target_time < time_manager.start_time or target_time > time_manager.end_time:
+                    logger.warning(f"⚠️ 目标时间 {target_time} 超出场景时间范围")
+
+            except (ValueError, TypeError):
+                # 如果不是数字，假设已经是STK时间格式
+                stk_time = str(time_str)
+                logger.info(f"⏰ 使用直接时间格式: {stk_time}")
+            position_data = None
             # 方法3：如果前两种方法都失败，使用传感器位置（如果存在）
             if position_data is None:
+                logger.info(f"🔍 方法3: 尝试使用传感器位置获取卫星 {satellite_id} 位置")
                 try:
                     sensor = None
+                    logger.info(f"🔍 搜索卫星 {satellite_id} 的传感器，子对象数量: {satellite.Children.Count}")
                     for i in range(satellite.Children.Count):
                         child = satellite.Children.Item(i)
                         if hasattr(child, 'ClassName') and child.ClassName == 'Sensor':
                             sensor = child
+                            logger.info(f"✅ 找到传感器: {child.InstanceName}")
                             break
 
                     if sensor:
+                        logger.info(f"📊 使用传感器获取位置数据")
                         dp = sensor.DataProviders.Item("Points(ICRF)").Group('Center')
-                        result = dp.Exec(scenario_time, scenario_time, 60)
+                        result = dp.Exec(stk_time, stk_time, 60)
+                        logger.info(f"📊 传感器数据查询完成")
 
                         if result.DataSets.Count > 0:
                             times = result.DataSets.GetDataSetByName("Time").GetValues()
                             x_pos = result.DataSets.GetDataSetByName("x").GetValues()
                             y_pos = result.DataSets.GetDataSetByName("y").GetValues()
                             z_pos = result.DataSets.GetDataSetByName("z").GetValues()
+                            logger.info(f"📊 传感器数据集: 时间点数={len(times) if times else 0}")
                             if times and x_pos and y_pos and z_pos and len(times) > 0:
                                 position_data = {
-                                    'time': times[0],
+                                    'time': stk_time,
                                     'x': float(x_pos[0]),
                                     'y': float(y_pos[0]),
                                     'z': float(z_pos[0])
                                 }
-                                logger.debug(f"方法3成功获取卫星 {satellite_id} 位置")
+                                logger.info(f"✅ 方法3成功获取卫星 {satellite_id} 位置: x={x_pos[0]:.2f}, y={y_pos[0]:.2f}, z={z_pos[0]:.2f}")
+                            else:
+                                logger.warning(f"⚠️ 方法3: 传感器数据不完整")
+                        else:
+                            logger.warning(f"⚠️ 方法3: 传感器无数据集")
+                    else:
+                        logger.warning(f"⚠️ 方法3: 卫星 {satellite_id} 没有传感器")
                 except Exception as e3:
-                    logger.debug(f"方法3失败: {e3}")
+                    logger.error(f"❌ 方法3失败: {e3}")
 
+            # 最终结果
             if position_data:
+                logger.info(f"🎉 成功获取卫星 {satellite_id} 位置数据: {position_data}")
                 return position_data
             else:
-                logger.warning(f"所有方法都无法获取卫星 {satellite_id} 的位置数据")
+                logger.error(f"❌ 所有方法都无法获取卫星 {satellite_id} 的位置数据")
+                logger.error(f"❌ 位置获取失败详情:")
+                logger.error(f"   - 卫星ID: {satellite_id}")
+                logger.error(f"   - 请求时间: {time_str}")
+                logger.error(f"   - STK时间: {stk_time}")
+                logger.error(f"   - 传播器状态: 已检查")
                 return None
 
         except Exception as e:

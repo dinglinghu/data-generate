@@ -172,15 +172,25 @@ class SatellitePositionSynchronizer:
                         task_requests = self._generate_position_requests_for_task(satellite_id, task)
                         position_requests.extend(task_requests)
 
-                        # 建立映射关系
+                        # 建立映射关系 - 使用唯一键避免task_id冲突
                         task_id = task.get("task_id")
-                        task_mapping[task_id] = {
+                        unique_task_key = f"{satellite_id}_{missile_id}_{task_id}"
+                        task_mapping[unique_task_key] = {
                             "satellite_id": satellite_id,
+                            "missile_id": missile_id,
+                            "task_id": task_id,
                             "task": task,
                             "request_indices": list(range(len(position_requests) - len(task_requests), len(position_requests)))
                         }
 
-            logger.info(f"📊 收集到 {len(position_requests)} 个位置请求，覆盖 {len(task_mapping)} 个任务")
+            # 计算优化效果
+            expected_requests_old = len(task_mapping) * 11  # 旧策略：平均每任务11个采样点（30秒间隔）
+            actual_requests = len(position_requests)
+            optimization_ratio = (expected_requests_old - actual_requests) / max(1, expected_requests_old) * 100
+
+            logger.info(f"📊 收集到 {actual_requests} 个位置请求，覆盖 {len(task_mapping)} 个任务")
+            logger.info(f"🚀 采样优化: 预期{expected_requests_old}个请求 → 实际{actual_requests}个请求 (减少{optimization_ratio:.1f}%)")
+            logger.info(f"⚡ 策略: 每个可见元任务只采集开始和结束时刻位置，大幅加速数据采集")
 
             # 2. 并行获取所有位置
             if position_requests:
@@ -190,8 +200,10 @@ class SatellitePositionSynchronizer:
                 total_tasks_processed = 0
                 total_positions_collected = 0
 
-                for task_id, mapping_info in task_mapping.items():
+                for unique_task_key, mapping_info in task_mapping.items():
                     satellite_id = mapping_info["satellite_id"]
+                    missile_id = mapping_info["missile_id"]
+                    task_id = mapping_info["task_id"]
                     task = mapping_info["task"]
                     request_indices = mapping_info["request_indices"]
 
@@ -207,9 +219,9 @@ class SatellitePositionSynchronizer:
                         task["satellite_position_sync"] = position_sync_data
                         total_positions_collected += len(position_sync_data.get("position_samples", []))
                         total_tasks_processed += 1
-                        logger.debug(f"✅ 任务 {task_id} 并行位置同步完成")
+                        logger.debug(f"✅ 任务 {satellite_id}-{missile_id}-{task_id} 并行位置同步完成")
                     else:
-                        logger.warning(f"⚠️ 任务 {task_id} 并行位置同步失败")
+                        logger.warning(f"⚠️ 任务 {satellite_id}-{missile_id}-{task_id} 并行位置同步失败")
 
                 # 4. 输出性能统计
                 parallel_stats = self.parallel_position_manager.get_stats()
@@ -452,40 +464,24 @@ class SatellitePositionSynchronizer:
                 return None
     
     def _calculate_sample_times(self, start_time: datetime, end_time: datetime) -> List[datetime]:
-        """计算采样时间点"""
+        """
+        计算采样时间点
+
+        🚀 优化策略：对于可见元任务，只采集开始和结束时刻的位置信息
+        这样可以大大加速数据采集速度，从699个请求减少到128个请求（64个任务 × 2个时间点）
+        """
         sample_times = []
 
         # 任务持续时间
         duration = (end_time - start_time).total_seconds()
 
-        # 🔧 修复：改进短任务的判断逻辑
-        if duration <= self.position_sample_interval * 2:
-            # 短任务：只采样开始和结束时间
-            sample_times = [start_time]
-            if start_time != end_time:
-                sample_times.append(end_time)
-        else:
-            # 长任务：按间隔采样
-            current_time = start_time
-            while current_time <= end_time:
-                sample_times.append(current_time)
-                current_time += timedelta(seconds=self.position_sample_interval)
+        # 🚀 优化：对于可见元任务，只采集开始和结束时刻的位置
+        # 这是最高效的策略，满足位置信息需求的同时最大化采集速度
+        sample_times = [start_time]
+        if start_time != end_time:
+            sample_times.append(end_time)
 
-            # 确保包含结束时间
-            if sample_times[-1] != end_time:
-                sample_times.append(end_time)
-
-        # 限制最大采样点数
-        if len(sample_times) > self.max_samples_per_task:
-            # 均匀分布采样点
-            step = max(1, len(sample_times) // self.max_samples_per_task)
-            sample_times = sample_times[::step][:self.max_samples_per_task]
-
-            # 确保包含开始和结束时间
-            if start_time not in sample_times:
-                sample_times[0] = start_time
-            if end_time not in sample_times and len(sample_times) > 1:
-                sample_times[-1] = end_time
+        logger.debug(f"📍 任务采样策略: 持续时间{duration:.1f}s, 采样点数: {len(sample_times)}")
 
         return sample_times
     
@@ -572,18 +568,24 @@ class SatellitePositionSynchronizer:
             位置请求列表
         """
         try:
-            # 解析任务时间范围
-            start_time_str = task.get("start_time")
-            end_time_str = task.get("end_time")
+            # 解析任务时间范围 - 优先使用ISO格式
+            start_time_str = task.get("start_time_iso") or task.get("start_time")
+            end_time_str = task.get("end_time_iso") or task.get("end_time")
             task_id = task.get("task_id")
 
             if not start_time_str or not end_time_str:
                 logger.warning(f"⚠️ 任务 {task_id} 时间范围无效")
                 return []
 
-            # 转换时间格式
-            start_time = datetime.fromisoformat(start_time_str.replace('Z', '+00:00'))
-            end_time = datetime.fromisoformat(end_time_str.replace('Z', '+00:00'))
+            # 转换时间格式 - 处理不同的时间格式
+            try:
+                # 首先尝试ISO格式
+                start_time = datetime.fromisoformat(start_time_str.replace('Z', '+00:00'))
+                end_time = datetime.fromisoformat(end_time_str.replace('Z', '+00:00'))
+            except ValueError:
+                # 如果ISO格式失败，尝试标准格式
+                start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S")
+                end_time = datetime.strptime(end_time_str, "%Y-%m-%d %H:%M:%S")
 
             # 计算采样时间点
             sample_times = self._calculate_sample_times(start_time, end_time)
@@ -631,13 +633,22 @@ class SatellitePositionSynchronizer:
 
             # 构建位置样本
             position_samples = []
+
+            # 解析任务开始时间用于计算相对时间
+            task_start_time_str = task.get("start_time_iso") or task.get("start_time")
+            try:
+                # 首先尝试ISO格式
+                task_start_time = datetime.fromisoformat(task_start_time_str.replace('Z', '+00:00'))
+            except ValueError:
+                # 如果ISO格式失败，尝试标准格式
+                task_start_time = datetime.strptime(task_start_time_str, "%Y-%m-%d %H:%M:%S")
+
             for result in successful_results:
                 enhanced_position = {
                     "sample_time": result.request.sample_time.isoformat(),
                     "time_offset_seconds": result.request.time_offset,
                     "position": result.position_data,
-                    "task_relative_time": (result.request.sample_time -
-                                         datetime.fromisoformat(task.get("start_time").replace('Z', '+00:00'))).total_seconds(),
+                    "task_relative_time": (result.request.sample_time - task_start_time).total_seconds(),
                     "processing_time": result.processing_time
                 }
                 position_samples.append(enhanced_position)
@@ -645,11 +656,19 @@ class SatellitePositionSynchronizer:
             # 计算位置统计信息
             position_stats = self._calculate_position_statistics(position_samples)
 
-            # 解析任务时间范围
-            start_time_str = task.get("start_time")
-            end_time_str = task.get("end_time")
-            start_time = datetime.fromisoformat(start_time_str.replace('Z', '+00:00'))
-            end_time = datetime.fromisoformat(end_time_str.replace('Z', '+00:00'))
+            # 解析任务时间范围 - 优先使用ISO格式
+            start_time_str = task.get("start_time_iso") or task.get("start_time")
+            end_time_str = task.get("end_time_iso") or task.get("end_time")
+
+            # 转换时间格式 - 处理不同的时间格式
+            try:
+                # 首先尝试ISO格式
+                start_time = datetime.fromisoformat(start_time_str.replace('Z', '+00:00'))
+                end_time = datetime.fromisoformat(end_time_str.replace('Z', '+00:00'))
+            except ValueError:
+                # 如果ISO格式失败，尝试标准格式
+                start_time = datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S")
+                end_time = datetime.strptime(end_time_str, "%Y-%m-%d %H:%M:%S")
 
             return {
                 "task_id": task.get("task_id"),

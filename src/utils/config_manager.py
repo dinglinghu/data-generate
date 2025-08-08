@@ -151,6 +151,16 @@ class ConfigManager:
         """获取数据采集配置"""
         sim_config = self.get_simulation_config()
         return sim_config.get("data_collection", {})
+
+    def get_position_config(self) -> Dict[str, Any]:
+        """获取位置配置"""
+        return self.config.get("position", {
+            "enable_position_cache": False,
+            "cache_timeout": 300,
+            "max_cache_size": 1000,
+            "position_timeout": 10,
+            "retry_attempts": 3
+        })
     
     def get_task_planning_config(self) -> Dict[str, Any]:
         """获取任务规划配置"""
